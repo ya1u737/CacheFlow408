@@ -19,7 +19,6 @@ s
 .ssh/
 
 # Data
-data/
 mock_test/
 
 # Vector database
