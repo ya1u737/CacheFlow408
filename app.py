@@ -1,19 +1,20 @@
 import streamlit as st
 import os
 from src.config import Config
-from src.parser import PDFParser
+from src.parser import DocumentParser
 from src.retriever import KnowledgeBase
 from src.generator import AnswerGenerator
 
 # 1. 基础配置
 st.set_page_config(
-    page_title="408 RAG Pro",
+    page_title="KnowMate Assistant",
     page_icon="🎓",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# ==================== 优化后的 CSS ====================
+
+
 st.markdown("""
 <style>
 /* === 全局背景 === */
@@ -141,7 +142,7 @@ if "messages" not in st.session_state:
     st.session_state.messages = []
 
 if "components_loaded" not in st.session_state:
-    st.session_state.parser = PDFParser()
+    st.session_state.parser = DocumentParser()
     st.session_state.kb = KnowledgeBase()
     st.session_state.generator = AnswerGenerator()
     st.session_state.components_loaded = True
@@ -176,36 +177,68 @@ with st.sidebar:
     st.divider()
 
     preset_docs = {
-        "数据结构": "数据结构核心考点.pdf",
-        "操作系统": "操作系统必背概念.pdf",
-        "计网": "计算机网络协议精讲.pdf"
+        "数据结构_知识点": "数据结构_知识点.md",
+        "操作系统_知识点": "操作系统_知识点.md",
+        "计算机网络_知识点": "计算机网络_知识点.md",
+        "组成原理_知识点": "组成原理_知识点.md",
     }
     selected = st.selectbox("选择预设讲义", options=["未选择"] + list(preset_docs.keys()))
 
     if selected != "未选择" and st.button("一键激活", use_container_width=True):
+
         path = os.path.join(Config.DATA_PATH, preset_docs[selected])
+
+        print("文件路径:", path)
+
         if os.path.exists(path):
-            st.session_state.kb.add_documents(st.session_state.parser.parse(path))
+
+           
+
+            docs = st.session_state.parser.parse_txt(path)
+
+            print("解析文档数量:", len(docs))
+
+            if docs:
+                print("第一段内容:")
+                print(docs[0].page_content[:200])
+
+            else:
+                print("❌ parser返回空列表")
+
+            st.session_state.kb.add_documents(docs)
+
             st.success("考点已同步内存")
+
+
 
     st.divider()
     uploaded_file = st.file_uploader(
-        "上传资料（支持 PDF / TXT）",
-        type=["pdf", "txt"]
+        "上传资料（支持 PDF / TXT /DOCX）",
+        type=["pdf", "txt","docx"]
     )
 
     if uploaded_file:
         if uploaded_file.type == "application/pdf":
-            docs = st.session_state.parser.parse(uploaded_file)
+            docs = st.session_state.parser.parse_pdf(uploaded_file)
 
         elif uploaded_file.type == "text/plain":
             docs = st.session_state.parser.parse_txt(uploaded_file)
+
+        elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
+            docs = st.session_state.parser.parse_docx(uploaded_file)
 
         else:
             st.error("不支持该文件类型")
             docs = []
 
         if docs:
+            # 确保每个 chunk 都有 source 和 page 信息
+            for doc in docs:
+                if "source" not in doc.metadata or not doc.metadata["source"]:
+                    doc.metadata["source"] = uploaded_file.name
+                if "page" not in doc.metadata:
+                    doc.metadata["page"] = "N/A"
+
             st.session_state.kb.add_documents(docs)
             st.success("资料已加载")
 
@@ -246,10 +279,38 @@ if prompt := st.chat_input("在此提问 408 考点..."):
         print(f'[PERF] Generation: {_t_gen:.2f}s')
         print(f'[PERF] Total: {_t_total:.2f}s')
 
-        if relevant_docs:
-            with st.expander("📚 查看参考来源"):
-                for doc in relevant_docs:
-                    st.caption(f"**{doc.metadata['source']} P{doc.metadata['page']}**")
-                    st.write(doc.page_content)
 
-    st.session_state.messages.append({"role": "assistant", "content": full_res})
+        if relevant_docs:
+            with st.expander("📚 检索知识点"):
+
+                for idx, doc in enumerate(relevant_docs, start=1):
+
+                    src = doc.metadata.get("source", "未知来源")
+                    page = doc.metadata.get("page", "N/A")
+
+                    content = doc.page_content.strip()
+
+                    # PDF符号处理
+                    content = content.replace("", " ")
+                    content = content.replace("\n", " ")
+
+                    # 去除多余空格
+                    content = " ".join(content.split())
+
+
+                    # 只取前15个字作为知识点摘要
+                    preview = content[:15]
+
+                    if len(content) > 15:
+                        preview += "..."
+
+
+                    # 一行显示
+                    st.write(
+                        f"📌 {idx}. {preview}"
+                    )
+
+                    # 来源单独一行
+                    st.caption(
+                        f"📄 {src}  P{page}"
+                    )

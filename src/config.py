@@ -2,8 +2,8 @@ import os
 
 class Config:
     # ==================== 路径配置 ====================
-    DATA_PATH = "data/"                     # PDF 文件存放目录
-    VECTOR_DB_PATH = "vector_db/"           # 向量数据库保存路径（可选）
+    DATA_PATH = "data/clean_md/"                # Markdown 文件存放目录
+    VECTOR_DB_PATH = "vector_db/"           
 
     # ==================== 本地 Ollama 聊天模型 ====================
     CHAT_MODEL = "qwen2.5:7b"              # 你当前运行的模型
@@ -14,28 +14,33 @@ class Config:
     API_KEY = ""
     API_BASE = "https://api.deepseek.com"
 
-    # ==================== Embedding 模型配置（关键！新增） ====================
+    # ==================== Embedding 模型配置 ====================
     # 本地 Ollama Embedding（强烈推荐目前使用）
-    EMBEDDING_MODEL = "bge-m3"               # 中文 RAG 最优开源模型
-    # 备选（任选其一）：
-    # EMBEDDING_MODEL = "nomic-embed-text"
-    # EMBEDDING_MODEL = "qwen3-embedding"     # 如果你已 pull
-
+    EMBEDDING_MODEL = "bge-m3"             
+    
     # RAG 检索参数
-    CHUNK_SIZE = 600                        # 建议调大一点，考研讲义单段通常较长
-    CHUNK_OVERLAP = 100
-    TOP_K = 4                               # 检索返回 4 个最相关片段（可调 3~6）
-    RETRIEVAL_TOP_K = 5                     # 向量召回候选数（降低以加速 rerank）
-    FINAL_TOP_K = 3                         # rerank 后最终返回的片段数
+    CHUNK_SIZE = 800                     
+    CHUNK_OVERLAP = 150
 
-    # ==================== Rerank（Cross Encoder 重排序） ====================
+
+    TOP_K = 4                            
+    RETRIEVAL_TOP_K = 5                     
+    FINAL_TOP_K = 3                        
+
+    # ==================== Rerank ====================
     RERANKER_MODEL = r"D:\models\bge-reranker-v2-m3"
 
-    # ==================== Prompt 模板（已优化） ====================
+    # ==================== Prompt 模板 ====================
     PROMPT_TEMPLATE = """你是一位专业、严谨、有十年教学经验的 408 考研导师（涵盖数据结构、操作系统、计算机网络、计算机组成原理）。
 请严格基于上下文信息回答问题，结合历史对话，重点突出核心考点、易混点、经典解题思路。
 回答要逻辑清晰、条理分明，适当使用 Markdown 列表、加粗、编号。
-如果上下文不足，可结合专业知识补充，但请注明“基于通用考研知识”。
+必须优先依据知识库回答。
+
+如果知识库没有提供相关信息：
+请明确说明：
+“当前知识库没有找到相关内容。”
+
+不要使用模型自身记忆替代知识库内容。
 不要回答与这四门课无关的问题，如果用户提问，请回答“抱歉，我只专注于数据结构、操作系统、计算机网络、计算机组成原理四门课程的考研辅导”。
 
 【对话历史】

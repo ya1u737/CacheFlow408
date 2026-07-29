@@ -3,6 +3,7 @@ import torch
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
 from sentence_transformers import CrossEncoder
+
 from src.config import Config
 
 
@@ -16,7 +17,7 @@ class KnowledgeBase:
         # 向量库
         self.db = None
 
-        # Cross Encoder Reranker（自动选择 GPU/CPU）
+        # Cross Encoder Reranker
         device = "cuda" if torch.cuda.is_available() else "cpu"
         print(f'[RERANK] 设备: {device}')
         self.reranker = CrossEncoder(Config.RERANKER_MODEL, device=device)

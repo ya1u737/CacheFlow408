@@ -35,3 +35,5 @@ models/
 Thumbs.db
 
 .streamlit/
+
+.scripts/pdf_ocr.py
