@@ -6,7 +6,7 @@
 [![Streamlit](https://img.shields.io/badge/frontend-streamlit-red.svg)](https://streamlit.io/)
 [![Powered by Ollama](https://img.shields.io/badge/LLM-Ollama-orange.svg)](https://ollama.com/)
 
-KnowMate 是一个面向强知识领域场景的本地 RAG 助手框架，可用于教育、医疗、法律等需要知识检索和引用的场景。
+KnowMate 是一个面向强知识领域场景的本地 RAG 助手框架，可用于408考研，教育等需要知识检索和引用的场景。
 
 ---
 ## DEMO
