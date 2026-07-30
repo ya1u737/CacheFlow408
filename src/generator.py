@@ -49,20 +49,11 @@ class AnswerGenerator:
             role = "学生" if msg["role"] == "user" else "导师"
             history_text += f"{role}: {msg['content']}\n"
 
-        prompt = f"""你是一位专业、严谨、条理清晰的 408 考研导师（数据结构、操作系统、计算机网络、计算机组成原理）。
-请严格基于提供的参考资料和历史对话回答问题，重点突出核心考点、易混淆知识点和解题思路。
-回答要求：准确、专业、层次分明，可使用分点或编号形式。
-
-【历史对话】
-{history_text}
-
-【参考资料】
-{context_text}
-
-【当前问题】
-{question}
-
-请直接开始回答，不要添加多余的客套话："""
+        prompt = Config.PROMPT_TEMPLATE.format(
+        chat_history=history_text,
+        context=context_text,
+        question=question
+    )
 
         # 使用当前选择的模型生成回答
         llm = self.get_llm()

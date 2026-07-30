@@ -1,9 +1,7 @@
 import streamlit as st
 import os
+import requests
 from src.config import Config
-from src.parser import DocumentParser
-from src.retriever import KnowledgeBase
-from src.generator import AnswerGenerator
 
 # 1. 基础配置
 st.set_page_config(
@@ -137,15 +135,14 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+API_BASE_URL = "http://localhost:8000"
+
 # 2. 初始化
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-if "components_loaded" not in st.session_state:
-    st.session_state.parser = DocumentParser()
-    st.session_state.kb = KnowledgeBase()
-    st.session_state.generator = AnswerGenerator()
-    st.session_state.components_loaded = True
+if "current_mode" not in st.session_state:
+    st.session_state.current_mode = "ollama"
 
 # 3. 侧边栏 - 添加自定义展开/收起按钮
 with st.sidebar:
@@ -156,18 +153,18 @@ with st.sidebar:
     with col1:
         if st.button("☁️ DeepSeek",
                      use_container_width=True,
-                     type="primary" if st.session_state.generator.current_mode == "api" else "secondary"):
-            st.session_state.generator.switch_mode("api")
+                     type="primary" if st.session_state.current_mode == "api" else "secondary"):
+            st.session_state.current_mode = "api"
             st.rerun()
 
     with col2:
         if st.button("🖥️ 本地 Ollama",
                      use_container_width=True,
-                     type="primary" if st.session_state.generator.current_mode == "ollama" else "secondary"):
-            st.session_state.generator.switch_mode("ollama")
+                     type="primary" if st.session_state.current_mode == "ollama" else "secondary"):
+            st.session_state.current_mode = "ollama"
             st.rerun()
 
-    current_model = "DeepSeek (云端)" if st.session_state.generator.current_mode == "api" else f"本地 Ollama ({Config.CHAT_MODEL})"
+    current_model = "DeepSeek (云端)" if st.session_state.current_mode == "api" else f"本地 Ollama ({Config.CHAT_MODEL})"
     st.caption(f"**当前使用：** {current_model}")
     # === 新增：自定义醒目的侧边栏控制按钮 ===
     col1, col2 = st.columns([1, 4])
@@ -186,28 +183,14 @@ with st.sidebar:
 
     if selected != "未选择" and st.button("一键激活", use_container_width=True):
 
-        path = os.path.join(Config.DATA_PATH, preset_docs[selected])
+        filename = preset_docs[selected]
 
-        print("文件路径:", path)
+        resp = requests.post(f"{API_BASE_URL}/api/load_knowledge", params={"filename": filename})
 
-        if os.path.exists(path):
-
-           
-
-            docs = st.session_state.parser.parse_txt(path)
-
-            print("解析文档数量:", len(docs))
-
-            if docs:
-                print("第一段内容:")
-                print(docs[0].page_content[:200])
-
-            else:
-                print("❌ parser返回空列表")
-
-            st.session_state.kb.add_documents(docs)
-
+        if resp.json().get("status") == "ok":
             st.success("考点已同步内存")
+        else:
+            st.error("加载失败")
 
 
 
@@ -218,29 +201,13 @@ with st.sidebar:
     )
 
     if uploaded_file:
-        if uploaded_file.type == "application/pdf":
-            docs = st.session_state.parser.parse_pdf(uploaded_file)
-
-        elif uploaded_file.type == "text/plain":
-            docs = st.session_state.parser.parse_txt(uploaded_file)
-
-        elif uploaded_file.type == "application/vnd.openxmlformats-officedocument.wordprocessingml.document":
-            docs = st.session_state.parser.parse_docx(uploaded_file)
-
-        else:
-            st.error("不支持该文件类型")
-            docs = []
-
-        if docs:
-            # 确保每个 chunk 都有 source 和 page 信息
-            for doc in docs:
-                if "source" not in doc.metadata or not doc.metadata["source"]:
-                    doc.metadata["source"] = uploaded_file.name
-                if "page" not in doc.metadata:
-                    doc.metadata["page"] = "N/A"
-
-            st.session_state.kb.add_documents(docs)
+        files = {"file": (uploaded_file.name, uploaded_file.getvalue(), uploaded_file.type)}
+        resp = requests.post(f"{API_BASE_URL}/api/upload", files=files)
+        data = resp.json()
+        if data.get("status") == "ok":
             st.success("资料已加载")
+        else:
+            st.error(data.get("message", "上传失败"))
 
     st.markdown('<div style="height: 20vh;"></div>', unsafe_allow_html=True)
     if st.button("🗑️ 清空当前对话", use_container_width=True):
@@ -248,7 +215,7 @@ with st.sidebar:
         st.rerun()
 
 # 4. 自定义顶栏
-st.markdown('<div class="top-banner"><h1>408 RAG Pro | 考研智能导师</h1></div>', unsafe_allow_html=True)
+st.markdown('<div class="top-banner"><h1>KnowMate RAG Assistant</h1></div>', unsafe_allow_html=True)
 
 # 历史对话
 for message in st.session_state.messages:
@@ -256,61 +223,50 @@ for message in st.session_state.messages:
         st.markdown(message["content"])
 
 # 输入与回答逻辑
-if prompt := st.chat_input("在此提问 408 考点..."):
+if prompt := st.chat_input("在此提问 ..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
     with st.chat_message("assistant"):
-        import time as _t
-        _t0 = _t.time()
-        relevant_docs = st.session_state.kb.search(prompt)
-        _t_ret_total = _t.time() - _t0
-
         res_box = st.empty()
-        _t1 = _t.time()
-        full_res = res_box.write_stream(
-            st.session_state.generator.generate(
-                prompt, relevant_docs, st.session_state.messages[:-1]
-            )
-        )
-        _t_gen = _t.time() - _t1
-        _t_total = _t.time() - _t0
-        print(f'[PERF] Generation: {_t_gen:.2f}s')
-        print(f'[PERF] Total: {_t_total:.2f}s')
+        full_res = ""
+        references = []
 
+        with requests.post(
+            f"{API_BASE_URL}/api/query_stream",
+            json={
+                "question": prompt,
+                "chat_history": st.session_state.messages[:-1],
+                "mode": st.session_state.current_mode
+            },
+            stream=True
+        ) as resp:
+            for line in resp.iter_lines():
+                if not line:
+                    continue
+                if line.startswith(b"data: "):
+                    payload = line[6:]
+                    import json
+                    msg = json.loads(payload)
+                    if msg["type"] == "token":
+                        full_res += msg["data"]
+                        res_box.markdown(full_res + "▌")
+                    elif msg["type"] == "references":
+                        references = msg["data"]
+                    elif msg["type"] == "done":
+                        break
 
-        if relevant_docs:
+        res_box.markdown(full_res)
+
+        print("[PERF] 流式回答完成")
+
+        if references:
             with st.expander("📚 检索知识点"):
+                for idx, ref in enumerate(references, start=1):
+                    preview = ref["preview"][:15] + "..." if len(ref["preview"]) > 15 else ref["preview"]
+                    st.write(f"📌 {idx}. {preview}")
+                    st.caption(f"📄 {ref['source']}  P{ref['page']}")
 
-                for idx, doc in enumerate(relevant_docs, start=1):
-
-                    src = doc.metadata.get("source", "未知来源")
-                    page = doc.metadata.get("page", "N/A")
-
-                    content = doc.page_content.strip()
-
-                    # PDF符号处理
-                    content = content.replace("", " ")
-                    content = content.replace("\n", " ")
-
-                    # 去除多余空格
-                    content = " ".join(content.split())
-
-
-                    # 只取前15个字作为知识点摘要
-                    preview = content[:15]
-
-                    if len(content) > 15:
-                        preview += "..."
-
-
-                    # 一行显示
-                    st.write(
-                        f"📌 {idx}. {preview}"
-                    )
-
-                    # 来源单独一行
-                    st.caption(
-                        f"📄 {src}  P{page}"
-                    )
+                    with st.expander("查看原文"):
+                        st.write(ref["preview"])

@@ -1,8 +1,6 @@
 import time
-import torch
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
-from sentence_transformers import CrossEncoder
 
 from src.config import Config
 
@@ -17,10 +15,12 @@ class KnowledgeBase:
         # 向量库
         self.db = None
 
-        # Cross Encoder Reranker
-        device = "cuda" if torch.cuda.is_available() else "cpu"
-        print(f'[RERANK] 设备: {device}')
-        self.reranker = CrossEncoder(Config.RERANKER_MODEL, device=device)
+        # [RERANK 已临时关闭] Cross Encoder Reranker
+        # 如需重新启用，取消以下注释：
+        # import torch
+        # from sentence_transformers import CrossEncoder
+        # device = "cuda" if torch.cuda.is_available() else "cpu"
+        # self.reranker = CrossEncoder(Config.RERANKER_MODEL, device=device)
 
     # ==================== 添加文档 ====================
     def add_documents(self, docs):
@@ -29,24 +29,11 @@ class KnowledgeBase:
         else:
             self.db.add_documents(docs)
 
-    # ==================== Cross Encoder Rerank ====================
+    # ==================== Rerank（已临时关闭）====================
+    # 直接返回传入的 docs，不做重排序
+    # 重新启用时：取消上方 __init__ 中注释 + 恢复此方法
     def rerank(self, query, docs):
-        candidates = len(docs)
-        if candidates == 0:
-            return docs
-
-        # 批量构造 (query, doc) 对
-        pairs = [(query, d.page_content) for d in docs]
-
-        # 批量评分
-        scores = self.reranker.predict(pairs)
-
-        # 按 score 从高到低排序
-        scored = list(zip(scores, docs))
-        scored.sort(key=lambda x: x[0], reverse=True)
-
-        selected = [doc for _, doc in scored[:Config.FINAL_TOP_K]]
-        return selected
+        return docs
 
     # ==================== 搜索 ====================
     def search(self, query):
@@ -61,11 +48,9 @@ class KnowledgeBase:
         t_retrieval = time.time() - t0
         candidates = len(docs)
 
-        # 3️⃣ Cross Encoder Rerank
-        t0 = time.time()
+        # 3️⃣ Rerank（已临时关闭）
         docs = self.rerank(query, docs)
-        t_rerank = time.time() - t0
 
-        print(f'[PERF] Retrieval: {t_retrieval:.2f}s | Rerank: {t_rerank:.2f}s | candidates={candidates} | selected={len(docs)}')
+        print(f'[PERF] Retrieval: {t_retrieval:.2f}s | candidates={candidates} | selected={len(docs)}')
 
         return docs
