@@ -23,7 +23,7 @@ __pycache__/
 venv/
 
 # 数据与大文件（关键！）
-data/preset data/
+data/preset_data/
 data/clean_md_from_md/
 data/dirty markdown/
 data/clean_md_from_pdf/
