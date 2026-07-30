@@ -9,10 +9,8 @@ __pycache__/
 # Virtual environment
 .venv/
 venv/
+
 # 依赖与打包
-
-
-Gus.py
 node_modules/
 frontend/node_modules/
 frontend/dist/
@@ -26,11 +24,14 @@ venv/
 
 # 数据与大文件（关键！）
 data/preset data/
+data/clean_md_from_md/
+data/dirty markdown/
+data/clean_md_from_pdf/
 
 # IDE
 .idea/
 .vscode/
-s
+
 # Git config / SSH
 .gitconfig
 .ssh/
@@ -53,3 +54,5 @@ Thumbs.db
 .streamlit/
 
 .scripts/pdf_ocr.py
+
+Gus.py

@@ -1,144 +1,99 @@
-# KnowMate-RAG Assistant
-> Local-First Knowledge Base Assistant
+# 🎓 KnowMate-RAG Assistant
+> **Modern, Local-First Knowledge Base Assistant with DeepSeek & Vue 3**
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Vue 3](https://img.shields.io/badge/frontend-Vue%203-brightgreen.svg)](https://vuejs.org/)
+[![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![Streamlit](https://img.shields.io/badge/frontend-streamlit-red.svg)](https://streamlit.io/)
 [![Powered by Ollama](https://img.shields.io/badge/LLM-Ollama-orange.svg)](https://ollama.com/)
 
-KnowMate 是一个面向强知识领域场景的本地 RAG 助手框架，可用于408考研，教育等需要知识检索和引用的场景。
+**KnowMate** 是一个采用**前后端分离架构**的高性能本地 RAG（检索增强生成）系统。专为 408 计算机考研、专业学术资料等强知识场景设计，支持精准的文档切片、向量检索、重排序（Rerank）以及流式打字机响应。
 
 ---
 ## DEMO
 
+
+
 <img src="./assets/demo.png" width="800">
-
-
 ## 🌟 Core Features
 
-### Local RAG Pipeline
-- **Document Parsing** — PDF / TXT files
-- **Text Chunking** — RecursiveCharacterTextSplitter
-- **Vector Retrieval** — Chroma + bge-m3 (Ollama)
-- **Cross Encoder Reranking** — bge-reranker-v2-m3 (sentence-transformers)
-- **LLM Generation** — Qwen2.5 / DeepSeek-R1 (Ollama) / DeepSeek API
-
-### Privacy-first Design
-- Ollama local inference
-- Local vector database
-- Documents remain locally
-- Optional Cloud API fallback
-
-### Domain Adaptation
-- 408 Computer Science
-- Medical documents
-- Legal documents
+- **🚀 前后端分离架构**：基于 **Vue 3 + Vite + Element Plus** 的极简美观现代 UI，搭配 **FastAPI** 高性能异步后端。
+- **⚡ 流式 SSE 打字机**：支持流式生成回答（Server-Sent Events）
+- **📚 智能知识库解析**：支持 Markdown、PDF、Word 及 TXT 解析，采用 `RecursiveCharacterTextSplitter` 做到精准切片。
+- **🔍 混合检索与重排**：**Chroma + bge-m3** 向量检索，配合 **bge-reranker-v2-m3** 交叉编码器重排序，检索精度极高。
+- **🔒 纯本地私有化**：敏感数据零上传，本地 Ollama 模型推理 + 本地向量数据库存储，确保数据绝对安全。
 
 ---
 
 ## 🏗️ Architecture
-
-```
-User Query
-  ↓
-Streamlit Frontend
-  ↓
-┌─────────── RAG Pipeline ───────────┐
-│  ① Document Parsing (PyMuPDF)     │
-│  ② Text Chunking (TextSplitter)   │
-│  ③ Vector Retrieval (Chroma)      │
-│  ④ Cross Encoder Reranking        │
-│  ⑤ LLM Generation                 │
-└────────────────────────────────────┘
-  ↓
-Ollama Local Models / DeepSeek API
-```
-
+┌──────────────────────────────────────────────────────────┐
+│              Vue 3 + Element Plus Frontend               │
+│      (Chat UI / Knowledge Base Mgmt / Stream Console)    │
+└────────────────────────────┬─────────────────────────────┘
+│ REST API / SSE Stream
+┌────────────────────────────▼─────────────────────────────┐
+│                    FastAPI Backend                       │
+│ ┌──────────────────────────────────────────────────────┐ │
+│ │                  RAG Pipeline Core                   │ │
+│ │  ① Document Parsing (PyMuPDF / Markdown)             │ │
+│ │  ② Text Chunking (LangChain Splitters)               │ │
+│ │  ③ Vector Retrieval (ChromaDB + Ollama bge-m3)       │ │
+│ │  ④ Reranking (bge-reranker-v2-m3)                    │ │
+│ │  ⑤ LLM Context Assembly & SSE Generation             │ │
+│ └──────────────────────────────────────────────────────┘ │
+└────────────────────────────┬─────────────────────────────┘
+│ Local IPC / Cloud API
+┌────────────────────────────▼─────────────────────────────┐
+│          Ollama (Qwen2.5 / DeepSeek) / DeepSeek API      │
+└──────────────────────────────────────────────────────────┘
 ### Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| UI | Streamlit |
-| Document Parsing | PyMuPDF / langchain-text-splitters |
-| Vector Retrieval | Chroma + bge-m3 (Ollama) |
-| Reranking | bge-reranker-v2-m3 (sentence-transformers) |
-| LLM | qwen2.5:7b / deepseek-r1:14b (Ollama) |
+| **Frontend** | Vue 3 (Composition API), Vite, Element Plus, Axios, Pinia |
+| **Backend API** | Python 3.11+, FastAPI, Uvicorn, SSE-Starlette |
+| **Document Parsing** | PyMuPDF, langchain-text-splitters |
+| **Vector Database** | ChromaDB + `bge-m3` (Ollama Embeddings) |
+| **Reranker** | `bge-reranker-v2-m3` (Sentence-Transformers) |
+| **LLM Inference** | Ollama (`qwen2.5:7b` / `deepseek-r1:14b`) or DeepSeek API |
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### 1. Prerequisites
 
 - Python 3.11+
+- Node.js 18+
 - [Ollama](https://ollama.com/)
 
-### Installation
+### 2. Model Preparation
 
 ```bash
-git clone https://github.com/ya1u737/KnowMate-RAG-assistant.git
-cd KnowMate-RAG-assistant
-pip install -r requirements.txt
-```
-
-### Model Setup
-
-```bash
-# Chat model (choose one)
+# Chat Model (Ollama)
 ollama pull qwen2.5:7b
-# or:
+# or DeepSeek R1:
 ollama pull deepseek-r1:14b
 
-# Embedding model
+# Embedding Model
 ollama pull bge-m3
 
-# Reranker model (auto-downloaded from HuggingFace on first run)
-```
+# 1. Install Dependencies
+pip install -r requirements.txt
 
-### Run
+# 2. Run FastAPI Backend Server
+python -m uvicorn backend.api:app --reload --port 8000
 
-```bash
-streamlit run app.py
-```
+# 1. Enter Frontend Directory
+cd frontend
 
-Open `http://localhost:8501` in your browser.
+# 2. Install Dependencies
+npm install
 
----
+# 3. Start Development Server
+npm run dev
 
-## ⚙️ Configuration
+📄 License
+MIT License. See LICENSE for details.
 
-```bash
-cp .env.example .env
-```
-
-Edit `.env` to set DeepSeek API Key (optional):
-
-```
-DEEPSEEK_API_KEY=sk-your-key-here   # leave empty for local Ollama
-USE_API=false                        # set true to use DeepSeek API
-```
-
-### Parameters
-
-| Parameter | Default | Description |
-|-----------|---------|-------------|
-| `CHAT_MODEL` | `qwen2.5:7b` | Ollama chat model |
-| `EMBEDDING_MODEL` | `bge-m3` | Ollama embedding model |
-| `RERANKER_MODEL` | `bge-reranker-v2-m3` | Cross encoder model path |
-| `RETRIEVAL_TOP_K` | 5 | Candidate count for retrieval |
-- [ ] Hybrid Search（BM25 + 向量）
-- [ ] 引用增强（标记文档来源）
-- [ ] 多知识库隔离切换
-- [ ] 医疗 / 法律领域适配模板
-- [ ] Docker 一键部署
-- [ ] 单元测试覆盖
-
----
-
-## 📄 License
-
-MIT License. 详见 [LICENSE](LICENSE)
-
----
-
-*Made with ❤️ for privacy-first RAG.*
+World ❤️ Peace 
