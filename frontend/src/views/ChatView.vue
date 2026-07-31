@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-container">
+  <div class="chat-container" :style="{ '--primary-color': currentColor }">
     <!-- 📚 当前知识库状态卡片 -->
     <div class="kb-status-bar">
       <div class="kb-bubble">
@@ -139,6 +139,7 @@ export default {
       loading: false,
       userScrolledUp: false,
       kbInfo: { knowledge_base: null, documents: [], chunk_count: 0 },
+      currentColor: localStorage.getItem('km_primary_color') || '#c8e338',
       userAvatarImg, 
       botAvatarImg
     }
@@ -146,10 +147,23 @@ export default {
   mounted() {
     this.loadHistory()
     this.fetchKbInfo()
+    // 监听侧边栏主题色切换
+    window.addEventListener('km-color-change', this.onColorChange)
+    this.currentColor = localStorage.getItem('km_primary_color') || '#c8e338'
   },
+  beforeUnmount() {
+    window.removeEventListener('km-color-change', this.onColorChange)
+  },
+    
 
 
   methods: {
+    onColorChange(e) {
+      if (e.detail && e.detail.color) {
+        this.currentColor = e.detail.color
+      }
+    },
+    
     async fetchKbInfo() {
       try {
         const r = await fetch('/api/status')
@@ -288,6 +302,8 @@ export default {
 /* 主容器：填满屏幕并 Flex 上下排列 */
 /* 聊天框主容器 */
 .chat-container {
+  /* 核心主题色变量（侧边栏切换时动态覆盖） */
+  --primary-color: #c8e338;
   position: relative;
   width: 100%;
   height: 100%;               /* 💡 使用 100% 继承 body 高度，避免 100vh 把输入框挤出屏幕 */
@@ -378,7 +394,7 @@ export default {
 
 /* 用户气泡 */
 .user-bubble {
-  background: linear-gradient(135deg, #c8e338, #1d4ed8);
+  background: linear-gradient(135deg, var(--primary-color), #1d4ed8);
   color: #ffffff;
   border-bottom-right-radius: 2px;
 }
@@ -421,7 +437,7 @@ export default {
 }
 
 :deep(.el-collapse-item__header:hover) {
-  border-color: #c8e338 !important;
+  border-color: var(--primary-color) !important;
 }
 
 .ref-summary-head {
@@ -484,7 +500,7 @@ export default {
 }
 
 .meta-idx {
-  color: #c8e338;
+  color: var(--primary-color);
   font-weight: 700;
 }
 
@@ -505,7 +521,7 @@ export default {
   display: flex;
   align-items: center;
   gap: 4px;
-  color: #c8e338;                              /* 👈 改用荧光绿高亮按钮 */
+  color: var(--primary-color);                 /* 👈 改用主题色高亮按钮 */
   font-size: 12px;                             /* 👈 按钮字号调大到 12px */
   font-weight: 600;
 }
@@ -609,8 +625,8 @@ export default {
   align-items: center !important;
 }
 .send-btn {
-  background-color: #c8e338 !important;
-  border-color: #c8e338 !important;
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
   color: #000000 !important; 
   font-weight: 700;
   border-radius: 5px !important;
@@ -688,7 +704,7 @@ export default {
   -webkit-backdrop-filter: blur(12px);
   
   /* 极细微光边框 */
-  border: 1px solid #c8e338;
+  border: 1px solid var(--primary-color);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
   
   /* 字体与颜色 */

@@ -180,7 +180,7 @@ export default {
   padding: 2px 8px;
   border-radius: 4px;
   font-size: 13px;
-  color: #c8e338; /* 搭配系统的荧光黄绿 */
+  color: var(--primary-color); /* 搭配系统的荧光黄绿 */
 }
 
 /* 模式 Tag */
@@ -230,9 +230,9 @@ export default {
   box-shadow: 0 0 8px #ef4444;
 }
 
-/* 刷新按钮：实心荧光绿圆角矩形 + 黑色文字 */
+/* 刷新按钮：实心主题色圆角矩形 + 黑色文字 */
 .refresh-text {
-  background-color: #c8e338;   /* 👈 实心荧光绿背景 */
+  background-color: var(--primary-color);   /* 👈 实心主题色背景 */
   color: #000000;              /* 👈 黑色文字 */
   font-size: 12px;
   font-weight: 700;            /* 文字加粗 */
@@ -246,8 +246,8 @@ export default {
 
 /* 悬停时加亮并提升透明度/发光 */
 .refresh-text:hover {
-  background-color: #d8f348;   /* 悬停稍微提亮 */
-  box-shadow: 0 0 10px rgba(200, 227, 56, 0.4); /* 荧光发光效果 */
+  background-color: color-mix(in srgb, var(--primary-color) 80%, white);   /* 悬停稍微提亮 */
+  box-shadow: 0 0 10px color-mix(in srgb, var(--primary-color) 40%, transparent); /* 荧光发光效果 */
 }
 
 /* 刷新/加载中状态 */

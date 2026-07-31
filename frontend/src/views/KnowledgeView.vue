@@ -126,7 +126,6 @@
 import { ref, onMounted, computed } from 'vue'
 import { ElMessage } from 'element-plus'
 
-// 预设文档列表
 const presetDocs = ref({
   '数据结构_知识点': '数据结构_知识点.md',
   '操作系统_知识点': '操作系统_知识点.md',
@@ -138,42 +137,28 @@ const statusText = ref('')
 const loadingPresets = ref({})
 const isRefreshing = ref(false)
 
-// ===== 假进度条 =====
 const uploadProgress = ref(0)
 const progressStatus = ref('')
 let progressTimer = null
 
-// 随机进度生成器（每次上传体验都不同）
 const startFakeProgress = () => {
   uploadProgress.value = 1
   progressStatus.value = ''
-
-  // 随机初始速度 1~5
   let speed = Math.floor(Math.random() * 4) + 1
-
-  // 随机目标区间：70~92，每次都不一样
   const maxTarget = Math.floor(Math.random() * 22) + 70
-
   clearInterval(progressTimer)
   progressTimer = setInterval(() => {
-    // 随机增量每次 1~5
     const inc = Math.floor(Math.random() * 5) + 1
     let next = uploadProgress.value + inc
-
-    // 在接近目标时减速（避免跳变）
     if (next >= maxTarget) {
-      // 随机停在目标区间内浮动，不再往上
       uploadProgress.value = maxTarget + Math.floor(Math.random() * 5) - 2
     } else {
       uploadProgress.value = next
     }
-
-    // 防止超过 99
     if (uploadProgress.value >= 99) uploadProgress.value = 95 + Math.floor(Math.random() * 4)
-  }, speed * 120) // 间隔时间也随机
+  }, speed * 120)
 }
 
-// 解析 statusText 为对象，方便看板渲染
 const parsedStatus = computed(() => {
   try {
     return JSON.parse(statusText.value)
@@ -182,7 +167,6 @@ const parsedStatus = computed(() => {
   }
 })
 
-// 获取系统状态
 const fetchStatus = async () => {
   isRefreshing.value = true
   try {
@@ -196,11 +180,9 @@ const fetchStatus = async () => {
   }
 }
 
-// 转换并加载预设知识库
 const loadPreset = async (filename) => {
   if (loadingPresets.value[filename]) return
   loadingPresets.value[filename] = true
-
   try {
     const r = await fetch(`/api/load_knowledge?filename=${encodeURIComponent(filename)}`, { method: 'POST' })
     const d = await r.json()
@@ -217,7 +199,6 @@ const loadPreset = async (filename) => {
   }
 }
 
-// 清空知识库
 const clearKnowledge = async () => {
   try {
     const r = await fetch('/api/clear', { method: 'DELETE' })
@@ -229,18 +210,14 @@ const clearKnowledge = async () => {
   }
 }
 
-// 上传回调
 const onUploadSuccess = (response, file, fileList) => {
   if (response.status === 'ok') {
-    // 真正成功：进度条直接跳到 100
     clearInterval(progressTimer)
     uploadProgress.value = 100
     progressStatus.value = 'success'
     ElMessage.success(`${response.source} 上传成功，共生成 ${response.chunks} 个知识片段`)
   } else {
-    // 业务失败（HTTP 200 但 status=error）
     ElMessage.error(`上传失败：${response.message || '未知错误'}`)
-    // 手动移除失败文件，避免显示对钩
     const idx = fileList.findIndex(f => f.uid === file.uid)
     if (idx !== -1) fileList.splice(idx, 1)
   }
@@ -250,10 +227,8 @@ const onUploadSuccess = (response, file, fileList) => {
 const onUploadError = (err, file, fileList) => {
   const msg = err?.response?.data?.message || '文件上传失败，请检查格式和内容'
   ElMessage.error(`上传失败：${msg}`)
-  // 失败：清除进度条
   clearInterval(progressTimer)
   uploadProgress.value = 0
-  // 从列表移除失败文件
   const idx = fileList.findIndex(f => f.uid === file.uid)
   if (idx !== -1) fileList.splice(idx, 1)
 }
@@ -274,7 +249,6 @@ onMounted(() => {
   overflow-y: auto;
 }
 
-/* 顶部标题栏 */
 .page-header {
   display: flex;
   align-items: center;
@@ -304,7 +278,6 @@ onMounted(() => {
   font-weight: 600;
 }
 
-/* 网格两列布局 */
 .knowledge-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -318,7 +291,6 @@ onMounted(() => {
   }
 }
 
-/* 基础卡片风格 */
 .section-card {
   background-color: #18191c;
   border: 1px solid #28292d;
@@ -338,14 +310,13 @@ onMounted(() => {
 
 .card-title .badge {
   font-size: 11px;
-  background-color: rgba(200, 227, 56, 0.15);
-  color: #c8e338;
-  border: 1px solid rgba(200, 227, 56, 0.3);
+  background-color: color-mix(in srgb, var(--primary-color) 15%, transparent);
+  color: var(--primary-color);
+  border: 1px solid color-mix(in srgb, var(--primary-color) 30%, transparent);
   padding: 1px 6px;
   border-radius: 4px;
 }
 
-/* 自定义拖拽上传区域 */
 .custom-drag-upload :deep(.el-upload-dragger) {
   background-color: #131417 !important;
   border: 2px dashed #33353b !important;
@@ -355,8 +326,8 @@ onMounted(() => {
 }
 
 .custom-drag-upload :deep(.el-upload-dragger:hover) {
-  border-color: #c8e338 !important;
-  background-color: rgba(200, 227, 56, 0.02) !important;
+  border-color: var(--primary-color) !important;
+  background-color: color-mix(in srgb, var(--primary-color) 2%, transparent) !important;
 }
 
 .upload-inner {
@@ -389,7 +360,7 @@ onMounted(() => {
 }
 
 .primary-text em {
-  color: #c8e338;
+  color: var(--primary-color);
   font-style: normal;
   font-weight: 600;
 }
@@ -399,7 +370,6 @@ onMounted(() => {
   color: #6b7280;
 }
 
-/* 假进度条样式 */
 .upload-progress {
   margin-top: 16px;
 }
@@ -413,7 +383,6 @@ onMounted(() => {
   color: #9ca3af;
 }
 
-/* 预设知识库卡片 */
 .preset-grid {
   display: flex;
   flex-direction: column;
@@ -433,7 +402,7 @@ onMounted(() => {
 }
 
 .preset-card:hover {
-  border-color: #c8e338;
+  border-color: var(--primary-color);
   transform: translateY(-1px);
 }
 
@@ -466,13 +435,12 @@ onMounted(() => {
 }
 
 .preset-card:hover .preset-btn {
-  background-color: #c8e338 !important;
-  border-color: #c8e338 !important;
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
   color: #000000 !important;
   font-weight: 700;
 }
 
-/* 状态看板区域 */
 .status-section {
   margin-top: 10px;
 }
@@ -483,26 +451,23 @@ onMounted(() => {
   justify-content: space-between;
 }
 
-/* 刷新按钮：实心荧光绿圆角矩形 + 黑色文字 */
 :deep(.refresh-btn) {
-  background-color: #c8e338 !important;   /* 实心荧光绿 */
-  border: none !important;                /* 去掉原本的细边框 */
-  color: #000000 !important;              /* 纯黑文字 */
-  font-weight: 700 !important;            /* 文字加粗 */
-  border-radius: 6px !important;          /* 圆角矩形 */
+  background-color: var(--primary-color) !important;
+  border: none !important;
+  color: #000000 !important;
+  font-weight: 700 !important;
+  border-radius: 6px !important;
   padding: 6px 14px !important;
   font-size: 12px !important;
   transition: all 0.2s ease !important;
 }
 
-/* 悬停时提亮并加发光效果 */
 :deep(.refresh-btn:hover) {
-  background-color: #d8f348 !important;
-  box-shadow: 0 0 10px rgba(200, 227, 56, 0.4) !important;
+  background-color: color-mix(in srgb, var(--primary-color) 80%, white) !important;
+  box-shadow: 0 0 10px color-mix(in srgb, var(--primary-color) 40%, transparent) !important;
   color: #000000 !important;
 }
 
-/* 加载状态/禁用状态 */
 :deep(.refresh-btn.is-loading),
 :deep(.refresh-btn.is-disabled) {
   background-color: #374151 !important;
@@ -538,10 +503,9 @@ onMounted(() => {
 }
 
 .metric-value.highlight {
-  color: #c8e338;
+  color: var(--primary-color);
 }
 
-/* 折叠面板与 JSON 降级显示 */
 .json-collapse :deep(.el-collapse),
 .json-collapse :deep(.el-collapse-item__header),
 .json-collapse :deep(.el-collapse-item__wrap) {

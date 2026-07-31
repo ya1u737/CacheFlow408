@@ -1,5 +1,5 @@
 <template>
-  <el-container class="app-layout">
+  <el-container class="app-layout" :style="{ '--primary-color': currentColor }">
     <!-- 侧边栏导航 -->
     <el-aside :width="isCollapse ? '64px' : '220px'" class="app-aside">
       <!-- 侧边栏顶部品牌区 + 展开/收缩按钮 -->
@@ -34,6 +34,22 @@
           <template #title>系统状态</template>
         </el-menu-item>
       </el-menu>
+
+      <!-- 侧边栏底部：主题色选择器 -->
+      <div class="theme-color-picker">
+
+        <div class="color-dots">
+          <button
+            v-for="c in colorOptions"
+            :key="c"
+            class="color-dot"
+            :class="{ active: currentColor === c }"
+            :style="{ backgroundColor: c }"
+            @click="setColor(c)"
+            :title="c"
+          />
+        </div>
+      </div>
     </el-aside>
 
     <!-- 右侧主区域 -->
@@ -60,13 +76,24 @@ import { ref } from 'vue'
 
 // 控制侧边栏展开/收缩状态
 const isCollapse = ref(false)
+
+// 主题色选择
+const colorOptions = ['#8b7cf6', '#9bb84a', '#4fb7c5']
+const currentColor = ref(localStorage.getItem('km_primary_color') || '#c8e338')
+
+const setColor = (c) => {
+  currentColor.value = c
+  localStorage.setItem('km_primary_color', c)
+  // 通知 ChatView 等页面实时切换
+  window.dispatchEvent(new CustomEvent('km-color-change', { detail: { color: c } }))
+}
 </script>
 
 <style scoped>
 /* 全局页面容器 */
 .app-layout {
   height: 100vh;
-  background-color: #131417;
+  background-color: #a1358f;
   color: #ececec;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   overflow: hidden;
@@ -124,7 +151,7 @@ html, body {
   margin-left :10px;
   background: linear-gradient(135deg, #2e3035, #18191c); /* 深灰渐变 */
   border: 1px solid rgba(255, 255, 255, 0.15);           /* 微亮细边框 */
-  color: #c8e338;                                        /* 荧光黄绿文字 */
+  color: var(--primary-color);                          /* 主题色文字 */
   font-weight: 800;
   font-size: 14px;
   border-radius: 8px;
@@ -202,7 +229,7 @@ html, body {
 
 .aside-menu :deep(.el-menu-item.is-active) {
   color: #000000 !important;
-  background-color: #c8e338 !important;
+  background-color: var(--primary-color) !important;
   font-weight: 600;
   box-shadow: 0 2px 10px rgba(37, 99, 235, 0.3);
 }
@@ -244,7 +271,7 @@ html, body {
 
 .app-title .tag {
   font-size: 15px;
-  color: #c8e338;
+  color: var(--primary-color);
   background-color: rgba(45, 46, 39, 0.08);
   border: 1px solid rgba(179, 207, 19, 0.25);
   padding: 3px 8px;
@@ -258,6 +285,46 @@ html, body {
   padding: 0;
   overflow: hidden;
   height: calc(100vh - 60px);
+}
+
+/* 主题色选择器（侧边栏底部） */
+.theme-color-picker {
+  flex-shrink: 0;
+  padding: 14px 16px 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.color-label {
+  font-size: 12px;
+  color: #8e8ea0;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.color-dots {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.color-dot {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+}
+
+.color-dot:hover {
+  transform: scale(1.15);
+}
+
+.color-dot.active {
+  border-color: #ffffff;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+  transform: scale(1.2);
 }
 </style>
 
