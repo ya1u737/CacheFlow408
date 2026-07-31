@@ -5,7 +5,6 @@ from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from src.config import Config
 
-
 class DocumentParser:
     def __init__(self):
         self.splitter = RecursiveCharacterTextSplitter(
@@ -37,6 +36,16 @@ class DocumentParser:
         else:
             doc = fitz.open(stream=file.read(), filetype="pdf")
             file_name = file.name
+
+        # PDF 类型检测：扫描件还是文本型
+        sample_pages = min(10, doc.page_count)
+        text_pages = 0
+        for i in range(sample_pages):
+            if doc[i].get_text().strip():
+                text_pages += 1
+
+        if text_pages == 0:
+            raise ValueError("当前仅支持文本型PDF，暂不支持扫描图片型PDF")
 
         documents = []
 

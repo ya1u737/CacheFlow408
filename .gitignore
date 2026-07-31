@@ -41,6 +41,7 @@ mock_test/
 
 # Vector database
 db/
+storage/
 
 # Model files
 models/

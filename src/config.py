@@ -3,7 +3,7 @@ import os
 class Config:
     # ==================== 路径配置 ====================
     DATA_PATH = "data/clean_md/"                # Markdown 文件存放目录
-    VECTOR_DB_PATH = "vector_db/"           
+    VECTOR_DB_PATH = "storage/chroma/"          # Chroma 持久化目录（每个知识库一个子目录）
 
     # ==================== 本地 Ollama 聊天模型 ====================
     CHAT_MODEL = "qwen2.5:7b"              # 你当前运行的模型

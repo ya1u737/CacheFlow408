@@ -36,12 +36,13 @@ class AnswerGenerator:
         return self.api_llm if self.current_mode == "api" else self.ollama_llm
 
     def generate(self, question: str, context_docs, chat_history):
-        # 构建参考资料文本
+        # 构建参考资料文本（只保留 TOP3 个最相关 chunk）
         context_text = ""
-        for i, doc in enumerate(context_docs):
+        top_docs = context_docs[:3]
+        for i, doc in enumerate(top_docs):
             source = doc.metadata.get('source', '未知文件')
             page = doc.metadata.get('page', '?')
-            context_text += f"[片段 {i + 1} | 来源: {source} 第{page}页]\n{doc.page_content}\n\n"
+            context_text += f"[引用{i + 1}]\n来源：{source} 第{page}页\n内容摘要：{doc.page_content[:50]}...\n完整内容：\n{doc.page_content}\n\n"
 
         # 构建历史对话（保留最近8轮）
         history_text = ""
@@ -50,10 +51,10 @@ class AnswerGenerator:
             history_text += f"{role}: {msg['content']}\n"
 
         prompt = Config.PROMPT_TEMPLATE.format(
-        chat_history=history_text,
-        context=context_text,
-        question=question
-    )
+            chat_history=history_text,
+            context=context_text,
+            question=question
+        )
 
         # 使用当前选择的模型生成回答
         llm = self.get_llm()

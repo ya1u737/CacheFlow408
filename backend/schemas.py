@@ -28,6 +28,9 @@ class StatusResponse(BaseModel):
     model: str
     embedding: str
     has_knowledge: bool
+    knowledge_base: Optional[str] = None
+    documents: List[str] = []
+    chunk_count: int = 0
 
 
 class LoadKnowledgeResponse(BaseModel):

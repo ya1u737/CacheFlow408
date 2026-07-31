@@ -1,6 +1,7 @@
 from fastapi import FastAPI, UploadFile, File
-from fastapi.responses import StreamingResponse
+from fastapi.responses import StreamingResponse, JSONResponse
 from backend.service import RAGService
+from backend import database as chat_db
 from backend.schemas import (
     QueryRequest, QueryResponse, Reference,
     StatusResponse, LoadKnowledgeResponse,
@@ -46,11 +47,40 @@ def load_knowledge(filename: str):
     return service.load_knowledge(filename)
 
 
-@app.post("/api/upload", response_model=UploadResponse)
+@app.post("/api/upload")
 def upload(file: UploadFile = File(...)):
-    return service.upload_document(file)
+    result = service.upload_document(file)
+    if result.get("status") != "ok":
+        return JSONResponse(status_code=400, content=result)
+    return result
 
 
 @app.delete("/api/clear", response_model=ClearResponse)
 def clear():
     return service.clear()
+
+
+# ==================== 聊天历史持久化 ====================
+
+@app.get("/api/history")
+def get_history(session_id: str):
+    messages = chat_db.get_messages(session_id)
+    return {"session_id": session_id, "messages": messages}
+
+
+@app.post("/api/history/save")
+def save_history(body: dict):
+    session_id = body.get("session_id")
+    role = body.get("role")
+    content = body.get("content")
+    references = body.get("references") or []
+    if not all([session_id, role, content]):
+        return {"status": "error", "message": "缺少必要字段"}
+    chat_db.save_message(session_id, role, content, references)
+    return {"status": "ok"}
+
+
+@app.delete("/api/history")
+def delete_history(session_id: str):
+    chat_db.delete_session(session_id)
+    return {"status": "ok", "message": f"会话 {session_id} 已删除"}
