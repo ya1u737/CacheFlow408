@@ -228,12 +228,15 @@ def run_eval(args):
     # 断点续跑
     partial_path = os.path.join(args.output, "eval_results_partial.json")
     done_ids = set()
+    results = []
     if args.resume and os.path.exists(partial_path):
         with open(partial_path, encoding="utf-8") as f:
-            done_ids = {r["id"] for r in json.load(f)}
-        print(f"[EVAL] 续跑模式：跳过已完成 {len(done_ids)} 题")
-
-    results = []
+            results = json.load(f)
+        done_ids = {r["id"] for r in results}
+        print(
+            f"[EVAL] 续跑模式：保留已保存 {len(results)} 条结果，"
+            f"跳过已完成 {len(done_ids)} 题"
+        )
 
     def save_partial():
         os.makedirs(args.output, exist_ok=True)
