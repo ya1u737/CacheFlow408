@@ -32,11 +32,21 @@ class Config:
     # RAG 检索参数
     CHUNK_SIZE = 800                     
     CHUNK_OVERLAP = 150
+    # 切块模式: recursive=固定长度递归切块 | semantic=按标题/段落语义切块
+    CHUNK_MODE = "semantic"              
 
 
     TOP_K = 4                            
     RETRIEVAL_TOP_K = 5                     
     FINAL_TOP_K = 3                        
+
+    # ==================== 混合检索（BM25 词法 + 向量语义，RRF 融合）====================
+    HYBRID_ENABLED = True                    # 是否启用 BM25 + RRF 混合检索
+    DENSE_TOP_K = 10                         # 向量检索候选数（融合前）
+    BM25_TOP_K = 10                          # BM25 候选数（融合前）
+    RRF_K = 60                               # RRF 平滑常数
+    RRF_DENSE_WEIGHT = 1.0                   # 向量路权重
+    RRF_BM25_WEIGHT = 1.0                    # BM25 路权重
 
     # ==================== Rerank（Cross Encoder 重排序） ====================
     RERANK_ENABLED = True                        # 是否启用 Cross Encoder 重排序
