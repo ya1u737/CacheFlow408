@@ -1,0 +1,116 @@
+{
+  "meta": {
+    "mode": "adaptive",
+    "rewrite": true,
+    "rewrite_enabled_in_run": true,
+    "rewrite_model": "qwen2.5:1.5b",
+    "reranker": "D:\\models\\bge-reranker-v2-m3",
+    "rerank_enabled": true,
+    "reranker_fp16": true,
+    "embedding": "bge-m3",
+    "chat_model": "qwen2.5:7b",
+    "chat_num_ctx": 8192,
+    "gen_backend": "ollama",
+    "judge_backend": "api",
+    "judge_model": "deepseek-v4-flash",
+    "top_k": 3,
+    "questions": 3,
+    "elapsed_s": 63.3
+  },
+  "summary": {
+    "数据结构": {
+      "subject": "数据结构",
+      "retrieval_sufficiency": null,
+      "answer_quality": null,
+      "key_point_coverage": null,
+      "total": 0.0,
+      "retrieval": 0.0,
+      "generation": 0.0
+    },
+    "__overall__": {
+      "subject": "全部",
+      "retrieval_sufficiency": null,
+      "answer_quality": null,
+      "key_point_coverage": null,
+      "total": 0.0,
+      "retrieval": 0.0,
+      "generation": 0.0
+    },
+    "__p95__": {
+      "total": 0.0,
+      "retrieval": 0.0,
+      "generation": 0.0
+    }
+  },
+  "questions": [
+    {
+      "id": "ds-01",
+      "subject": "数据结构",
+      "question": "什么是数据结构？数据的逻辑结构和存储结构有什么区别？",
+      "rewritten": "什么是数据结构？数据的逻辑结构和存储结构有什么区别？",
+      "answer": null,
+      "retrieval_sufficiency": null,
+      "answer_quality": null,
+      "key_point_coverage": null,
+      "total": 0.0,
+      "retrieval": 0.0,
+      "generation": 0.0,
+      "error": "retrieval: model \"bge-m3\" not found, try pulling it first (status code: 404)",
+      "scores": {
+        "retrieval_sufficiency": null,
+        "answer_quality": null,
+        "retrieval_reason": "",
+        "answer_reason": ""
+      },
+      "latency": {},
+      "judge_time": 0.0,
+      "references": []
+    },
+    {
+      "id": "ds-03",
+      "subject": "数据结构",
+      "question": "栈和队列有什么区别？分别适用于什么场景？",
+      "rewritten": "栈和队列有什么区别？分别适用于什么场景？",
+      "answer": null,
+      "retrieval_sufficiency": null,
+      "answer_quality": null,
+      "key_point_coverage": null,
+      "total": 0.0,
+      "retrieval": 0.0,
+      "generation": 0.0,
+      "error": "retrieval: model \"bge-m3\" not found, try pulling it first (status code: 404)",
+      "scores": {
+        "retrieval_sufficiency": null,
+        "answer_quality": null,
+        "retrieval_reason": "",
+        "answer_reason": ""
+      },
+      "latency": {},
+      "judge_time": 0.0,
+      "references": []
+    },
+    {
+      "id": "ds-06",
+      "subject": "数据结构",
+      "question": "二叉树有哪几种遍历方式？如何根据遍历序列唯一确定一棵二叉树？",
+      "rewritten": "二叉树有哪几种遍历方式？如何根据遍历序列唯一确定一棵二叉树？",
+      "answer": null,
+      "retrieval_sufficiency": null,
+      "answer_quality": null,
+      "key_point_coverage": null,
+      "total": 0.0,
+      "retrieval": 0.0,
+      "generation": 0.0,
+      "error": "retrieval: model \"bge-m3\" not found, try pulling it first (status code: 404)",
+      "scores": {
+        "retrieval_sufficiency": null,
+        "answer_quality": null,
+        "retrieval_reason": "",
+        "answer_reason": ""
+      },
+      "latency": {},
+      "judge_time": 0.0,
+      "references": []
+    }
+  ]
+}

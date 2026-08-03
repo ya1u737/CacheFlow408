@@ -1,0 +1,134 @@
+{
+  "meta": {
+    "mode": "full",
+    "rewrite": true,
+    "rewrite_model": "qwen2.5:1.5b",
+    "reranker": "D:\\models\\bge-reranker-v2-m3",
+    "rerank_enabled": true,
+    "embedding": "bge-m3",
+    "chat_model": "qwen2.5:7b",
+    "gen_backend": "ollama",
+    "judge_backend": "ollama",
+    "judge_model": "qwen2.5:7b",
+    "top_k": 3,
+    "questions": 2,
+    "elapsed_s": 89.7
+  },
+  "summary": {
+    "数据结构": {
+      "subject": "数据结构",
+      "retrieval_sufficiency": 3.5,
+      "answer_quality": 4,
+      "total": 32.97,
+      "retrieval": 4.5,
+      "generation": 16.91
+    },
+    "__overall__": {
+      "subject": "全部",
+      "retrieval_sufficiency": 3.5,
+      "answer_quality": 4,
+      "total": 32.97,
+      "retrieval": 4.5,
+      "generation": 16.91
+    },
+    "__p95__": {
+      "total": 42.11,
+      "retrieval": 4.73,
+      "generation": 17.38
+    }
+  },
+  "questions": [
+    {
+      "id": "数据-01",
+      "subject": "数据结构",
+      "question": "可以用（）定义一个完整的数据结构。",
+      "rewritten": "可以使用括号（）来定义一个完整的数据结构。",
+      "answer": "根据资料中的描述，可以使用**数据类型、逻辑结构和存储结构**这三部分来定义一个完整的数据结构。\n\n1. **数据类型**：确定数据元素的值的集合以及在此集合上定义的一组操作。\n2. **逻辑结构**：描述数据元素之间的逻辑关系，包括线性结构（如线性表）、非线性结构（如树和图）等。\n3. **存储结构**：表示逻辑结构在计算机中的具体形式，涉及数据的物理存储方式。\n\n例如，一个简单的栈可以定义为：\n- 数据类型：整数\n- 逻辑结构：线性结构（后进先出）\n- 存储结构：数组或链表\n\n这样就构成了一个完整的数据结构。",
+      "retrieval_sufficiency": 3,
+      "answer_quality": 3,
+      "total": 23.821,
+      "retrieval": 4.276,
+      "generation": 16.428,
+      "scores": {
+        "retrieval_sufficiency": 3,
+        "answer_quality": 3,
+        "retrieval_reason": "资料部分覆盖了数据类型、逻辑结构和存储结构，但未直接提及抽象数据类型（ADT）。",
+        "answer_reason": "回答提到了数据类型、逻辑结构和存储结构，但未能准确使用三元组表示法来定义一个完整的数据结构。"
+      },
+      "latency": {
+        "query_process": 2.953,
+        "embedding": 3.594,
+        "vector_search": 0.089,
+        "rerank": 0.593,
+        "context_build": 0.0,
+        "prompt_build": 0.0,
+        "llm_generation": 16.428,
+        "total": 23.821
+      },
+      "judge_time": 9.041,
+      "references": [
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "3.数据对象\n数据对象是具有相同性质的数据元素的集合，是数据的一个子集。例如，整数数据对象是集\n合 N = {0, ±1, ±2,}。\n4.数据类型\n数据类型是一个值的集合和定义在此集合上的一组操作的总称。\n1）原子类型。其值不可再分的数据"
+        },
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "---\nAIGC:\n    Label: \"1\"\n    ContentProducer: 001191440300708461136T1XGW3\n    ProduceID: bf6eef5f6878718fccb038a78ee2c8e"
+        },
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "# 第一章 绪论\n\n## 1.1 数据结构的基本概念\n\n数据结构的基本概念\n1. 数据\n数据是信息的载体，是描述客观事物属性的数、字符及所有能输入到计算机中并被计算机程\n序识别和处理的符号的集合。数据是计算机程序加工的原料。\n2.数据元素\n"
+        }
+      ]
+    },
+    {
+      "id": "数据-02",
+      "subject": "数据结构",
+      "question": "静态链表中指针表示的是（） A下一元素的地址",
+      "rewritten": "静态链表中指针表示的是（） A下一元素的地址",
+      "answer": "根据资料中的描述，静态链表中的指针是结点的相对地址（数组下标），又称游标。因此，在静态链表中指针表示的是**下一元素的数组下标**。\n\n答案：A 下一元素的地址（应理解为数组下标）。",
+      "retrieval_sufficiency": 4,
+      "answer_quality": 5,
+      "total": 42.113,
+      "retrieval": 4.726,
+      "generation": 17.382,
+      "scores": {
+        "retrieval_sufficiency": 4,
+        "answer_quality": 5,
+        "retrieval_reason": "资料充分覆盖了静态链表中指针的概念，但未直接给出答案选项。",
+        "answer_reason": "回答正确且完整地解释了问题，并选择了正确的选项。"
+      },
+      "latency": {
+        "query_process": 20.006,
+        "embedding": 4.318,
+        "vector_search": 0.004,
+        "rerank": 0.404,
+        "context_build": 0.0,
+        "prompt_build": 0.0,
+        "llm_generation": 17.382,
+        "total": 42.113
+      },
+      "judge_time": 9.155,
+      "references": [
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "第2章\n线性表\n图2.12循环单链表\n循环单链表的插入、删除算法与单链表的几乎一样，所不同的是若操作是在表尾进行，则执\n行的操作不同，以让单链表继续保持循环的性质。当然，正是因为循环单链表是一个“环”，因\n此在任何一个位置上的插入和删除操作"
+        },
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "//下个元素的数组下标\nint next;\n】 SLinkList[Maxsize];\n静态链表以next==-1作为其结束的标志。静态链表的插入、删除操作与动态链表的相同，\n只需要修改指针，而不需要移动元素。总体来说，静态链表没有单链表使"
+        },
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "的元素，指针low和high分别指向表的下界和上界，mid则指向表的中间位置L（low+\nhigh）/2」。以下说明查找11的过程（查找32的过程请读者自行分析）：\n710131619293233374143\nthigh\ntmid\nt lo"
+        }
+      ]
+    }
+  ]
+}

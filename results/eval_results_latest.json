@@ -1,0 +1,81 @@
+{
+  "meta": {
+    "mode": "baseline",
+    "rewrite": true,
+    "rewrite_enabled_in_run": true,
+    "rewrite_model": "qwen2.5:1.5b",
+    "reranker": "D:\\models\\bge-reranker-v2-m3",
+    "rerank_enabled": true,
+    "reranker_fp16": true,
+    "embedding": "bge-m3",
+    "chat_model": "qwen2.5:7b",
+    "chat_num_ctx": 8192,
+    "gen_backend": "ollama",
+    "judge_backend": "api",
+    "judge_model": "deepseek-v4-flash",
+    "top_k": 3,
+    "questions": 1,
+    "elapsed_s": 10.6
+  },
+  "summary": {
+    "组成原理": {
+      "subject": "组成原理",
+      "retrieval_sufficiency": null,
+      "answer_quality": 5,
+      "key_point_coverage": 1.0,
+      "total": 7.53,
+      "retrieval": 0.0,
+      "generation": 7.53
+    },
+    "__overall__": {
+      "subject": "全部",
+      "retrieval_sufficiency": null,
+      "answer_quality": 5,
+      "key_point_coverage": 1.0,
+      "total": 7.53,
+      "retrieval": 0.0,
+      "generation": 7.53
+    },
+    "__p95__": {
+      "total": 7.53,
+      "retrieval": 0.0,
+      "generation": 7.53
+    }
+  },
+  "questions": [
+    {
+      "id": "co-08",
+      "subject": "组成原理",
+      "question": "Cache的替换算法有哪些？",
+      "rewritten": "Cache的替换算法有哪些？",
+      "answer": "### 结论\n常见的Cache替换算法包括：先进先出（FIFO）、最近最少使用（LRU）、最近最不经常使用（LFU）和随机选择（Random）。\n\n### 理由或解析\n1. **先进先出（FIFO）**：\n   - FIFO是最简单的替换策略之一，它按照数据进入Cache的顺序进行管理。最早被放入Cache的数据，在一定条件下会被最先移除。\n   \n2. **最近最少使用（LRU）**：\n   - LRU算法认为最近一段时间内没有被访问过的数据在未来较长时间内也不会被频繁访问。因此，当需要替换时，会选择最久未被使用的数据进行替换。\n\n3. **最近最不经常使用（LFU）**：\n   - LFU算法考虑的是数据的访问频率，即访问次数最少的数据会被优先移除。这种策略假设那些较少被访问的数据在未来也不会频繁访问。\n   \n4. **随机选择（Random）**：\n   - 随机选择是最简单的替换策略之一，它不依赖于任何特定的信息或模式来决定哪些数据应该被替换。每次需要替换时，随机选取一个位置进行替换。\n\n### 选择题\n假设有一个选择题如下：Cache的常见替换算法有哪些？\n- A. FIFO、LRU和LFU\n- B. FIFO、LRU、LFU和Random\n- C. LRU、LFU和Random\n- D. FIFO、LRU\n\n**正确选项：B**\n\n**原因解释**：\n- 选项A忽略了随机选择（Random）算法。\n- 选项C忽略了FIFO和Random算法。\n- 选项D虽然包含了正确的替换策略，但缺少了LFU。\n\n因此，最全面的答案是选项B。",
+      "mode_used": null,
+      "rerank_top_score": null,
+      "retrieval_sufficiency": null,
+      "answer_quality": 5,
+      "key_point_coverage": 1.0,
+      "total": 7.533,
+      "retrieval": 0.0,
+      "generation": 7.533,
+      "error": null,
+      "scores": {
+        "retrieval_sufficiency": null,
+        "answer_quality": 5,
+        "retrieval_reason": "未检索到任何资料，无法提供依据",
+        "answer_reason": "回答正确列出四种算法并解释，关键点齐全"
+      },
+      "latency": {
+        "query_process": 0.0,
+        "embedding": 0.0,
+        "vector_search": 0.0,
+        "rerank": 0.0,
+        "context_build": 0.0,
+        "prompt_build": 0.0,
+        "llm_generation": 7.533,
+        "total": 7.533
+      },
+      "judge_time": 2.141,
+      "references": []
+    }
+  ]
+}

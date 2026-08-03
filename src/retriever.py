@@ -1,5 +1,4 @@
 import os
-import time
 from langchain_chroma import Chroma
 from langchain_ollama import OllamaEmbeddings
 
@@ -10,18 +9,34 @@ class KnowledgeBase:
     def __init__(self):
         # 向量模型
         self.embedding = OllamaEmbeddings(
-            model=Config.EMBEDDING_MODEL
+            model=Config.EMBEDDING_MODEL,
+            keep_alive=Config.EMBEDDING_KEEP_ALIVE,
         )
 
         # 向量库（当前会话使用）
         self.db = None
 
-        # [RERANK 已临时关闭] Cross Encoder Reranker
-        # 如需重新启用，取消以下注释：
-        # import torch
-        # from sentence_transformers import CrossEncoder
-        # device = "cuda" if torch.cuda.is_available() else "cpu"
-        # self.reranker = CrossEncoder(Config.RERANKER_MODEL, device=device)
+        # Rerank 开关（配置驱动；启用时加载 Cross Encoder）
+        self.rerank_enabled = Config.RERANK_ENABLED
+        self.reranker = None
+        # 最近一次检索的最高重排分数（分级降级门控用）
+        self.last_rerank_top_score = None
+        if self.rerank_enabled:
+            try:
+                import torch
+                from sentence_transformers import CrossEncoder
+                device = "cuda" if torch.cuda.is_available() else "cpu"
+                model_kwargs = {}
+                if Config.RERANKER_FP16 and device == "cuda":
+                    model_kwargs["torch_dtype"] = torch.float16
+                self.reranker = CrossEncoder(
+                    Config.RERANKER_MODEL, device=device, model_kwargs=model_kwargs
+                )
+                print(f"[RERANK] Cross Encoder 已启用: {Config.RERANKER_MODEL} (device={device})")
+            except Exception as e:
+                self.reranker = None
+                self.rerank_enabled = False
+                print(f"[RERANK] 模型加载失败，已回退为不启用: {e}")
 
     # ==================== 添加文档 ====================
     def add_documents(self, docs):
@@ -63,28 +78,72 @@ class KnowledgeBase:
         )
         return True
 
-    # ==================== Rerank（已临时关闭）====================
-    # 直接返回传入的 docs，不做重排序
-    # 重新启用时：取消上方 __init__ 中注释 + 恢复此方法
+    # ==================== Rerank（Cross Encoder 重排序）====================
     def rerank(self, query, docs):
-        return docs
+        """按 query 与各 doc 的相关性分数降序重排，返回 Top FINAL_TOP_K。
+
+        未启用 / 模型加载失败 / 无候选时，原样返回 docs。
+        """
+        self.last_rerank_top_score = None
+        if not self.rerank_enabled or self.reranker is None or not docs:
+            return docs
+
+        pairs = [[query, doc.page_content] for doc in docs]
+        scores = self.reranker.predict(pairs, batch_size=32)
+        if hasattr(scores, "tolist"):
+            scores = scores.tolist()
+        self.last_rerank_top_score = float(max(scores))
+
+        scored = sorted(
+            zip(docs, scores),
+            key=lambda x: x[1],
+            reverse=True
+        )
+        return [doc for doc, _ in scored][:Config.FINAL_TOP_K]
 
     # ==================== 搜索 ====================
-    def search(self, query):
-        t_total_start = time.time()
+    def search(self, query, timer=None, query_embedding=None):
+        """向量检索 + 重排序（返回候选 docs）。
 
+        timer: RAGTimer，记录 embedding / vector_search / rerank 三个阶段。
+        query_embedding: 预计算的查询向量（评测预向量化时传入，跳过在线 embedding）。
+        rerank 未启用时，rerank 阶段保持 0。
+        """
         if self.db is None:
             return []
+        self.last_rerank_top_score = None
 
-        # 1️⃣ 向量召回
-        t0 = time.time()
-        docs = self.db.similarity_search(query, k=Config.RETRIEVAL_TOP_K)
-        t_retrieval = time.time() - t0
+        # 1. Embedding（Query 向量化）
+        if query_embedding is None:
+            if timer:
+                timer.start("embedding")
+            query_embedding = self.embedding.embed_query(query)
+            if timer:
+                timer.end("embedding")
+        elif timer:
+            # 评测预向量化模式：embedding 耗时在预跑阶段单独记录
+            timer.start("embedding")
+            timer.end("embedding")
+
+        # 2. Vector Search（Chroma 向量检索）
+        if timer:
+            timer.start("vector_search")
+        docs = self.db.similarity_search_by_vector(
+            query_embedding, k=Config.RETRIEVAL_TOP_K
+        )
+        if timer:
+            timer.end("vector_search")
         candidates = len(docs)
 
-        # 3️⃣ Rerank（已临时关闭）
+        # 3. Rerank（Cross Encoder 重排序）
+        if self.rerank_enabled and timer:
+            timer.start("rerank")
         docs = self.rerank(query, docs)
+        if self.rerank_enabled and timer:
+            timer.end("rerank")
 
-        print(f'[PERF] Retrieval: {t_retrieval:.2f}s | candidates={candidates} | selected={len(docs)}')
+        print(
+            f"[PERF] Retrieval: candidates={candidates} | selected={len(docs)}"
+        )
 
         return docs

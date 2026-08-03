@@ -1,0 +1,107 @@
+{
+  "meta": {
+    "mode": "baseline",
+    "rewrite": true,
+    "rewrite_enabled_in_run": true,
+    "rewrite_model": "qwen2.5:1.5b",
+    "reranker": "D:\\models\\bge-reranker-v2-m3",
+    "rerank_enabled": true,
+    "reranker_fp16": true,
+    "embedding": "bge-m3",
+    "chat_model": "qwen2.5:7b",
+    "chat_num_ctx": 8192,
+    "gen_backend": "ollama",
+    "judge_backend": "ollama",
+    "judge_model": "qwen2.5:7b",
+    "top_k": 3,
+    "questions": 2,
+    "elapsed_s": 26.4
+  },
+  "summary": {
+    "数据结构": {
+      "subject": "数据结构",
+      "retrieval_sufficiency": null,
+      "answer_quality": 3.5,
+      "total": 10.98,
+      "retrieval": 0.0,
+      "generation": 10.98
+    },
+    "__overall__": {
+      "subject": "全部",
+      "retrieval_sufficiency": null,
+      "answer_quality": 3.5,
+      "total": 10.98,
+      "retrieval": 0.0,
+      "generation": 10.98
+    },
+    "__p95__": {
+      "total": 15.77,
+      "retrieval": 0.0,
+      "generation": 15.76
+    }
+  },
+  "questions": [
+    {
+      "id": "数据-01",
+      "subject": "数据结构",
+      "question": "可以用（）定义一个完整的数据结构。",
+      "rewritten": "可以用（）定义一个完整的数据结构。",
+      "answer": "### 结论\n\n可以使用“类”来定义一个完整的数据结构。\n\n### 理由或解析\n\n在面向对象编程中，“类”是一种用于创建具有相同属性和方法的对象的模板。通过类，我们可以定义一个包含数据成员（即变量）和成员函数（即方法）的数据结构。这样不仅能够描述数据的类型和形式，还能规定如何操作这些数据。\n\n例如，在C++或Java中，可以使用如下代码来定义一个简单的“学生”数据结构：\n\n```cpp\nclass Student {\npublic:\n    string name; // 姓名\n    int age;     // 年龄\n    double score; // 成绩\n\n    void displayInfo() { // 显示信息的方法\n        cout << \"Name: \" << name << \", Age: \" << age << \", Score: \" << score << endl;\n    }\n};\n```\n\n### 选择题解析（假设为选择题）\n\n**问题：可以用（）定义一个完整的数据结构。**\n\n- A. 变量声明\n- B. 函数定义\n- C. 类定义\n- D. 结构体定义\n\n**正确选项：C. 类定义**\n\n**原因解释：**\n- **A. 变量声明**：变量声明只能定义单一的数据项，不能包含多个相关数据成员和方法。\n- **B. 函数定义**：函数定义主要用来描述操作数据的方法或过程，并不直接定义数据结构。\n- **C. 类定义**：类定义可以包含多个数据成员（即属性）以及这些属性的操作方法（即行为），因此能够完整地定义一个数据结构。\n- **D. 结构体定义**：在某些编程语言中，如C/C++，结构体确实可以用来定义具有多个相关数据成员的数据类型。但“类”通常提供了更强大的功能和更好的封装性。\n\n综上所述，在面向对象的编程范式下，“类”是定义完整数据结构的最佳选择。",
+      "retrieval_sufficiency": null,
+      "answer_quality": 3,
+      "total": 15.765,
+      "retrieval": 0.0,
+      "generation": 15.764,
+      "error": null,
+      "scores": {
+        "retrieval_sufficiency": null,
+        "answer_quality": 3,
+        "retrieval_reason": "未检索到相关资料，纯模型生成",
+        "answer_reason": "回答偏离了问题核心，使用类定义而非ADT来解释数据结构"
+      },
+      "latency": {
+        "query_process": 0.0,
+        "embedding": 0.0,
+        "vector_search": 0.0,
+        "rerank": 0.0,
+        "context_build": 0.0,
+        "prompt_build": 0.0,
+        "llm_generation": 15.764,
+        "total": 15.765
+      },
+      "judge_time": 2.089,
+      "references": []
+    },
+    {
+      "id": "数据-02",
+      "subject": "数据结构",
+      "question": "静态链表中指针表示的是（） A下一元素的地址",
+      "rewritten": "静态链表中指针表示的是（） A下一元素的地址",
+      "answer": "### 结论\n静态链表中的指针指向的是前一个节点的地址。\n\n### 理由或解析\n静态链表是一种数据结构，它通过数组来存储节点，并且每个节点包含一个指向前驱节点的指针。与动态链表不同，静态链表中节点的位置是固定的，但可以通过指针来表示节点之间的关系。具体来说：\n\n- **前驱指针**：在静态链表中，每个节点除了包含数据外，还包含一个指向前一个节点（即前驱）的指针。\n- **下一元素地址**：动态链表中的指针通常用于指向下一个节点的位置，但在静态链表中没有这样的概念。因为静态链表是通过数组索引来访问节点的。\n\n因此，在静态链表中，指针表示的是前一个节点的地址，而不是下一元素的地址。\n\n### 选择题分析\n- **正确选项**：B（假设选项B为“前一个节点的地址”）\n- **错误选项A**：“下一元素的地址”。在静态链表中，没有这样的概念。动态链表中的指针用于指向下一个节点的位置，但在静态链表中是通过数组索引来访问节点。\n\n希望这个解释能帮助你理解静态链表中的指针含义！",
+      "retrieval_sufficiency": null,
+      "answer_quality": 4,
+      "total": 6.188,
+      "retrieval": 0.0,
+      "generation": 6.188,
+      "error": null,
+      "scores": {
+        "retrieval_sufficiency": null,
+        "answer_quality": 4,
+        "retrieval_reason": "未检索到相关资料",
+        "answer_reason": "回答正确但与问题不匹配"
+      },
+      "latency": {
+        "query_process": 0.0,
+        "embedding": 0.0,
+        "vector_search": 0.0,
+        "rerank": 0.0,
+        "context_build": 0.0,
+        "prompt_build": 0.0,
+        "llm_generation": 6.188,
+        "total": 6.188
+      },
+      "judge_time": 1.636,
+      "references": []
+    }
+  ]
+}

@@ -40,6 +40,16 @@
               </span>
             </div>
 
+            <!-- 云端 API 配置状态 -->
+            <div class="status-item">
+              <span class="label">云端 API</span>
+              <span class="value">
+                <span :class="['knowledge-badge', status.api_available ? 'has-data' : 'empty-data']">
+                  {{ status.api_available ? '● 已配置' : '○ 未配置' }}
+                </span>
+              </span>
+            </div>
+
             <!-- LLM 模型 -->
             <div class="status-item">
               <span class="label">LLM 模型</span>

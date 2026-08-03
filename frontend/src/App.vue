@@ -35,6 +35,48 @@
         </el-menu-item>
       </el-menu>
 
+      <!-- 侧边栏中部：模型选择 + API Key -->
+      <div v-if="!isCollapse" class="model-picker">
+        <div class="model-label">🤖 模型选择</div>
+        <div class="mode-btns">
+          <button
+            class="mode-btn"
+            :class="{ active: llmMode === 'ollama' }"
+            @click="setMode('ollama')"
+          >
+            🖥️ 本地 Ollama
+          </button>
+          <button
+            class="mode-btn"
+            :class="{ active: llmMode === 'api' }"
+            @click="setMode('api')"
+          >
+            ☁️ DeepSeek API
+          </button>
+        </div>
+
+        <!-- API Key 输入（切换到云端模式时显示） -->
+        <div v-if="llmMode === 'api'" class="api-box">
+          <el-input
+            v-model="apiKey"
+            type="password"
+            show-password
+            size="small"
+            placeholder="粘贴你的 DeepSeek API Key"
+            @keyup.enter="saveApiKey"
+          />
+          <div class="api-actions">
+            <el-button size="small" type="primary" :loading="apiBusy" @click="saveApiKey">
+              启用云端
+            </el-button>
+            <el-button size="small" text @click="clearApiKey">清除</el-button>
+          </div>
+          <div v-if="apiStatus" class="api-status" :class="{ err: apiStatus.startsWith('❌') }">
+            {{ apiStatus }}
+          </div>
+        </div>
+      </div>
+
       <!-- 侧边栏底部：主题色选择器 -->
       <div class="theme-color-picker">
 
@@ -72,10 +114,80 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
 // 控制侧边栏展开/收缩状态
 const isCollapse = ref(false)
+
+// ==================== 模型选择 + DeepSeek API Key ====================
+const llmMode = ref(localStorage.getItem('km_llm_mode') || 'ollama')
+const apiKey = ref(localStorage.getItem('km_api_key') || '')
+const apiStatus = ref('')
+const apiBusy = ref(false)
+
+const setMode = (m) => {
+  llmMode.value = m
+  localStorage.setItem('km_llm_mode', m)
+  // 通知 ChatView 等页面实时切换
+  window.dispatchEvent(new CustomEvent('km-mode-change', { detail: { mode: m } }))
+}
+
+const saveApiKey = async () => {
+  const key = apiKey.value.trim()
+  if (!key) {
+    apiStatus.value = '❌ API Key 不能为空'
+    return
+  }
+  apiBusy.value = true
+  apiStatus.value = ''
+  try {
+    const r = await fetch('/api/config/api_key', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ api_key: key })
+    })
+    const data = await r.json()
+    if (data.status === 'ok') {
+      localStorage.setItem('km_api_key', key)
+      apiStatus.value = '✅ DeepSeek API 已启用'
+      setMode('api')
+    } else {
+      apiStatus.value = '❌ ' + (data.message || data.detail || '启用失败')
+    }
+  } catch (e) {
+    apiStatus.value = '❌ 连接后端失败: ' + e.message
+  } finally {
+    apiBusy.value = false
+  }
+}
+
+const clearApiKey = async () => {
+  apiKey.value = ''
+  apiStatus.value = ''
+  localStorage.removeItem('km_api_key')
+  try {
+    await fetch('/api/config/api_key', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ api_key: '' })
+    })
+  } catch {}
+  setMode('ollama')
+}
+
+onMounted(async () => {
+  // 本地已保存过 Key 时，启动自动注册到后端
+  const saved = localStorage.getItem('km_api_key')
+  if (saved) {
+    try {
+      await fetch('/api/config/api_key', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ api_key: saved })
+      })
+    } catch {}
+  }
+})
 
 // 主题色选择
 const colorOptions = ['#8b7cf6', '#9bb84a', '#4fb7c5']
@@ -237,6 +349,72 @@ html, body {
 .menu-icon {
   margin-right: 12px;
   font-size: 16px;
+}
+
+/* 模型选择器 */
+.model-picker {
+  flex-shrink: 0;
+  padding: 14px 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.model-label {
+  font-size: 12px;
+  color: #8e8ea0;
+  margin-bottom: 10px;
+}
+
+.mode-btns {
+  display: flex;
+  gap: 8px;
+}
+
+.mode-btn {
+  flex: 1;
+  padding: 7px 4px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #222328;
+  color: #b8bcc8;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.mode-btn:hover {
+  border-color: var(--primary-color);
+  color: #ffffff;
+}
+
+.mode-btn.active {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: #000000;
+  font-weight: 700;
+}
+
+.api-box {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.api-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.api-status {
+  font-size: 12px;
+  color: #34d399;
+  line-height: 1.4;
+}
+
+.api-status.err {
+  color: #f87171;
 }
 
 /* 右侧主容器 */

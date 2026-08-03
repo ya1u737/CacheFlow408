@@ -5,7 +5,7 @@ from backend import database as chat_db
 from backend.schemas import (
     QueryRequest, QueryResponse, Reference,
     StatusResponse, LoadKnowledgeResponse,
-    UploadResponse, ClearResponse
+    UploadResponse, ClearResponse, ApiKeyRequest
 )
 
 app = FastAPI(title="KnowMate RAG API", version="1.0.0")
@@ -19,13 +19,20 @@ def get_status():
 
 @app.post("/api/query", response_model=QueryResponse)
 def query(req: QueryRequest):
-    result = service.query(req.question, req.chat_history, req.mode)
-    references = [Reference(**r) for r in result["references"]]
-    return QueryResponse(
-        answer=result["answer"],
-        references=references,
-        perf=result["perf"]
-    )
+    try:
+        result = service.query(req.question, req.chat_history, req.mode)
+        references = [Reference(**r) for r in result["references"]]
+        return QueryResponse(
+            answer=result["answer"],
+            references=references,
+            perf=result["perf"],
+            performance=result["performance"],
+            grounded=result.get("grounded", True),
+            retrieval_confidence=result.get("retrieval_confidence"),
+            notice=result.get("notice", "")
+        )
+    except ValueError as e:
+        return JSONResponse(status_code=400, content={"detail": str(e)})
 
 
 @app.post("/api/query_stream")
@@ -58,6 +65,27 @@ def upload(file: UploadFile = File(...)):
 @app.delete("/api/clear", response_model=ClearResponse)
 def clear():
     return service.clear()
+
+
+# ==================== DeepSeek API Key（用户自填）====================
+
+@app.post("/api/config/api_key")
+def set_api_key(req: ApiKeyRequest):
+    """设置/清除 DeepSeek API Key。Key 仅保存在内存，不写入磁盘。"""
+    key = (req.api_key or "").strip()
+    if not key:
+        service.set_api_key("")
+        return {
+            "status": "ok",
+            "api_available": False,
+            "message": "已清除 API Key，当前使用本地模式"
+        }
+    service.set_api_key(key, req.model)
+    return {
+        "status": "ok",
+        "api_available": True,
+        "message": "DeepSeek API 已启用"
+    }
 
 
 # ==================== 聊天历史持久化 ====================

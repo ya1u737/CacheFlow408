@@ -1,0 +1,97 @@
+{
+  "meta": {
+    "mode": "adaptive",
+    "rewrite": true,
+    "rewrite_enabled_in_run": true,
+    "rewrite_model": "qwen2.5:1.5b",
+    "reranker": "D:\\models\\bge-reranker-v2-m3",
+    "rerank_enabled": true,
+    "reranker_fp16": true,
+    "embedding": "bge-m3",
+    "chat_model": "qwen2.5:7b",
+    "chat_num_ctx": 8192,
+    "gen_backend": "ollama",
+    "judge_backend": "api",
+    "judge_model": "deepseek-v4-flash",
+    "top_k": 3,
+    "questions": 1,
+    "elapsed_s": 40.4
+  },
+  "summary": {
+    "数据结构": {
+      "subject": "数据结构",
+      "retrieval_sufficiency": 5,
+      "answer_quality": 4,
+      "key_point_coverage": 0.75,
+      "total": 15.13,
+      "retrieval": 5.42,
+      "generation": 13.96
+    },
+    "__overall__": {
+      "subject": "全部",
+      "retrieval_sufficiency": 5,
+      "answer_quality": 4,
+      "key_point_coverage": 0.75,
+      "total": 15.13,
+      "retrieval": 5.42,
+      "generation": 13.96
+    },
+    "__p95__": {
+      "total": 15.13,
+      "retrieval": 5.42,
+      "generation": 13.96
+    }
+  },
+  "questions": [
+    {
+      "id": "ds-01",
+      "subject": "数据结构",
+      "question": "什么是数据结构？数据的逻辑结构和存储结构有什么区别？",
+      "rewritten": "什么是数据结构？数据的逻辑结构与存储结构有何不同？",
+      "answer": "**数据结构定义**\n\n根据资料中的描述，数据结构是相互之间存在一种或多种特定关系的数据元素的集合。它包括三方面的内容：逻辑结构、存储结构和数据的运算。\n\n**逻辑结构与存储结构的区别**\n\n- **逻辑结构**是指数据元素之间的逻辑关系，即从逻辑关系上描述数据。它与数据的存储无关，是独立于计算机的。数据的逻辑结构分为线性结构和非线性结构。\n  - 线性结构：如线性表、栈和队列等，其中的数据元素之间只存在一对一的关系。\n  - 非线性结构：如树形结构（一对多关系）和图状结构或网状结构（多对多关系）。\n\n- **存储结构**是指数据结构在计算机中的表示（又称映像），也称物理结构。它包括数据元素的表示和关系的表示，依赖于计算机语言。常见的存储结构有顺序存储、链式存储、索引存储和散列存储。\n  - 顺序存储：逻辑上相邻的元素存储在物理位置上也相邻的存储单元中，每个元素占用最少的存储空间；缺点是只能使用相邻的一整块存储单元。\n  - 链式存储：不要求逻辑上相邻的元素在物理位置上也相邻，借助指示元素存储地址的指针来表示元素之间的逻辑关系；优点是不会出现碎片现象，能充分利用所有存储单元。\n\n总结来说，逻辑结构关注的是数据元素之间的抽象关系，而存储结构则是这些关系在计算机中的具体实现方式。",
+      "mode_used": "grounded",
+      "rerank_top_score": 0.99462890625,
+      "retrieval_sufficiency": 5,
+      "answer_quality": 4,
+      "key_point_coverage": 0.75,
+      "total": 15.135,
+      "retrieval": 5.42,
+      "generation": 13.958,
+      "error": null,
+      "scores": {
+        "retrieval_sufficiency": 5,
+        "answer_quality": 4,
+        "retrieval_reason": "检索资料完整涵盖了数据结构三要素、逻辑结构与存储结构的定义及分类，足以回答该问题。",
+        "answer_reason": "回答正确阐释了定义与区别，覆盖了三个关键点，但未明确说明同一逻辑结构可对应多种存储结构。"
+      },
+      "latency": {
+        "query_process": 3.333,
+        "embedding": 4.474,
+        "vector_search": 0.121,
+        "rerank": 0.825,
+        "context_build": 0.0,
+        "prompt_build": 0.0,
+        "llm_generation": 13.958,
+        "total": 15.135
+      },
+      "judge_time": 9.074,
+      "references": [
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "3.数据对象\n数据对象是具有相同性质的数据元素的集合，是数据的一个子集。例如，整数数据对象是集\n合 N = {0, ±1, ±2,}。\n4.数据类型\n数据类型是一个值的集合和定义在此集合上的一组操作的总称。\n1）原子类型。其值不可再分的数据"
+        },
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "树形结构。结构中的数据元素之间存在一对多的关系，如图1.2(c)所示。\n图状结构或网状结构。结构中的数据元素之间存在多对多的关系，如图1.2(d)所示。\n2.数据的存储结构\n存储结构是指数据结构在计算机中的表示（又称映像），也称物理结构。它"
+        },
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "第 1 章 绪论\n1）顺序存储。把逻辑上相邻的元素存储\n在物理位置上也相邻的存储单元中，\noooooo\n元素之间的关系由存储单元的邻接\n关系来体现。其优点是可以实现随机\n(b）线性结构\n(a）集合\n存取，每个元素占用最少的存储空\n间；缺点是"
+        }
+      ]
+    }
+  ]
+}

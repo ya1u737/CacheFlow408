@@ -8,6 +8,12 @@ class QueryRequest(BaseModel):
     mode: str = "ollama"
 
 
+class ApiKeyRequest(BaseModel):
+    """用户自填 DeepSeek API Key"""
+    api_key: str
+    model: Optional[str] = None
+
+
 class Reference(BaseModel):
     source: str
     page: str
@@ -20,6 +26,10 @@ class QueryResponse(BaseModel):
     answer: str
     references: List[Reference]
     perf: dict
+    performance: dict = {}
+    grounded: bool = True
+    retrieval_confidence: Optional[float] = None
+    notice: str = ""
 
 
 class StatusResponse(BaseModel):
@@ -28,6 +38,7 @@ class StatusResponse(BaseModel):
     model: str
     embedding: str
     has_knowledge: bool
+    api_available: bool = False
     knowledge_base: Optional[str] = None
     documents: List[str] = []
     chunk_count: int = 0

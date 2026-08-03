@@ -205,7 +205,10 @@ LLM Generation
 
 * Ollama
 * Qwen2.5
-* DeepSeek
+
+云端模型（需自备 API Key）：
+
+* DeepSeek API —— 在网页侧边栏选择 "DeepSeek API"，填入自己的 API Key 即可启用
 
 
 ---
@@ -329,7 +332,7 @@ KnowMate-RAG-assistant
 | Embedding       | BGE-M3                     |
 | Reranker        | BGE Reranker               |
 | Local Runtime   | Ollama                     |
-| LLM             | Qwen2.5 / DeepSeek         |
+| LLM             | Qwen2.5（本地）/ DeepSeek API（自备 Key） |
 | Document Parser | PyMuPDF / python-docx      |
 
 ---
@@ -374,6 +377,32 @@ npm run dev
 
 ---
 
+## ☁️ 云端 DeepSeek API（可选，自备 Key）
+
+不想用本地 Ollama 时，可切换为云端 DeepSeek API 回答问题。API Key 由**用户自己填写**，无需在项目中配置任何付费密钥。
+
+**方式一：网页端填写（推荐）**
+
+1. 打开前端页面
+2. 在左侧边栏的「模型选择」中点击 **DeepSeek API**
+3. 粘贴你自己的 DeepSeek API Key，点击 **启用云端**
+4. 之后对话将使用云端模型回答
+
+API Key 只保存在本地浏览器中，仅发送给本地后端服务，不写入项目文件、不会上传第三方。
+
+**方式二：服务端 .env 配置**
+
+在项目根目录的 `.env` 文件中配置（可选）：
+
+```bash
+DEEPSEEK_API_KEY=sk-你的key
+DEEPSEEK_API_MODEL=deepseek-chat   # 可选：deepseek-chat / deepseek-reasoner
+```
+
+配置后启动后端，云端模式自动可用。
+
+---
+
 # 🛣️ Roadmap
 
 ## ✅ Completed
@@ -385,6 +414,7 @@ npm run dev
 * [x] Markdown/TXT/DOCX解析
 * [x] Chroma向量数据库
 * [x] 本地LLM推理
+* [x] 云端 DeepSeek API（用户自填 Key 启用）
 * [x] 知识库切换
 * [x] 文档来源引用
 

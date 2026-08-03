@@ -166,6 +166,27 @@ with st.sidebar:
 
     current_model = "DeepSeek (云端)" if st.session_state.current_mode == "api" else f"本地 Ollama ({Config.CHAT_MODEL})"
     st.caption(f"**当前使用：** {current_model}")
+
+    # === DeepSeek API Key（用户自备，运行时填写）===
+    if st.session_state.current_mode == "api":
+        api_key_input = st.text_input(
+            "DeepSeek API Key（自备）",
+            type="password",
+            placeholder="粘贴你的 API Key",
+            key="km_api_key_input"
+        )
+        if st.button("保存并启用云端", use_container_width=True):
+            key = (api_key_input or "").strip()
+            resp = requests.post(
+                f"{API_BASE_URL}/api/config/api_key",
+                json={"api_key": key}
+            )
+            data = resp.json()
+            if data.get("status") == "ok":
+                st.success(data.get("message", "DeepSeek API 已启用"))
+            else:
+                st.error(data.get("message", data.get("detail", "启用失败")))
+
     # === 新增：自定义醒目的侧边栏控制按钮 ===
     col1, col2 = st.columns([1, 4])
 

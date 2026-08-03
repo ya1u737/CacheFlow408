@@ -139,6 +139,7 @@ export default {
       loading: false,
       userScrolledUp: false,
       kbInfo: { knowledge_base: null, documents: [], chunk_count: 0 },
+      mode: localStorage.getItem('km_llm_mode') || 'ollama',
       currentColor: localStorage.getItem('km_primary_color') || '#c8e338',
       userAvatarImg, 
       botAvatarImg
@@ -149,10 +150,13 @@ export default {
     this.fetchKbInfo()
     // 监听侧边栏主题色切换
     window.addEventListener('km-color-change', this.onColorChange)
+    // 监听侧边栏模型切换
+    window.addEventListener('km-mode-change', this.onModeChange)
     this.currentColor = localStorage.getItem('km_primary_color') || '#c8e338'
   },
   beforeUnmount() {
     window.removeEventListener('km-color-change', this.onColorChange)
+    window.removeEventListener('km-mode-change', this.onModeChange)
   },
     
 
@@ -161,6 +165,12 @@ export default {
     onColorChange(e) {
       if (e.detail && e.detail.color) {
         this.currentColor = e.detail.color
+      }
+    },
+
+    onModeChange(e) {
+      if (e.detail && e.detail.mode) {
+        this.mode = e.detail.mode
       }
     },
     
@@ -256,7 +266,7 @@ export default {
           body: JSON.stringify({
             question: q,
             chat_history: this.messages.slice(0, -1).map(m => ({ role: m.role, content: m.content })),
-            mode: 'ollama'
+            mode: this.mode
           })
         })
         const reader = resp.body.getReader()
@@ -276,6 +286,8 @@ export default {
                 this.scrollToBottom()
               } else if (msg.type === 'references') {
                 this.messages[msgIndex].references = msg.data
+              } else if (msg.type === 'error') {
+                this.messages[msgIndex].content = '❌ ' + msg.data
               } else if (msg.type === 'done') {
                 const total = (Date.now() - t0) / 1000
                 this.messages[msgIndex].perf = { retrieval: 0, generation: total, total }

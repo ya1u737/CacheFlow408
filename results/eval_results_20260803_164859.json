@@ -1,0 +1,197 @@
+{
+  "meta": {
+    "mode": "adaptive",
+    "rewrite": true,
+    "rewrite_enabled_in_run": true,
+    "rewrite_model": "qwen2.5:1.5b",
+    "reranker": "D:\\models\\bge-reranker-v2-m3",
+    "rerank_enabled": true,
+    "reranker_fp16": true,
+    "embedding": "bge-m3",
+    "chat_model": "qwen2.5:7b",
+    "chat_num_ctx": 8192,
+    "gen_backend": "ollama",
+    "judge_backend": "ollama",
+    "judge_model": "qwen2.5:7b",
+    "top_k": 3,
+    "questions": 3,
+    "elapsed_s": 63.9
+  },
+  "summary": {
+    "数据结构": {
+      "subject": "数据结构",
+      "retrieval_sufficiency": 4.33,
+      "answer_quality": 4,
+      "key_point_coverage": 0.77,
+      "total": 9.5,
+      "retrieval": 4.16,
+      "generation": 9.05
+    },
+    "__overall__": {
+      "subject": "全部",
+      "retrieval_sufficiency": 4.33,
+      "answer_quality": 4,
+      "key_point_coverage": 0.77,
+      "total": 9.5,
+      "retrieval": 4.16,
+      "generation": 9.05
+    },
+    "__p95__": {
+      "total": 13.36,
+      "retrieval": 5.46,
+      "generation": 12.15
+    }
+  },
+  "questions": [
+    {
+      "id": "ds-01",
+      "subject": "数据结构",
+      "question": "什么是数据结构？数据的逻辑结构和存储结构有什么区别？",
+      "rewritten": "什么是数据结构？数据的逻辑结构与存储结构有何不同？",
+      "answer": "根据资料中的描述：\n\n**数据结构**是指相互之间存在一种或多种特定关系的数据元素的集合。它包括三方面的内容：逻辑结构、存储结构和数据的运算。\n\n- **数据的逻辑结构**是从逻辑关系上描述数据，与数据的存储无关，是独立于计算机的。数据的逻辑结构分为线性结构（如线性表、栈和队列等）和非线性结构（如树形结构、图状结构等）。例如，集合中的数据元素之间除“同属一个集合”外，别无其他关系；而树形结构的数据元素之间存在一对多的关系。\n\n- **数据的存储结构**是指数据结构在计算机中的表示（又称映像），也称物理结构。它包括数据元素的表示和关系的表示。常见的存储结构有顺序存储、链式存储、索引存储和散列存储等，这些存储方式各有优缺点，如顺序存储适合随机存取但可能产生外部碎片；链式存储不会出现碎片现象但每个元素需要额外存储指针。\n\n总结来说，逻辑结构关注数据之间的关系本质，而存储结构则关注如何在计算机中表示这些关系。",
+      "mode_used": "grounded",
+      "rerank_top_score": 0.99462890625,
+      "retrieval_sufficiency": 5,
+      "answer_quality": 4,
+      "key_point_coverage": 0.75,
+      "total": 13.357,
+      "retrieval": 5.462,
+      "generation": 12.15,
+      "error": null,
+      "scores": {
+        "retrieval_sufficiency": 5,
+        "answer_quality": 4,
+        "retrieval_reason": "检索资料充分覆盖了逻辑结构和存储结构的定义及分类。",
+        "answer_reason": "回答基本涵盖了参考答案的关键点，但未明确提及数据结构三要素以及同一逻辑结构可对应多种存储结构。"
+      },
+      "latency": {
+        "query_process": 3.931,
+        "embedding": 4.486,
+        "vector_search": 0.141,
+        "rerank": 0.835,
+        "context_build": 0.0,
+        "prompt_build": 0.0,
+        "llm_generation": 12.15,
+        "total": 13.357
+      },
+      "judge_time": 3.223,
+      "references": [
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "3.数据对象\n数据对象是具有相同性质的数据元素的集合，是数据的一个子集。例如，整数数据对象是集\n合 N = {0, ±1, ±2,}。\n4.数据类型\n数据类型是一个值的集合和定义在此集合上的一组操作的总称。\n1）原子类型。其值不可再分的数据"
+        },
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "树形结构。结构中的数据元素之间存在一对多的关系，如图1.2(c)所示。\n图状结构或网状结构。结构中的数据元素之间存在多对多的关系，如图1.2(d)所示。\n2.数据的存储结构\n存储结构是指数据结构在计算机中的表示（又称映像），也称物理结构。它"
+        },
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "第 1 章 绪论\n1）顺序存储。把逻辑上相邻的元素存储\n在物理位置上也相邻的存储单元中，\noooooo\n元素之间的关系由存储单元的邻接\n关系来体现。其优点是可以实现随机\n(b）线性结构\n(a）集合\n存取，每个元素占用最少的存储空\n间；缺点是"
+        }
+      ]
+    },
+    {
+      "id": "ds-02",
+      "subject": "数据结构",
+      "question": "什么是抽象数据类型（ADT）？它包含哪几部分？",
+      "rewritten": "什么是抽象数据类型（ADT）？它由哪些组成部分构成？",
+      "answer": "### 结论\n\n抽象数据类型（Abstract Data Type, ADT）是一种数据结构的高级描述，它定义了一组数据和在这些数据上可以执行的操作。ADT 不关心实现细节，只关注功能。\n\n### 理由或解析\n\n1. **定义**：抽象数据类型是将数据结构与其操作分离的一种方式。通过定义一个数据类型的逻辑特性（即它的行为）而不涉及其具体实现，使得用户能够以统一的方式处理不同的数据结构。\n   \n2. **组成部分**：\n   - **数据对象**：这是ADT所描述的数据集合，它具有相同性质的元素组成，这些元素可以是基本类型或复杂类型。\n   - **操作集**：这是定义在数据对象上的运算集合。每个操作都有一个名称、参数列表和返回值类型。\n\n### 选择题\n\n- 正确选项及原因：\n  - ADT由“数据对象”和“操作集”两部分组成。\n  \n- 解释错误选项（假设给出的选项有A. 数据结构 B. 操作实现 C. 数据对象与操作集）：\n\n  - **选项A：数据结构**。虽然ADT涉及数据，但其核心在于定义数据的行为而非具体的数据组织方式或存储方法。\n  - **选项B：操作实现**。ADT关注的是操作的定义和接口设计，而不是具体的实现细节。不同的实现可以提供相同的操作集，但内部实现可能不同。\n\n综上所述，抽象数据类型由“数据对象”和“操作集”两部分组成。",
+      "mode_used": "fallback",
+      "rerank_top_score": 0.045867919921875,
+      "retrieval_sufficiency": 5,
+      "answer_quality": 4,
+      "key_point_coverage": 0.75,
+      "total": 7.183,
+      "retrieval": 3.477,
+      "generation": 7.105,
+      "error": null,
+      "scores": {
+        "retrieval_sufficiency": 5,
+        "answer_quality": 4,
+        "retrieval_reason": "检索资料充分覆盖了ADT的关键概念。",
+        "answer_reason": "回答基本涵盖了参考答案中的关键点，但未完全提及三元组表示法。"
+      },
+      "latency": {
+        "query_process": 3.006,
+        "embedding": 3.399,
+        "vector_search": 0.004,
+        "rerank": 0.074,
+        "context_build": 0.0,
+        "prompt_build": 0.0,
+        "llm_generation": 7.105,
+        "total": 7.183
+      },
+      "judge_time": 2.944,
+      "references": [
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "3.数据对象\n数据对象是具有相同性质的数据元素的集合，是数据的一个子集。例如，整数数据对象是集\n合 N = {0, ±1, ±2,}。\n4.数据类型\n数据类型是一个值的集合和定义在此集合上的一组操作的总称。\n1）原子类型。其值不可再分的数据"
+        },
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "---\nAIGC:\n    Label: \"1\"\n    ContentProducer: 001191440300708461136T1XGW3\n    ProduceID: bf6eef5f6878718fccb038a78ee2c8e"
+        },
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "# 第一章 绪论\n\n## 1.1 数据结构的基本概念\n\n数据结构的基本概念\n1. 数据\n数据是信息的载体，是描述客观事物属性的数、字符及所有能输入到计算机中并被计算机程\n序识别和处理的符号的集合。数据是计算机程序加工的原料。\n2.数据元素\n"
+        }
+      ]
+    },
+    {
+      "id": "ds-03",
+      "subject": "数据结构",
+      "question": "栈和队列有什么区别？分别适用于什么场景？",
+      "rewritten": "栈和队列的主要区别在于插入和删除操作的方向不同。栈是后进先出（LIFO），而队列是先进先出（FIFO）。请根据具体需求选择合适的数据结构。",
+      "answer": "根据资料中的描述\n\n## 栈与队列的区别及应用场景\n\n### 1. 基本概念差异\n- **栈（Stack）**：只允许在一端进行插入或删除操作的线性表，遵循后进先出（Last In First Out, LIFO）的原则。\n- **队列（Queue）**：只允许在表的一端进行插入，在另一端进行删除的操作，遵循先进先出（First In First Out, FIFO）的原则。\n\n### 2. 存储结构\n- 栈和队列都可以采用顺序存储或链式存储。其中顺序存储时，栈通常使用一个指针指向栈顶元素，而队列则有两个指针分别指向队头和队尾。\n  \n### 3. 应用场景差异\n- **栈**：适用于需要遵循后进先出原则的场合，如函数调用、表达式求值（例如括号匹配）、浏览器的历史记录等。\n- **队列**：适用于需要遵循先进先出原则的场合，如任务调度、消息传递系统、打印机队列管理等。\n\n### 4. 注意事项\n栈和队列都是操作受限的线性表，因此不是任何对线性表的操作都可以作为它们的操作。例如，不可以随便读取中间某个数据。\n\n通过对比可以看出，栈与队列在基本概念、存储结构以及应用场景上都有明显的区别。理解这些差异有助于更好地选择合适的数据结构来解决实际问题。",
+      "mode_used": "grounded",
+      "rerank_top_score": 0.990234375,
+      "retrieval_sufficiency": 3,
+      "answer_quality": 4,
+      "key_point_coverage": 0.8,
+      "total": 7.97,
+      "retrieval": 3.536,
+      "generation": 7.889,
+      "error": null,
+      "scores": {
+        "retrieval_sufficiency": 3,
+        "answer_quality": 4,
+        "retrieval_reason": "资料提供了栈和队列的基本概念、存储结构及应用场景，但未直接提及LIFO与FIFO。",
+        "answer_reason": "回答基本涵盖了参考答案的关键点，但对栈和队列的应用场景描述略显简略。"
+      },
+      "latency": {
+        "query_process": 2.76,
+        "embedding": 3.455,
+        "vector_search": 0.004,
+        "rerank": 0.077,
+        "context_build": 0.0,
+        "prompt_build": 0.0,
+        "llm_generation": 7.889,
+        "total": 7.97
+      },
+      "judge_time": 3.249,
+      "references": [
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "## 3.2 队列\n\n队列的基本概念\n1.队列的定义\n队列（Queue）简称队，也是一种操作受限的线性表，只允许在表的一端进行插入，而在表\n的另一端进行删除。向队列中插入元素称为入队或进\n出队列一\n入队列\n队；删除元素称为出队或离队。这和我"
+        },
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "队头（Front）。允许删除的一端，又称队首。\n队尾（Rear）。允许插入的一端。\n空队列。不含任何元素的空表。\n2.队列常见的基本操作\nInitQueue（&Q)：初始化队列，构造一个空队列Q。\nQueueEmpty(Q)：判队列空，若队"
+        },
+        {
+          "source": "数据结构_知识点.md",
+          "page": 1,
+          "preview": "第2章  线性表\n表选择顺序存储，而频繁进行插入、删除操作的线性表（即动态性较强）宜选择链式存储。\n注意：只有熟练学握顺序存储和链式存储，才能深刻理解它们各自的优缺点。\n\n# 第三章 栈、队列和数组\n\n## 3.1 栈\n\n3.1栈\n出栈\n进"
+        }
+      ]
+    }
+  ]
+}
