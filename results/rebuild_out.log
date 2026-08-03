@@ -1,0 +1,34 @@
+[REBUILD] 切块模式: semantic | 待重建: ['操作系统_知识点.md', '数据结构_知识点.md', '组成原理_知识点.md', '计算机网络_知识点.md']
+[BAK] 旧库已备份 -> storage\chroma_bak_recursive\操作系统_知识点
+[HYBRID] BM25 索引就绪: 264 chunks
+[OK] 操作系统_知识点: 264 chunks
+[BAK] 旧库已备份 -> storage\chroma_bak_recursive\数据结构_知识点
+Traceback (most recent call last):
+  File "D:\408-RAG-bot\scripts\rebuild_kb.py", line 74, in <module>
+    main()
+  File "D:\408-RAG-bot\scripts\rebuild_kb.py", line 65, in main
+    n = kb.save_persistent(kb_name, docs)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\408-RAG-bot\src\retriever.py", line 146, in save_persistent
+    db = Chroma.from_documents(docs, self.embedding, persist_directory=path)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\miniconda\envs\408rag\Lib\site-packages\langchain_chroma\vectorstores.py", line 1431, in from_documents
+    return cls.from_texts(
+           ^^^^^^^^^^^^^^^
+  File "D:\miniconda\envs\408rag\Lib\site-packages\langchain_chroma\vectorstores.py", line 1365, in from_texts
+    chroma_collection.add_texts(
+  File "D:\miniconda\envs\408rag\Lib\site-packages\langchain_chroma\vectorstores.py", line 627, in add_texts
+    embeddings = self._embedding_function.embed_documents(texts)
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\miniconda\envs\408rag\Lib\site-packages\langchain_ollama\embeddings.py", line 325, in embed_documents
+    return self._client.embed(
+           ^^^^^^^^^^^^^^^^^^^
+  File "D:\miniconda\envs\408rag\Lib\site-packages\ollama\_client.py", line 415, in embed
+    return self._request(
+           ^^^^^^^^^^^^^^
+  File "D:\miniconda\envs\408rag\Lib\site-packages\ollama\_client.py", line 199, in _request
+    return cls(**self._request_raw(*args, **kwargs).json())
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\miniconda\envs\408rag\Lib\site-packages\ollama\_client.py", line 143, in _request_raw
+    raise ResponseError(e.response.text, e.response.status_code) from None
+ollama._types.ResponseError: Post "http://127.0.0.1:50062/tokenize": dial tcp 127.0.0.1:50062: connectex: No connection could be made because the target machine actively refused it. (status code: 400)

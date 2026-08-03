@@ -1,6 +1,7 @@
 import os
 import math
 import re
+import time
 from langchain_chroma import Chroma
 from langchain_core.documents import Document
 from langchain_ollama import OllamaEmbeddings
@@ -139,15 +140,35 @@ class KnowledgeBase:
         # Chroma 持久化目录中应包含 chroma.sqlite3
         return os.path.exists(os.path.join(path, "chroma.sqlite3"))
 
-    def save_persistent(self, kb_name: str, docs) -> int:
-        """首次构建：解析后保存到持久化目录，返回 chunks 数"""
+    def save_persistent(self, kb_name: str, docs, batch_size: int = 200) -> int:
+        """首次构建：解析后保存到持久化目录，返回 chunks 数。
+
+        分批嵌入（默认 200 条/批，失败自动重试），规避 Ollama 大批量嵌入
+        偶发断连（本地实测 300+ 条单批会触发 runner 连接拒绝）。
+        """
         path = self._kb_path(kb_name)
         os.makedirs(path, exist_ok=True)
-        db = Chroma.from_documents(docs, self.embedding, persist_directory=path)
+        db = Chroma(persist_directory=path, embedding_function=self.embedding)
+        total = 0
+        for i in range(0, len(docs), batch_size):
+            batch = docs[i:i + batch_size]
+            for attempt in range(1, 4):
+                try:
+                    db.add_documents(batch)
+                    total += len(batch)
+                    break
+                except Exception as e:
+                    print(
+                        f"[KB] 批次 {i // batch_size + 1} 第 {attempt} 次失败: "
+                        f"{type(e).__name__}: {e}"
+                    )
+                    if attempt == 3:
+                        raise
+                    time.sleep(5)
         # 让当前会话使用这个向量库
         self.db = db
         self._build_bm25_index()
-        return len(docs)
+        return total
 
     def load_persistent(self, kb_name: str) -> bool:
         """已有缓存：直接加载持久化目录，不做 embedding"""
