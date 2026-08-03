@@ -1,8 +1,0 @@
-{
-  "OLLAMA_HOST": null,
-  "HTTP_PROXY": null,
-  "HTTPS_PROXY": null,
-  "ALL_PROXY": null,
-  "embed_ok": true,
-  "dim": 1024
-}
