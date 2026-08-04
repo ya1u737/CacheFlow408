@@ -81,7 +81,7 @@ class BM25Okapi:
 
 
 class KnowledgeBase:
-    def __init__(self):
+    def __init__(self, rerank_enabled=None):
         # 向量模型
         self.embedding = OllamaEmbeddings(
             model=Config.EMBEDDING_MODEL,
@@ -97,8 +97,10 @@ class KnowledgeBase:
         self._chunk_docs = []
         self._bm25_ready = False
 
-        # Rerank 开关（配置驱动；启用时加载 Cross Encoder）
-        self.rerank_enabled = Config.RERANK_ENABLED
+        # Rerank 开关（配置驱动；A/B 评测可传 rerank_enabled=False 跳过模型加载与推理）
+        self.rerank_enabled = (
+            Config.RERANK_ENABLED if rerank_enabled is None else rerank_enabled
+        )
         self.reranker = None
         # 最近一次检索的最高重排分数（分级降级门控用）
         self.last_rerank_top_score = None
@@ -213,11 +215,12 @@ class KnowledgeBase:
     def rerank(self, query, docs):
         """按 query 与各 doc 的相关性分数降序重排，返回 Top FINAL_TOP_K。
 
-        未启用 / 模型加载失败 / 无候选时，原样返回 docs。
+        未启用 / 模型加载失败 / 无候选时，候选已按融合分（RRF）降序，
+        直接截取 Top FINAL_TOP_K；同时不提供门控信号（--no-rerank A/B 用）。
         """
         self.last_rerank_top_score = None
         if not self.rerank_enabled or self.reranker is None or not docs:
-            return docs
+            return docs[: Config.FINAL_TOP_K]
 
         pairs = [[query, doc.page_content] for doc in docs]
         scores = self.reranker.predict(pairs, batch_size=32)

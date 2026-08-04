@@ -211,12 +211,14 @@ def run_eval(args):
     if args.limit:
         questions = questions[: args.limit]
 
-    kb = None if args.baseline else KnowledgeBase()
+    kb = None if args.baseline else KnowledgeBase(rerank_enabled=not args.no_rerank)
     qproc = (
         None
         if args.baseline or args.no_rewrite
         else QueryProcessor() if Config.QUERY_REWRITE_ENABLED else None
     )
+    if args.no_rerank:
+        print("[EVAL] --no-rerank: 跳过 Cross Encoder，按融合分取 top-3，门控关闭（A/B 对照）")
     gen = AnswerGenerator()
     if not gen.switch_mode(args.gen_backend):
         raise RuntimeError(
@@ -323,7 +325,12 @@ def run_eval(args):
 
         # 分级降级：检索置信度不足时用纯模型回答（--adaptive 模式验证真实门控）
         mode_used = "grounded"
-        if kb is not None and args.adaptive and not retrieval_only:
+        if (
+            kb is not None
+            and args.adaptive
+            and not retrieval_only
+            and not args.no_rerank
+        ):
             if (
                 rerank_top_score is None
                 or rerank_top_score < Config.RAG_FALLBACK_THRESHOLD
@@ -518,7 +525,13 @@ def main():
     parser.add_argument("--limit", type=int, default=None, help="只跑前 N 题（冒烟测试）")
     parser.add_argument("--ids", default=None, help="只跑指定题目 id（逗号分隔，如 ds-01,co-08）")
     parser.add_argument("--resume", action="store_true", help="断点续跑，跳过已完成的题")
+    parser.add_argument("--no-rerank", action="store_true", help="关闭 rerank：按融合分取 top-3、跳过门控（A/B 用）")
+    parser.add_argument("--kb-root", default=None, help="覆盖向量库根目录（A/B 用，如 storage/chroma_bak_recursive）")
     args = parser.parse_args()
+
+    if args.kb_root:
+        Config.VECTOR_DB_PATH = os.path.normpath(args.kb_root)
+        print(f"[EVAL] 向量库根目录覆盖为: {Config.VECTOR_DB_PATH}")
 
     t0 = time.time()
     results = run_eval(args)
@@ -543,7 +556,10 @@ def main():
             "rewrite_enabled_in_run": not args.no_rewrite and Config.QUERY_REWRITE_ENABLED,
             "rewrite_model": Config.QUERY_REWRITE_MODEL,
             "reranker": Config.RERANKER_MODEL,
-            "rerank_enabled": Config.RERANK_ENABLED,
+            "rerank_enabled": (not args.no_rerank) and Config.RERANK_ENABLED,
+            "no_rerank": args.no_rerank,
+            "kb_root": Config.VECTOR_DB_PATH,
+            "chunk_mode": Config.CHUNK_MODE,
             "reranker_fp16": Config.RERANKER_FP16,
             "embedding": Config.EMBEDDING_MODEL,
             "chat_model": Config.CHAT_MODEL,

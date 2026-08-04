@@ -33,7 +33,7 @@ class Config:
     CHUNK_SIZE = 800                     
     CHUNK_OVERLAP = 150
     # 切块模式: recursive=固定长度递归切块 | semantic=按标题/段落语义切块
-    CHUNK_MODE = "semantic"              
+    CHUNK_MODE = "recursive"             
 
 
     TOP_K = 4                            
