@@ -95,7 +95,7 @@ class AnswerGenerator:
         for i, doc in enumerate(top_docs):
             source = doc.metadata.get('source', '未知文件')
             page = doc.metadata.get('page', '?')
-            context_text += f"[引用{i + 1}]\n来源：{source} 第{page}页\n内容摘要：{doc.page_content[:50]}...\n完整内容：\n{doc.page_content}\n\n"
+            context_text += f"[资料{i + 1}]\n来源：{source} 第{page}页\n内容摘要：{doc.page_content[:50]}...\n完整内容：\n{doc.page_content}\n\n"
         if timer:
             timer.end("context_build")
 

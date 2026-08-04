@@ -30,11 +30,16 @@
           class="avatar ai-avatar-img" 
           />
           <div class="message-bubble assistant-bubble">
-            <p class="msg-text ai-text">{{ msg.content }}</p>
+            <p class="msg-text ai-text">
+              <template v-for="(seg, si) in citeSegments(msg.content)" :key="si">
+                <span v-if="seg.type === 'cite'" class="cite-tag" @click="focusRef(i, seg.n)">{{ seg.text }}</span>
+                <template v-else>{{ seg.text }}</template>
+              </template>
+            </p>
 
             <!-- 检索知识点参考（清晰调大版） -->
-            <div v-if="msg.references && msg.references.length" class="refs-box">
-              <el-collapse>
+            <div v-if="msg.references && msg.references.length" class="refs-box" :data-i="i">
+              <el-collapse v-model="msg.refsOpen">
                 <el-collapse-item name="refs">
                   <template #title>
                     <div class="ref-summary-head">
@@ -45,12 +50,13 @@
 
                   <!-- 原文列表容器 -->
                   <div class="ref-list">
-                    <div v-for="(ref, j) in msg.references" :key="j" class="ref-node">
+                    <div v-for="(ref, j) in msg.references" :key="j" class="ref-node" :data-ref="j + 1">
                       <!-- 顶部元信息栏：来源 + 页码 + 展开开关 -->
                       <div class="ref-meta-bar" @click="ref.expanded = !ref.expanded">
                         <div class="meta-left">
-                          <span class="meta-idx">#{{ j + 1 }}</span>
+                          <span class="meta-idx">[资料{{ j + 1 }}]</span>
                           <span class="meta-source">📄 {{ ref.source }}</span>
+                          <span v-if="ref.heading" class="meta-heading">{{ ref.heading }}</span>
                         </div>
                         <div class="meta-action">
                           <span>{{ ref.expanded ? '收起原文' : '展开全文' }}</span>
@@ -161,6 +167,35 @@ export default {
 
 
   methods: {
+    citeSegments(content) {
+      if (!content) return [{ type: 'text', text: '' }]
+      return String(content)
+        .split(/(\[资料\d+\])/g)
+        .filter(p => p !== '')
+        .map(p => {
+          const m = p.match(/^\[资料(\d+)\]$/)
+          return m ? { type: 'cite', text: p, n: Number(m[1]) } : { type: 'text', text: p }
+        })
+    },
+
+    focusRef(msgIdx, n) {
+      const msg = this.messages[msgIdx]
+      if (!msg || !msg.references || !msg.references.length) return
+      msg.refsOpen = ['refs']
+      this.$nextTick(() => {
+        const el = document.querySelector(
+          `.refs-box[data-i="${msgIdx}"] .ref-node[data-ref="${n}"]`
+        )
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+          el.classList.remove('flash')
+          void el.offsetWidth
+          el.classList.add('flash')
+          setTimeout(() => el.classList.remove('flash'), 1600)
+        }
+      })
+    },
+
     onColorChange(e) {
       if (e.detail && e.detail.color) {
         this.currentColor = e.detail.color
@@ -222,7 +257,10 @@ export default {
       try {
         const r = await fetch(`/api/history?session_id=${this.sessionId}`)
         const data = await r.json()
-        this.messages = (data.messages || []).slice(-15)
+        this.messages = (data.messages || []).slice(-15).map(m => ({
+          ...m,
+          refsOpen: []
+        }))
         this.scrollToBottom()
       } catch {
         // 静默失败，不影响聊天
@@ -253,7 +291,7 @@ export default {
       this.loading = true
 
       const msgIndex = this.messages.length
-      this.messages.push({ role: 'assistant', content: '', references: [], perf: null })
+      this.messages.push({ role: 'assistant', content: '', references: [], refsOpen: [], perf: null })
 
       this.scrollToBottom()
 
@@ -529,6 +567,34 @@ export default {
 .meta-source {
   color: #e5e7eb;
   font-weight: 500;
+}
+
+.meta-heading {
+  color: #9ca3af;
+  font-size: 12px;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cite-tag {
+  color: var(--primary-color);
+  font-weight: 600;
+  cursor: pointer;
+  border-bottom: 1px dashed var(--primary-color);
+  padding: 0 1px;
+  user-select: none;
+}
+
+.cite-tag:hover {
+  filter: brightness(1.15);
+}
+
+.ref-node.flash {
+  border-color: var(--primary-color) !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.06);
+  transition: border-color 0.2s ease;
 }
 
 .meta-action {

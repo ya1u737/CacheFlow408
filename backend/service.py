@@ -1,5 +1,6 @@
 import os
 import json
+import re
 from src.parser import DocumentParser
 from src.retriever import KnowledgeBase
 from src.generator import AnswerGenerator
@@ -145,8 +146,15 @@ class RAGService:
                     references.append({
                         "source": doc.metadata.get("source", "未知"),
                         "page": doc.metadata.get("page", "N/A"),
+                        "heading": doc.metadata.get("heading", ""),
                         "preview": doc.page_content[:150]
                     })
+
+            # 引用兜底：回答未标注 [资料N] 时，末尾补充引用依据（结构化引用始终可用）
+            if grounded and references and not re.search(r"\[资料\d+\]", answer):
+                answer += "\n\n（引用依据：" + "、".join(
+                    f"[资料{i}]" for i in range(1, len(references) + 1)
+                ) + "）"
         finally:
             # 5. total：完整请求耗时 + [RAG Trace] 日志
             timer.end("total")
@@ -223,15 +231,25 @@ class RAGService:
                     references.append({
                         "source": doc.metadata.get("source", "未知"),
                         "page": doc.metadata.get("page", "N/A"),
+                        "heading": doc.metadata.get("heading", ""),
                         "preview": doc.page_content[:150]
                     })
 
             yield f"data: {json.dumps({'type': 'references', 'data': references})}\n\n"
 
             # 逐 token 发送
+            emitted = ""
             for chunk in stream:
                 content = chunk.content if hasattr(chunk, "content") else str(chunk)
+                emitted += content
                 yield f"data: {json.dumps({'type': 'token', 'data': content})}\n\n"
+
+            # 引用兜底：流式回答未标注 [资料N] 时，末尾补引用依据
+            if grounded and references and not re.search(r"\[资料\d+\]", emitted):
+                footer = "\n\n（引用依据：" + "、".join(
+                    f"[资料{i}]" for i in range(1, len(references) + 1)
+                ) + "）"
+                yield f"data: {json.dumps({'type': 'token', 'data': footer})}\n\n"
         finally:
             # total：完整请求耗时（含流式生成）+ [RAG Trace] 日志
             timer.end("total")

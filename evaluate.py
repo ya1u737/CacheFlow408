@@ -376,6 +376,7 @@ def run_eval(args):
         rec = {
             "id": q["id"],
             "subject": q["subject"],
+            "knowledge_point": q.get("knowledge_point", ""),
             "question": q["question"],
             "rewritten": rewritten,
             "answer": answer,

@@ -18,6 +18,7 @@ class Reference(BaseModel):
     source: str
     page: str
     preview: str
+    heading: str = ""
     model_config = {
         "coerce_numbers_to_str": True
     }
