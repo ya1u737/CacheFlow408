@@ -51,7 +51,6 @@
                         <div class="meta-left">
                           <span class="meta-idx">#{{ j + 1 }}</span>
                           <span class="meta-source">📄 {{ ref.source }}</span>
-                          <span v-if="ref.page" class="meta-page">P{{ ref.page }}</span>
                         </div>
                         <div class="meta-action">
                           <span>{{ ref.expanded ? '收起原文' : '展开全文' }}</span>
@@ -76,7 +75,7 @@
 
             <!-- 性能消耗统计 -->
             <p v-if="msg.perf" class="perf-info">
-              ⚡ 检索 {{ msg.perf.retrieval }}s | 生成 {{ msg.perf.generation }}s | 总计 {{ msg.perf.total }}s
+              ⚡ Query Rewrite: {{ msg.perf.rewrite }}s，Generation: {{ msg.perf.generation }}s，Total: {{ msg.perf.total }}s
             </p>
           </div>
         </div>
@@ -288,9 +287,19 @@ export default {
                 this.messages[msgIndex].references = msg.data
               } else if (msg.type === 'error') {
                 this.messages[msgIndex].content = '❌ ' + msg.data
+              } else if (msg.type === 'performance') {
+                const p = msg.data || {}
+                const r1 = (v) => Math.round((v || 0) * 10) / 10
+                this.messages[msgIndex].perf = {
+                  rewrite: r1(p.query_process),
+                  generation: r1(p.llm_generation),
+                  total: r1(p.total)
+                }
               } else if (msg.type === 'done') {
-                const total = (Date.now() - t0) / 1000
-                this.messages[msgIndex].perf = { retrieval: 0, generation: total, total }
+                if (!this.messages[msgIndex].perf) {
+                  const total = Math.round(((Date.now() - t0) / 1000) * 10) / 10
+                  this.messages[msgIndex].perf = { rewrite: 0, generation: total, total }
+                }
               }
             }
           }
@@ -521,14 +530,6 @@ export default {
   font-weight: 500;
 }
 
-.meta-page {
-  color: #9ca3af;
-  background: #2a2d34;
-  padding: 1px 6px;
-  border-radius: 3px;
-  font-size: 11px;
-}
-
 .meta-action {
   display: flex;
   align-items: center;
@@ -551,14 +552,19 @@ export default {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
-/* 展开后的原文文本区：字号 13px + 增大行高 */
+/* 展开后的原文文本区：现代浅色规范风格 */
 .ref-full-codeblock {
-  padding: 12px;
-  background: #0f1012;
-  border-top: 1px solid #23252c;
+  padding: 14px 16px;
+  background: #1e1f23; /* 项目主体深灰色 */
+  border: 1px solid var(--primary-color); /* 随系统主题色变化 */
+  border-radius: 6px; /* 加上轻微圆角，瞬间消除僵硬感 */
+  
+  /* 换成标准无衬线字体，优雅清晰 */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 14px; /* 13px 稍微偏小，14px 读起来最舒适 */
+  line-height: 1.6; /* 黄金行高，提升可读性 */
+  color: #d1d5db; /* 深色背景下的浅灰文字 */
 }
-
 .code-content {
   margin: 0;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;

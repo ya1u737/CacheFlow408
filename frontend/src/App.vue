@@ -41,7 +41,6 @@
 
       <!-- 侧边栏中部：模型选择 + API Key -->
       <div v-if="!isCollapse" class="model-picker">
-        <div class="model-label">🤖 模型选择</div>
         <div class="mode-btns">
           <button
             class="mode-btn"
@@ -55,7 +54,7 @@
             :class="{ active: llmMode === 'api' }"
             @click="setMode('api')"
           >
-            ☁️ DeepSeek API
+            ☁️ DeepSeek云
           </button>
         </div>
 
@@ -238,6 +237,7 @@ html, body {
   border-right: 1px solid #28292d;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
   transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   user-select: none;
   z-index: 10;

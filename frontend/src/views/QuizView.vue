@@ -8,7 +8,7 @@
           <el-option label="随机学科" value="" />
           <el-option v-for="s in subjects" :key="s" :label="s" :value="s" />
         </el-select>
-        <el-button type="primary" :loading="loading" @click="generate">
+        <el-button class="theme-btn" :loading="loading" @click="generate">
           {{ current ? '换一题' : '生成题目' }}
         </el-button>
       </div>
@@ -39,7 +39,7 @@
 
         <div class="actions">
           <el-button
-            type="success"
+            class="theme-btn"
             :disabled="!selected || submitted"
             :loading="checking"
             @click="submit"
@@ -203,6 +203,24 @@ async function submit() {
 
 .actions {
   margin-top: 20px;
+}
+
+.theme-btn {
+  background-color: var(--primary-color) !important;
+  border-color: var(--primary-color) !important;
+  color: #000000 !important;
+  font-weight: 600;
+}
+
+.theme-btn:hover:not(.is-disabled) {
+  filter: brightness(0.92);
+}
+
+.theme-btn.is-disabled {
+  background-color: #2a2b31 !important;
+  border-color: #2a2b31 !important;
+  color: #6b7280 !important;
+  filter: none;
 }
 
 .result-box {
