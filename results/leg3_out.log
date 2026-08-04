@@ -1,0 +1,189 @@
+[EVAL] 向量库根目录覆盖为: storage\chroma_bak_recursive
+[REWRITE] 查询改写已启用: qwen2.5:1.5b (timeout=20s)
+[EVAL] --no-rerank: 跳过 Cross Encoder，按融合分取 top-3，门控关闭（A/B 对照）
+[LLM] 检测到 DEEPSEEK_API_KEY，DeepSeek API 已就绪
+🔄 已切换到 → 本地 Ollama
+[JUDGE] 本地裁判: qwen2.5:7b
+[EVAL] 预改写 80 题 ...
+[EVAL] 预向量化 80 题 ...
+[HYBRID] BM25 索引就绪: 238 chunks
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 1/80 ds-01 完成 (total=7.5s, 检索=3.35s, 生成=7.1s, 改写=2.7s) ETA 7749s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 2/80 ds-02 完成 (total=6.7s, 检索=0.27s, 生成=6.7s, 改写=1.8s) ETA 4236s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 3/80 ds-03 完成 (total=8.4s, 检索=0.31s, 生成=8.4s, 改写=0.6s) ETA 3101s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 4/80 ds-04 完成 (total=13.7s, 检索=0.32s, 生成=13.7s, 改写=0.9s) ETA 2629s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 5/80 ds-05 完成 (total=10.3s, 检索=0.28s, 生成=10.3s, 改写=0.3s) ETA 2287s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 6/80 ds-06 完成 (total=12.3s, 检索=0.24s, 生成=12.3s, 改写=0.4s) ETA 2089s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 7/80 ds-07 完成 (total=8.7s, 检索=0.29s, 生成=8.7s, 改写=0.4s) ETA 1898s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 8/80 ds-08 完成 (total=10.9s, 检索=0.27s, 生成=10.9s, 改写=0.3s) ETA 1771s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 9/80 ds-09 完成 (total=12.2s, 检索=0.30s, 生成=12.2s, 改写=1.3s) ETA 1680s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 10/80 ds-10 完成 (total=8.1s, 检索=2.60s, 生成=8.1s, 改写=1.7s) ETA 1574s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 11/80 ds-11 完成 (total=9.4s, 检索=0.29s, 生成=9.4s, 改写=1.7s) ETA 1490s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 12/80 ds-12 完成 (total=11.8s, 检索=0.27s, 生成=11.7s, 改写=0.4s) ETA 1435s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 13/80 ds-13 完成 (total=12.5s, 检索=0.31s, 生成=12.5s, 改写=0.5s) ETA 1389s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 14/80 ds-14 完成 (total=11.2s, 检索=0.31s, 生成=11.2s, 改写=0.3s) ETA 1340s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 15/80 ds-15 完成 (total=13.2s, 检索=0.28s, 生成=13.2s, 改写=0.4s) ETA 1304s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 16/80 ds-16 完成 (total=7.9s, 检索=0.26s, 生成=7.9s, 改写=0.4s) ETA 1249s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 17/80 ds-17 完成 (total=10.6s, 检索=0.27s, 生成=10.6s, 改写=0.4s) ETA 1210s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 18/80 ds-18 完成 (total=7.5s, 检索=0.24s, 生成=7.5s, 改写=0.4s) ETA 1163s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 19/80 ds-19 完成 (total=4.7s, 检索=0.25s, 生成=4.7s, 改写=0.4s) ETA 1110s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 20/80 ds-20 完成 (total=8.4s, 检索=0.21s, 生成=8.4s, 改写=1.7s) ETA 1072s
+[HYBRID] BM25 索引就绪: 321 chunks
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 21/80 os-01 完成 (total=7.9s, 检索=2.43s, 生成=7.5s, 改写=1.6s) ETA 1036s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 22/80 os-02 完成 (total=10.3s, 检索=0.22s, 生成=10.3s, 改写=0.3s) ETA 1009s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 23/80 os-03 完成 (total=6.8s, 检索=0.25s, 生成=6.8s, 改写=0.3s) ETA 975s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 24/80 os-04 完成 (total=10.1s, 检索=0.31s, 生成=10.1s, 改写=0.3s) ETA 951s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 25/80 os-05 完成 (total=8.6s, 检索=0.33s, 生成=8.6s, 改写=0.3s) ETA 922s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 26/80 os-06 完成 (total=7.0s, 检索=0.34s, 生成=7.0s, 改写=0.3s) ETA 892s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 27/80 os-07 完成 (total=6.7s, 检索=0.32s, 生成=6.7s, 改写=0.3s) ETA 863s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 28/80 os-08 完成 (total=9.8s, 检索=0.30s, 生成=9.8s, 改写=0.3s) ETA 842s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 29/80 os-09 完成 (total=12.3s, 检索=0.27s, 生成=12.3s, 改写=0.3s) ETA 826s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 30/80 os-10 完成 (total=6.0s, 检索=0.29s, 生成=6.0s, 改写=0.3s) ETA 798s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 31/80 os-11 完成 (total=10.3s, 检索=2.48s, 生成=10.3s, 改写=0.4s) ETA 779s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 32/80 os-12 完成 (total=9.7s, 检索=0.23s, 生成=9.6s, 改写=0.3s) ETA 759s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 33/80 os-13 完成 (total=7.1s, 检索=0.29s, 生成=7.1s, 改写=1.8s) ETA 736s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 34/80 os-14 完成 (total=9.8s, 检索=0.30s, 生成=9.8s, 改写=0.4s) ETA 717s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 35/80 os-15 完成 (total=7.4s, 检索=0.29s, 生成=7.4s, 改写=0.3s) ETA 696s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 36/80 os-16 完成 (total=8.7s, 检索=0.26s, 生成=8.7s, 改写=0.3s) ETA 676s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 37/80 os-17 完成 (total=5.3s, 检索=0.28s, 生成=5.3s, 改写=0.4s) ETA 653s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 38/80 os-18 完成 (total=8.7s, 检索=0.26s, 生成=8.7s, 改写=0.4s) ETA 635s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 39/80 os-19 完成 (total=5.2s, 检索=0.25s, 生成=5.2s, 改写=0.4s) ETA 612s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 40/80 os-20 完成 (total=0.9s, 检索=0.25s, 生成=0.9s, 改写=0.4s) ETA 586s
+[HYBRID] BM25 索引就绪: 308 chunks
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 41/80 net-01 完成 (total=7.6s, 检索=2.55s, 生成=7.2s, 改写=1.7s) ETA 568s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 42/80 net-02 完成 (total=8.4s, 检索=0.22s, 生成=8.4s, 改写=2.1s) ETA 552s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 43/80 net-03 完成 (total=13.8s, 检索=0.27s, 生成=13.8s, 改写=0.4s) ETA 540s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 44/80 net-04 完成 (total=12.5s, 检索=0.30s, 生成=12.5s, 改写=0.4s) ETA 527s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 45/80 net-05 完成 (total=12.1s, 检索=0.27s, 生成=12.1s, 改写=0.4s) ETA 513s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 46/80 net-06 完成 (total=10.1s, 检索=0.21s, 生成=10.1s, 改写=0.3s) ETA 498s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 47/80 net-07 完成 (total=7.3s, 检索=0.21s, 生成=7.3s, 改写=0.3s) ETA 481s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 48/80 net-08 完成 (total=8.9s, 检索=0.22s, 生成=8.9s, 改写=0.3s) ETA 465s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 49/80 net-09 完成 (total=7.5s, 检索=0.22s, 生成=7.5s, 改写=0.3s) ETA 449s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 50/80 net-10 完成 (total=11.3s, 检索=0.27s, 生成=11.3s, 改写=0.4s) ETA 435s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 51/80 net-11 完成 (total=11.0s, 检索=0.24s, 生成=11.0s, 改写=1.7s) ETA 420s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 52/80 net-12 完成 (total=16.3s, 检索=0.23s, 生成=16.2s, 改写=0.4s) ETA 409s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 53/80 net-13 完成 (total=8.2s, 检索=2.43s, 生成=8.2s, 改写=0.3s) ETA 393s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 54/80 net-14 完成 (total=5.3s, 检索=0.24s, 生成=5.3s, 改写=0.3s) ETA 376s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 55/80 net-15 完成 (total=7.2s, 检索=0.26s, 生成=7.2s, 改写=0.3s) ETA 360s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 56/80 net-16 完成 (total=8.0s, 检索=0.27s, 生成=8.0s, 改写=0.3s) ETA 344s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 57/80 net-17 完成 (total=4.5s, 检索=0.24s, 生成=4.5s, 改写=0.3s) ETA 327s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 58/80 net-18 完成 (total=10.8s, 检索=0.24s, 生成=10.7s, 改写=0.3s) ETA 313s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 59/80 net-19 完成 (total=1.6s, 检索=0.25s, 生成=1.6s, 改写=0.3s) ETA 296s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 60/80 net-20 完成 (total=1.2s, 检索=0.31s, 生成=1.2s, 改写=0.4s) ETA 278s
+[HYBRID] BM25 索引就绪: 306 chunks
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 61/80 co-01 完成 (total=8.1s, 检索=0.30s, 生成=7.1s, 改写=0.4s) ETA 264s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 62/80 co-02 完成 (total=12.1s, 检索=0.38s, 生成=11.9s, 改写=1.8s) ETA 250s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 63/80 co-03 完成 (total=8.4s, 检索=0.27s, 生成=8.4s, 改写=0.3s) ETA 236s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 64/80 co-04 完成 (total=14.3s, 检索=2.45s, 生成=14.3s, 改写=0.4s) ETA 223s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 65/80 co-05 完成 (total=14.4s, 检索=0.27s, 生成=14.4s, 改写=0.4s) ETA 210s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 66/80 co-06 完成 (total=6.3s, 检索=0.22s, 生成=6.3s, 改写=0.4s) ETA 195s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 67/80 co-07 完成 (total=10.9s, 检索=0.22s, 生成=10.9s, 改写=0.3s) ETA 182s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 68/80 co-08 完成 (total=5.0s, 检索=0.24s, 生成=5.0s, 改写=0.3s) ETA 167s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 69/80 co-09 完成 (total=10.0s, 检索=0.25s, 生成=10.0s, 改写=0.3s) ETA 153s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 70/80 co-10 完成 (total=8.4s, 检索=0.23s, 生成=8.4s, 改写=0.3s) ETA 139s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 71/80 co-11 完成 (total=7.7s, 检索=0.25s, 生成=7.7s, 改写=0.4s) ETA 125s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 72/80 co-12 完成 (total=7.6s, 检索=0.20s, 生成=7.6s, 改写=0.3s) ETA 111s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 73/80 co-13 完成 (total=10.2s, 检索=0.27s, 生成=10.2s, 改写=1.8s) ETA 97s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 74/80 co-14 完成 (total=4.4s, 检索=0.24s, 生成=4.4s, 改写=0.3s) ETA 83s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 75/80 co-15 完成 (total=11.2s, 检索=0.25s, 生成=11.1s, 改写=0.3s) ETA 69s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 76/80 co-16 完成 (total=11.9s, 检索=2.50s, 生成=11.9s, 改写=0.3s) ETA 55s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 77/80 co-17 完成 (total=6.5s, 检索=0.27s, 生成=6.5s, 改写=0.3s) ETA 41s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 78/80 co-18 完成 (total=10.7s, 检索=0.26s, 生成=10.7s, 改写=0.4s) ETA 28s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 79/80 co-19 完成 (total=7.6s, 检索=0.28s, 生成=7.6s, 改写=0.4s) ETA 14s
+[PERF] Retrieval: candidates=5 | selected=3
+[EVAL] 80/80 co-20 完成 (total=7.4s, 检索=0.25s, 生成=7.4s, 改写=0.4s) ETA 0s
+
+完成 80 题（跳过 0）
+[EVAL] 分级模式分布: grounded=80, fallback=0
+科目             召回充分性      回答质量      要点命中     平均total        平均检索        生成
+-------------------------------------------------------------------------------------------------
+数据结构            4.35      4.05       0.8         9.8        0.54      9.77
+操作系统            4.65       3.8       0.8        7.93         0.5       7.9
+计算机网络            4.2       3.7      0.76        8.69        0.47      8.66
+组成原理             4.6      3.95      0.77        9.16        0.48       9.1
+-------------------------------------------------------------------------------------------------
+全部              4.45      3.88      0.78        8.89         0.5      8.85
+
+p95 延迟: total=13.85s, 检索=2.5s, 生成=13.84s
+
+总耗时: 1096.8s
+
+结果已保存: results/leg3_norerank_recursive\eval_results_20260804_093015.json
