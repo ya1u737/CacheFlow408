@@ -1,0 +1,619 @@
+[QUIZ] 数据结构: 可用选择题 373 道（题库共 697 块）
+[QUIZ] 操作系统: 可用选择题 436 道（题库共 619 块）
+[QUIZ] 组成原理: 可用选择题 223 道（题库共 442 块）
+[QUIZ] 计算机网络: 可用选择题 143 道（题库共 345 块）
+[LLM] 检测到 DEEPSEEK_API_KEY，DeepSeek API 已就绪
+[QUIZ] 数据结构: 可用选择题 373 道（题库共 697 块）
+[QUIZ] 操作系统: 可用选择题 436 道（题库共 619 块）
+[QUIZ] 组成原理: 可用选择题 223 道（题库共 442 块）
+[QUIZ] 计算机网络: 可用选择题 143 道（题库共 345 块）
+[OK] 操作系统-1: 答案 C
+[OK] 操作系统-2: 答案 D
+[OK] 操作系统-3: 答案 D
+[HYBRID] BM25 索引就绪: 321 chunks
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-4: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-5: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-6: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-7: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-8: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-9: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-10: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-11: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-12: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-13: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-14: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-15: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-16: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-17: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-19: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-20: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-21: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-22: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-24: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-25: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-26: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-27: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-28: 答案 B
+[OK] 操作系统-29: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-30: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-32: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-34: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-38: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-39: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-40: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-41: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-42: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-43: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-44: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-45: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-46: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-48: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-49: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-50: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-52: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-53: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-54: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-55: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-56: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-57: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-58: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-59: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-60: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-61: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-62: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-63: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-64: 答案 B
+[OK] 操作系统-1: 答案 C
+[OK] 操作系统-2: 答案 D
+[OK] 操作系统-3: 答案 D
+[OK] 操作系统-4: 答案 D
+[OK] 操作系统-5: 答案 B
+[OK] 操作系统-6: 答案 C
+[OK] 操作系统-7: 答案 B
+[OK] 操作系统-9: 答案 C
+[OK] 操作系统-10: 答案 A
+[OK] 操作系统-11: 答案 A
+[OK] 操作系统-12: 答案 A
+[OK] 操作系统-13: 答案 D
+[OK] 操作系统-14: 答案 C
+[OK] 操作系统-15: 答案 D
+[OK] 操作系统-17: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-18: 答案 C
+[OK] 操作系统-20: 答案 D
+[OK] 操作系统-21: 答案 C
+[OK] 操作系统-22: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-23: 答案 A
+[OK] 操作系统-24: 答案 C
+[OK] 操作系统-25: 答案 B
+[OK] 操作系统-26: 答案 D
+[OK] 操作系统-27: 答案 A
+[OK] 操作系统-28: 答案 B
+[OK] 操作系统-29: 答案 C
+[OK] 操作系统-30: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-33: 答案 D
+[OK] 操作系统-34: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-35: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-36: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-37: 答案 D
+[OK] 操作系统-38: 答案 A
+[OK] 操作系统-39: 答案 C
+[OK] 操作系统-41: 答案 C
+[OK] 操作系统-42: 答案 D
+[OK] 操作系统-43: 答案 D
+[OK] 操作系统-44: 答案 C
+[OK] 操作系统-45: 答案 A
+[OK] 操作系统-46: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-47: 答案 A
+[OK] 操作系统-48: 答案 C
+[OK] 操作系统-49: 答案 D
+[OK] 操作系统-50: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-51: 答案 C
+[OK] 操作系统-53: 答案 C
+[OK] 操作系统-54: 答案 C
+[OK] 操作系统-55: 答案 B
+[OK] 操作系统-56: 答案 D
+[OK] 操作系统-57: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-65: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-66: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-67: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-68: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-69: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-72: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-73: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-74: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-75: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-76: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-77: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-78: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-79: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-80: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-87: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-88: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-89: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-90: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-91: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-92: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-93: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-94: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-95: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-96: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-97: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-98: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-99: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-100: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-101: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-102: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-103: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-104: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-117: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-118: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-119: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-120: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-121: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-122: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-123: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-124: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-125: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-126: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-127: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-128: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-129: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-130: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-131: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-132: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-133: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-134: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-135: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-136: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-137: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-138: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-139: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-140: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-143: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-144: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-145: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-146: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-147: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-148: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-151: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-152: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-153: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-154: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-155: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-157: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-158: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-159: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-160: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-161: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-162: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-163: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-190: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-191: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-192: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-195: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-196: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-197: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-198: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-199: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-200: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-201: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-202: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-203: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-204: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-205: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-207: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-209: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-210: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-211: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-212: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-213: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-214: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-215: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-216: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-217: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-218: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-220: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-221: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-222: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-223: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-225: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-227: 答案 D
+[OK] 操作系统-1: 答案 C
+[OK] 操作系统-2: 答案 D
+[OK] 操作系统-3: 答案 D
+[OK] 操作系统-5: 答案 B
+[OK] 操作系统-6: 答案 C
+[OK] 操作系统-7: 答案 B
+[OK] 操作系统-8: 答案 B
+[OK] 操作系统-9: 答案 C
+[OK] 操作系统-10: 答案 A
+[OK] 操作系统-11: 答案 A
+[OK] 操作系统-12: 答案 A
+[OK] 操作系统-13: 答案 D
+[OK] 操作系统-14: 答案 C
+[OK] 操作系统-15: 答案 D
+[OK] 操作系统-16: 答案 C
+[OK] 操作系统-17: 答案 A
+[OK] 操作系统-18: 答案 C
+[OK] 操作系统-19: 答案 D
+[OK] 操作系统-20: 答案 D
+[OK] 操作系统-21: 答案 C
+[OK] 操作系统-22: 答案 B
+[OK] 操作系统-23: 答案 A
+[OK] 操作系统-25: 答案 B
+[OK] 操作系统-26: 答案 D
+[OK] 操作系统-27: 答案 A
+[OK] 操作系统-28: 答案 B
+[OK] 操作系统-29: 答案 C
+[OK] 操作系统-30: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-31: 答案 B
+[OK] 操作系统-32: 答案 B
+[OK] 操作系统-33: 答案 D
+[OK] 操作系统-34: 答案 C
+[OK] 操作系统-35: 答案 A
+[OK] 操作系统-36: 答案 D
+[OK] 操作系统-37: 答案 D
+[OK] 操作系统-38: 答案 A
+[OK] 操作系统-39: 答案 C
+[OK] 操作系统-40: 答案 C
+[OK] 操作系统-41: 答案 C
+[OK] 操作系统-42: 答案 D
+[OK] 操作系统-43: 答案 D
+[OK] 操作系统-44: 答案 C
+[OK] 操作系统-45: 答案 A
+[OK] 操作系统-46: 答案 B
+[OK] 操作系统-47: 答案 A
+[OK] 操作系统-48: 答案 C
+[OK] 操作系统-49: 答案 D
+[OK] 操作系统-50: 答案 D
+[OK] 操作系统-51: 答案 C
+[OK] 操作系统-52: 答案 A
+[OK] 操作系统-53: 答案 C
+[OK] 操作系统-55: 答案 B
+[OK] 操作系统-56: 答案 D
+[OK] 操作系统-57: 答案 A
+[OK] 操作系统-58: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-70: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-71: 答案 C
+[OK] 操作系统-72: 答案 D
+[OK] 操作系统-73: 答案 B
+[OK] 操作系统-74: 答案 B
+[OK] 操作系统-75: 答案 C
+[OK] 操作系统-76: 答案 A
+[OK] 操作系统-77: 答案 A
+[OK] 操作系统-78: 答案 B
+[OK] 操作系统-79: 答案 B
+[OK] 操作系统-80: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-81: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-82: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-83: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-84: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-85: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-86: 答案 B
+[OK] 操作系统-87: 答案 A
+[OK] 操作系统-88: 答案 B
+[OK] 操作系统-89: 答案 B
+[OK] 操作系统-91: 答案 B
+[OK] 操作系统-92: 答案 B
+[OK] 操作系统-93: 答案 B
+[OK] 操作系统-96: 答案 A
+[OK] 操作系统-97: 答案 C
+[OK] 操作系统-100: 答案 B
+[OK] 操作系统-101: 答案 A
+[OK] 操作系统-103: 答案 C
+[OK] 操作系统-104: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-105: 答案 B
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-106: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-107: 答案 A
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-109: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-110: 答案 C
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-111: 答案 D
+[PERF] Retrieval: candidates=5 | selected=3
+[OK] 操作系统-112: 答案 C
+[OK] 操作系统-1: 答案 C
+[OK] 操作系统-3: 答案 D
+[OK] 操作系统-4: 答案 D
+[OK] 操作系统-5: 答案 B
+[OK] 操作系统-6: 答案 C
+[OK] 操作系统-7: 答案 B
+[OK] 操作系统-8: 答案 B
+[OK] 操作系统-9: 答案 C
+[OK] 操作系统-10: 答案 A
+[OK] 操作系统-11: 答案 A
+[OK] 操作系统-12: 答案 A
+[OK] 操作系统-13: 答案 D
+[OK] 操作系统-14: 答案 C
+[OK] 操作系统-15: 答案 D
+[OK] 操作系统-16: 答案 C
+[OK] 操作系统-17: 答案 A
+[OK] 操作系统-18: 答案 C
+[OK] 操作系统-19: 答案 D
+[OK] 操作系统-20: 答案 D
+[OK] 操作系统-21: 答案 C
+[OK] 操作系统-22: 答案 B
+[OK] 操作系统-23: 答案 A
+[OK] 操作系统-24: 答案 C
+[OK] 操作系统-25: 答案 B
+[OK] 操作系统-27: 答案 A
+[OK] 操作系统-29: 答案 C
+[OK] 操作系统-30: 答案 A
+[OK] 操作系统-31: 答案 B
+[OK] 操作系统-32: 答案 B
+[OK] 操作系统-33: 答案 D
+[OK] 操作系统-34: 答案 C
+[OK] 操作系统-35: 答案 A
+[OK] 操作系统-36: 答案 D
+[OK] 操作系统-38: 答案 A
+[OK] 操作系统-39: 答案 C
+[OK] 操作系统-51: 答案 C
+[OK] 操作系统-52: 答案 A
+[OK] 操作系统-53: 答案 C
+[OK] 操作系统-54: 答案 C
+[OK] 操作系统-55: 答案 B
+[OK] 操作系统-56: 答案 D
+[OK] 操作系统-57: 答案 A
+[OK] 操作系统-58: 答案 C
+[OK] 操作系统-59: 答案 A
+[OK] 操作系统-66: 答案 C
+[OK] 操作系统-67: 答案 C
+[OK] 操作系统-68: 答案 D
+[OK] 操作系统-69: 答案 A
+[OK] 操作系统-71: 答案 C
+[OK] 操作系统-72: 答案 D
+[OK] 操作系统-73: 答案 B
+[OK] 操作系统-1: 答案 C
+[OK] 操作系统-2: 答案 D
+[OK] 操作系统-4: 答案 D
+[OK] 操作系统-5: 答案 B
+[OK] 操作系统-6: 答案 C
+[OK] 操作系统-7: 答案 B
+[OK] 操作系统-8: 答案 B
+[OK] 操作系统-9: 答案 C
+[OK] 操作系统-10: 答案 A
+[OK] 操作系统-11: 答案 A
+[OK] 操作系统-12: 答案 A
+[OK] 操作系统-13: 答案 D
+[OK] 操作系统-14: 答案 C
+[OK] 操作系统-15: 答案 D
+[OK] 操作系统-16: 答案 C
+[OK] 操作系统-18: 答案 C
+[OK] 操作系统-19: 答案 D
+[OK] 操作系统-20: 答案 D
+[OK] 操作系统-21: 答案 C
+[OK] 操作系统-22: 答案 B
+[OK] 操作系统-23: 答案 A
+[OK] 操作系统-24: 答案 C
+[OK] 操作系统-31: 答案 B
+[OK] 操作系统-32: 答案 B
+[OK] 操作系统-33: 答案 D
+[OK] 操作系统-34: 答案 C
+[OK] 操作系统-35: 答案 A
+[OK] 操作系统-36: 答案 D
+[OK] 操作系统-37: 答案 D
+[OK] 操作系统-38: 答案 A
+[OK] 操作系统-39: 答案 C
+[OK] 操作系统-40: 答案 C
+[OK] 操作系统-42: 答案 D
+[OK] 操作系统-43: 答案 D
+[OK] 操作系统-44: 答案 C
+[OK] 操作系统-45: 答案 A
+[OK] 操作系统-46: 答案 B
+[OK] 操作系统-47: 答案 A
+[OK] 操作系统-48: 答案 C
+[OK] 操作系统-49: 答案 D
+[OK] 操作系统-50: 答案 D
+[OK] 操作系统-51: 答案 C
+[OK] 操作系统-52: 答案 A
+[OK] 操作系统-53: 答案 C
+[OK] 操作系统-54: 答案 C
+[OK] 操作系统-55: 答案 B
+[OK] 操作系统-56: 答案 D
+[OK] 操作系统-57: 答案 A
+[OK] 操作系统-58: 答案 C
+[OK] 操作系统-59: 答案 A
+[OK] 操作系统-60: 答案 C
+[OK] 操作系统-61: 答案 C
+[OK] 操作系统-62: 答案 C
+[OK] 操作系统-69: 答案 A
+[OK] 操作系统-70: 答案 B
+[OK] 操作系统-71: 答案 C
+[OK] 操作系统-72: 答案 D
+[OK] 操作系统-73: 答案 B
+[OK] 操作系统-74: 答案 B
+[OK] 操作系统-75: 答案 C
+[OK] 操作系统-76: 答案 A
+[OK] 操作系统-77: 答案 A
+[OK] 操作系统-78: 答案 B
+[OK] 操作系统-80: 答案 B
+[OK] 操作系统-81: 答案 B
+[OK] 操作系统-82: 答案 A
+[OK] 操作系统-83: 答案 A
+[OK] 操作系统-84: 答案 A
+[OK] 操作系统-85: 答案 C
+[OK] 操作系统-86: 答案 B
+[OK] 操作系统-87: 答案 A
+[OK] 操作系统-88: 答案 B
+[OK] 操作系统-89: 答案 B
+[OK] 操作系统-90: 答案 C
+
+完成：判定 426 道，失败 0 道，待写入 426 道答案
+已写入 426 道答案 -> data/clean_md/操作系统_题库.md

@@ -62,7 +62,7 @@
 
       <div v-else class="empty-tip">
         <p>点击「生成题目」，从 408 题库中随机抽一道选择题。</p>
-        <p class="muted">答案取自题库；操作系统缺答案的题由本地模型判定。</p>
+        <p class="muted">答案取自题库。</p>
       </div>
     </div>
   </div>
