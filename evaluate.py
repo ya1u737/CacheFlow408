@@ -533,6 +533,16 @@ def main():
         Config.VECTOR_DB_PATH = os.path.normpath(args.kb_root)
         print(f"[EVAL] 向量库根目录覆盖为: {Config.VECTOR_DB_PATH}")
 
+    # 读取库根目录的切块配置标记（rebuild_kb 写入），避免 meta 记录默认值
+    kb_cfg = {}
+    try:
+        with open(
+            os.path.join(Config.VECTOR_DB_PATH, "__kb_config__.json"), encoding="utf-8"
+        ) as f:
+            kb_cfg = json.load(f)
+    except Exception:
+        pass
+
     t0 = time.time()
     results = run_eval(args)
     summary = summarize(results, args)
@@ -559,7 +569,9 @@ def main():
             "rerank_enabled": (not args.no_rerank) and Config.RERANK_ENABLED,
             "no_rerank": args.no_rerank,
             "kb_root": Config.VECTOR_DB_PATH,
-            "chunk_mode": Config.CHUNK_MODE,
+            "chunk_mode": kb_cfg.get("chunk_mode", Config.CHUNK_MODE),
+            "chunk_size": kb_cfg.get("chunk_size", Config.CHUNK_SIZE),
+            "chunk_overlap": kb_cfg.get("chunk_overlap", Config.CHUNK_OVERLAP),
             "reranker_fp16": Config.RERANKER_FP16,
             "embedding": Config.EMBEDDING_MODEL,
             "chat_model": Config.CHAT_MODEL,

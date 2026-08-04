@@ -1,0 +1,9 @@
+
+[RUN] scripts/rebuild_kb.py --chunk-size 400 --overlap 150 --kb-root storage/chroma_s400
+
+[RUN] evaluate.py --adaptive --questions data/eval_questions_80.json --kb-root storage/chroma_s400 --output results\leg_chunk400
+[DONE] chunk400£¨chunk 400/overlap 150£©
+
+[RUN] scripts/rebuild_kb.py --chunk-size 1200 --overlap 150 --kb-root storage/chroma_s1200
+
+[RUN] evaluate.py --adaptive --questions data/eval_questions_80.json --kb-root storage/chroma_s1200 --output results\leg_chunk1200

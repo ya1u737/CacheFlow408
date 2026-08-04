@@ -2,12 +2,15 @@
 
 用法（在项目根目录，408rag 虚拟环境）:
     python scripts/rebuild_kb.py
+    python scripts/rebuild_kb.py --chunk-size 400 --overlap 150 --kb-root storage/chroma_s400
 
 行为:
     1. 旧库先整体备份到 storage/chroma_bak_recursive/<kb_name>
     2. 用 data/clean_md/ 下对应 md 文件 + 当前 CHUNK_MODE 重新切块并向量化
     3. 覆盖 storage/chroma/<kb_name>
 """
+import argparse
+import json
 import os
 import shutil
 import sys
@@ -34,6 +37,18 @@ def log(msg):
 
 
 def main():
+    parser = argparse.ArgumentParser(description="重建 4 个学科知识点向量库（可指定切块参数与库根目录）")
+    parser.add_argument("--chunk-size", type=int, default=None, help="切块大小（覆盖 Config.CHUNK_SIZE）")
+    parser.add_argument("--overlap", type=int, default=None, help="切块重叠（覆盖 Config.CHUNK_OVERLAP）")
+    parser.add_argument("--kb-root", default=None, help="向量库根目录（覆盖 Config.VECTOR_DB_PATH，评测用）")
+    args = parser.parse_args()
+    if args.chunk_size:
+        Config.CHUNK_SIZE = args.chunk_size
+    if args.overlap is not None:
+        Config.CHUNK_OVERLAP = args.overlap
+    if args.kb_root:
+        Config.VECTOR_DB_PATH = args.kb_root
+
     # 重建阶段不需要 reranker（省显存），embedding 保持常驻避免反复加载
     Config.RERANK_ENABLED = False
     Config.EMBEDDING_KEEP_ALIVE = 1800  # 30 分钟（langchain 接受整数秒，不接受 "30m"）
@@ -45,7 +60,11 @@ def main():
         f for f in os.listdir(Config.DATA_PATH)
         if f.endswith(".md") and "知识点" in f
     )
-    log(f"[REBUILD] 切块模式: {Config.CHUNK_MODE} | 待重建: {targets}")
+    log(
+        f"[REBUILD] 切块模式: {Config.CHUNK_MODE} | "
+        f"chunk_size={Config.CHUNK_SIZE} overlap={Config.CHUNK_OVERLAP} | "
+        f"库根: {Config.VECTOR_DB_PATH} | 待重建: {targets}"
+    )
 
     chroma_root = os.path.abspath(Config.VECTOR_DB_PATH)
     bak_root = os.path.join("storage", "chroma_bak_recursive")
@@ -97,6 +116,21 @@ def main():
             kb.db = None
             kb._chunk_docs = []
         log("[REBUILD] 完成")
+        # 写入该库根目录的切块配置标记，供评测/复盘读取（避免 meta 记错参数）
+        marker = os.path.join(Config.VECTOR_DB_PATH, "__kb_config__.json")
+        with open(marker, "w", encoding="utf-8") as f:
+            json.dump(
+                {
+                    "chunk_mode": Config.CHUNK_MODE,
+                    "chunk_size": Config.CHUNK_SIZE,
+                    "chunk_overlap": Config.CHUNK_OVERLAP,
+                    "updated": time.strftime("%Y-%m-%d %H:%M:%S"),
+                },
+                f,
+                ensure_ascii=False,
+                indent=2,
+            )
+        log(f"[REBUILD] 已写入切块配置标记: {marker}")
     except Exception:
         log("[REBUILD] 失败:\n" + traceback.format_exc())
         sys.exit(1)
