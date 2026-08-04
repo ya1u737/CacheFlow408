@@ -43,6 +43,9 @@ mock_test/
 db/
 storage/
 
+# 运行时数据库（聊天历史），不纳入版本库
+backend/database/chat.db
+
 # Model files
 models/
 *.safetensors

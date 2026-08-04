@@ -30,7 +30,9 @@
           class="avatar ai-avatar-img" 
           />
           <div class="message-bubble assistant-bubble">
-            <div class="msg-text markdown-body" v-html="msg.rendered"></div>
+            <!-- 流式期间显示纯文本（丝滑），结束后一次性渲染 Markdown -->
+            <p v-if="!msg.rendered" class="msg-text ai-text">{{ msg.content }}</p>
+            <div v-else class="msg-text markdown-body" v-html="msg.rendered"></div>
 
             <!-- 检索知识点参考（清晰调大版） -->
             <div v-if="msg.references && msg.references.length" class="refs-box">
@@ -139,7 +141,6 @@ export default {
       messages: [], 
       loading: false,
       userScrolledUp: false,
-      lastRenderAt: 0,
       kbInfo: { knowledge_base: null, documents: [], chunk_count: 0 },
       mode: localStorage.getItem('km_llm_mode') || 'ollama',
       currentColor: localStorage.getItem('km_primary_color') || '#c8e338',
@@ -229,7 +230,7 @@ export default {
       try {
         const r = await fetch(`/api/history?session_id=${this.sessionId}`)
         const data = await r.json()
-        this.messages = (data.messages || []).map(m => ({
+        this.messages = (data.messages || []).slice(-15).map(m => ({
           ...m,
           rendered: m.role === 'assistant' ? this.renderMarkdown(m.content) : ''
         }))
@@ -292,11 +293,6 @@ export default {
               if (msg.type === 'token') {
                 full += msg.data
                 this.messages[msgIndex].content = full
-                const now = Date.now()
-                if (now - this.lastRenderAt >= 200) {
-                  this.lastRenderAt = now
-                  this.messages[msgIndex].rendered = this.renderMarkdown(full)
-                }
                 this.scrollToBottom()
               } else if (msg.type === 'references') {
                 this.messages[msgIndex].references = msg.data

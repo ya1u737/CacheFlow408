@@ -40,6 +40,16 @@ def save_message(session_id: str, role: str, content: str, references=None):
         "INSERT INTO chat_history (session_id, role, content, references_json) VALUES (?, ?, ?, ?)",
         (session_id, role, content, refs_json),
     )
+    # 每个会话只保留最近 15 条消息，避免历史无限增长
+    conn.execute(
+        """
+        DELETE FROM chat_history
+        WHERE session_id = ? AND id NOT IN (
+            SELECT id FROM chat_history WHERE session_id = ? ORDER BY id DESC LIMIT 15
+        )
+        """,
+        (session_id, session_id),
+    )
     conn.commit()
     conn.close()
 
