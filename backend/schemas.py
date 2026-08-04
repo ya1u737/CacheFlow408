@@ -61,3 +61,33 @@ class UploadResponse(BaseModel):
 class ClearResponse(BaseModel):
     status: str
     message: str
+
+
+# ==================== AI 出题 ====================
+
+class QuizGenerateRequest(BaseModel):
+    """生成一道选择题；subject 为空时随机学科。"""
+    subject: Optional[str] = None
+
+
+class QuizGenerateResponse(BaseModel):
+    question_id: str
+    subject: str
+    question: str
+    options: List[str]
+    answer: str
+    knowledge_point: str = ""
+    analysis: str = ""
+    source: str = ""
+
+
+class QuizCheckRequest(BaseModel):
+    question_id: str
+    user_answer: str
+
+
+class QuizCheckResponse(BaseModel):
+    correct: bool
+    answer: str
+    user_answer: str
+    analysis: str = ""

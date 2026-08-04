@@ -69,6 +69,11 @@ class Config:
     EVAL_JUDGE_BACKEND = "ollama"                # 裁判后端: ollama / api（DeepSeek 等）
     EVAL_JUDGE_MODEL = "qwen2.5:7b"              # 裁判模型；api 模式下可设为 deepseek-chat 等
 
+    # ==================== AI 出题 ====================
+    QUIZ_BANK_DIR = "data/clean_md/"             # 题库 Markdown 目录
+    QUIZ_GROUNDING_ENABLED = True                # 操作系统 LLM 判题时是否检索知识点做 grounding
+    QUIZ_ANSWER_CACHE_PATH = "storage/quiz_os_answers.json"   # 操作系统判题结果缓存（内存 + JSON）
+
     FALLBACK_PROMPT = """
 你是 KnowMate-408，一个计算机408考研辅导助手（数据结构、操作系统、计算机网络、计算机组成原理）。
 

@@ -1,15 +1,19 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.responses import StreamingResponse, JSONResponse
 from backend.service import RAGService
+from backend.quiz_service import QuizService
 from backend import database as chat_db
 from backend.schemas import (
     QueryRequest, QueryResponse, Reference,
     StatusResponse, LoadKnowledgeResponse,
-    UploadResponse, ClearResponse, ApiKeyRequest
+    UploadResponse, ClearResponse, ApiKeyRequest,
+    QuizGenerateRequest, QuizGenerateResponse,
+    QuizCheckRequest, QuizCheckResponse,
 )
 
 app = FastAPI(title="KnowMate RAG API", version="1.0.0")
 service = RAGService()
+quiz_service = QuizService(service.generator)
 
 
 @app.get("/api/status", response_model=StatusResponse)
@@ -112,3 +116,21 @@ def save_history(body: dict):
 def delete_history(session_id: str):
     chat_db.delete_session(session_id)
     return {"status": "ok", "message": f"会话 {session_id} 已删除"}
+
+
+# ==================== AI 出题 ====================
+
+@app.post("/api/quiz/generate", response_model=QuizGenerateResponse)
+def quiz_generate(req: QuizGenerateRequest):
+    try:
+        return quiz_service.generate(req.subject)
+    except ValueError as e:
+        return JSONResponse(status_code=400, content={"detail": str(e)})
+
+
+@app.post("/api/quiz/check", response_model=QuizCheckResponse)
+def quiz_check(req: QuizCheckRequest):
+    try:
+        return quiz_service.check(req.question_id, req.user_answer)
+    except ValueError as e:
+        return JSONResponse(status_code=400, content={"detail": str(e)})

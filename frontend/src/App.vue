@@ -29,6 +29,10 @@
           <span class="menu-icon">📚</span>
           <template #title>知识库管理</template>
         </el-menu-item>
+        <el-menu-item index="/quiz">
+          <span class="menu-icon">📝</span>
+          <template #title>AI出题</template>
+        </el-menu-item>
         <el-menu-item index="/status">
           <span class="menu-icon">📊</span>
           <template #title>系统状态</template>
