@@ -30,7 +30,7 @@
           class="avatar ai-avatar-img" 
           />
           <div class="message-bubble assistant-bubble">
-            <p class="msg-text ai-text">{{ msg.content }}</p>
+            <div class="msg-text markdown-body" v-html="msg.rendered"></div>
 
             <!-- 检索知识点参考（清晰调大版） -->
             <div v-if="msg.references && msg.references.length" class="refs-box">
@@ -127,6 +127,8 @@
 <script>
 import botAvatarImg from '../assets/bot_avatar.jpg'
 import userAvatarImg from '../assets/user_avatar.png'
+import { marked } from 'marked'
+import DOMPurify from 'dompurify'
 export default {
   data() {
     const sid = localStorage.getItem('km_session_id') || 'session_' + Date.now()
@@ -137,6 +139,7 @@ export default {
       messages: [], 
       loading: false,
       userScrolledUp: false,
+      lastRenderAt: 0,
       kbInfo: { knowledge_base: null, documents: [], chunk_count: 0 },
       mode: localStorage.getItem('km_llm_mode') || 'ollama',
       currentColor: localStorage.getItem('km_primary_color') || '#c8e338',
@@ -161,6 +164,10 @@ export default {
 
 
   methods: {
+    renderMarkdown(text) {
+      return text ? DOMPurify.sanitize(marked.parse(text)) : ''
+    },
+
     onColorChange(e) {
       if (e.detail && e.detail.color) {
         this.currentColor = e.detail.color
@@ -222,7 +229,10 @@ export default {
       try {
         const r = await fetch(`/api/history?session_id=${this.sessionId}`)
         const data = await r.json()
-        this.messages = data.messages || []
+        this.messages = (data.messages || []).map(m => ({
+          ...m,
+          rendered: m.role === 'assistant' ? this.renderMarkdown(m.content) : ''
+        }))
         this.scrollToBottom()
       } catch {
         // 静默失败，不影响聊天
@@ -253,7 +263,7 @@ export default {
       this.loading = true
 
       const msgIndex = this.messages.length
-      this.messages.push({ role: 'assistant', content: '', references: [], perf: null })
+      this.messages.push({ role: 'assistant', content: '', rendered: '', references: [], perf: null })
 
       this.scrollToBottom()
 
@@ -282,11 +292,17 @@ export default {
               if (msg.type === 'token') {
                 full += msg.data
                 this.messages[msgIndex].content = full
+                const now = Date.now()
+                if (now - this.lastRenderAt >= 200) {
+                  this.lastRenderAt = now
+                  this.messages[msgIndex].rendered = this.renderMarkdown(full)
+                }
                 this.scrollToBottom()
               } else if (msg.type === 'references') {
                 this.messages[msgIndex].references = msg.data
               } else if (msg.type === 'error') {
                 this.messages[msgIndex].content = '❌ ' + msg.data
+                this.messages[msgIndex].rendered = this.renderMarkdown(this.messages[msgIndex].content)
               } else if (msg.type === 'performance') {
                 const p = msg.data || {}
                 const r1 = (v) => Math.round((v || 0) * 10) / 10
@@ -300,6 +316,9 @@ export default {
                   const total = Math.round(((Date.now() - t0) / 1000) * 10) / 10
                   this.messages[msgIndex].perf = { rewrite: 0, generation: total, total }
                 }
+                this.messages[msgIndex].rendered = this.renderMarkdown(
+                  this.messages[msgIndex].content || full
+                )
               }
             }
           }
@@ -433,6 +452,96 @@ export default {
   white-space: pre-wrap;
   word-break: break-word;
 }
+
+/* ---------------- AI 回答 Markdown 渲染（暗色主题） ---------------- */
+.markdown-body {
+  line-height: 1.7;
+  word-break: break-word;
+  font-size: 15px;
+  color: #ececec;
+}
+
+.markdown-body h1,
+.markdown-body h2,
+.markdown-body h3,
+.markdown-body h4 {
+  margin: 14px 0 8px;
+  color: #f3f4f6;
+  line-height: 1.35;
+}
+
+.markdown-body h1 {
+  font-size: 20px;
+  border-bottom: 1px solid #2a2b31;
+  padding-bottom: 6px;
+}
+
+.markdown-body h2 { font-size: 17px; }
+.markdown-body h3 { font-size: 15px; }
+.markdown-body h4 { font-size: 14px; }
+
+.markdown-body p { margin: 8px 0; }
+.markdown-body ul, .markdown-body ol { margin: 8px 0; padding-left: 22px; }
+.markdown-body li { margin: 3px 0; }
+.markdown-body strong { color: #f3f4f6; }
+
+.markdown-body table {
+  border-collapse: collapse;
+  margin: 10px 0;
+  width: 100%;
+  font-size: 13px;
+}
+
+.markdown-body th,
+.markdown-body td {
+  border: 1px solid #33363f;
+  padding: 6px 10px;
+  text-align: left;
+}
+
+.markdown-body th {
+  background: #24262c;
+  color: #e5e7eb;
+}
+
+.markdown-body tr:nth-child(even) { background: rgba(255, 255, 255, 0.02); }
+
+.markdown-body code {
+  background: #2a2d34;
+  color: #e8b46f;
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.markdown-body pre {
+  background: #0f1012;
+  border: 1px solid #23252c;
+  border-radius: 8px;
+  padding: 12px 14px;
+  overflow-x: auto;
+  margin: 10px 0;
+}
+
+.markdown-body pre code {
+  background: transparent;
+  color: #d1d5db;
+  padding: 0;
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.markdown-body blockquote {
+  margin: 10px 0;
+  padding: 4px 12px;
+  border-left: 3px solid var(--primary-color);
+  background: rgba(255, 255, 255, 0.03);
+  color: #b8bcc8;
+}
+
+.markdown-body a { color: var(--primary-color); }
+.markdown-body hr { border: none; border-top: 1px solid #2a2b31; margin: 14px 0; }
 
 
 /* ---------------- 检索参考知识点（清晰调大版） ---------------- */
