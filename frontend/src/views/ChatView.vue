@@ -597,12 +597,14 @@ export default {
 /* 底部固定输入框区域 */
 .input-area {
   flex-shrink: 0;
-  padding: 16px 0 24px 0;
+  padding: 16px 20px 24px;
   background-color: #131417;
 }
 
 /* 外层容器统一接管圆角和溢出裁切 */
 .input-wrapper {
+  max-width: 800px;
+  margin: 0 auto;
   background-color: #1e1f23;
   border-radius: 12px;         /* 适当加大圆角，更现代化 */
   border: 1px solid #2e3035;   /* 补上一圈细边框，增强立体感 */

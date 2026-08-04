@@ -81,7 +81,7 @@
       </div>
 
       <!-- 侧边栏底部：主题色选择器 -->
-      <div class="theme-color-picker">
+      <div v-if="!isCollapse" class="theme-color-picker">
 
         <div class="color-dots">
           <button

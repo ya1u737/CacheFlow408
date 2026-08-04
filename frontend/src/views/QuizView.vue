@@ -69,17 +69,47 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { ElMessage } from 'element-plus'
 
 const subjects = ['数据结构', '操作系统', '组成原理', '计算机网络']
-const subject = ref('')
+const SUBJECT_KEY = 'km_quiz_subject'
+const QUIZ_STATE_KEY = 'km_quiz_state'
+
+const subject = ref(localStorage.getItem(SUBJECT_KEY) || '')
 const loading = ref(false)
 const checking = ref(false)
 const current = ref(null)
 const selected = ref('')
 const submitted = ref(false)
 const result = ref(null)
+
+// 恢复上次的科目与题目状态（切页返回后不丢失）
+try {
+  const saved = JSON.parse(localStorage.getItem(QUIZ_STATE_KEY) || 'null')
+  if (saved && saved.current) {
+    current.value = saved.current
+    selected.value = saved.selected || ''
+    submitted.value = saved.submitted || false
+    result.value = saved.result || null
+  }
+} catch {}
+
+function persist() {
+  localStorage.setItem(SUBJECT_KEY, subject.value || '')
+  if (current.value) {
+    localStorage.setItem(QUIZ_STATE_KEY, JSON.stringify({
+      current: current.value,
+      selected: selected.value,
+      submitted: submitted.value,
+      result: result.value
+    }))
+  } else {
+    localStorage.removeItem(QUIZ_STATE_KEY)
+  }
+}
+
+watch(subject, persist)
 
 async function generate() {
   loading.value = true
@@ -95,6 +125,7 @@ async function generate() {
     selected.value = ''
     submitted.value = false
     result.value = null
+    persist()
   } catch (e) {
     ElMessage.error('生成题目失败：' + e.message)
   } finally {
@@ -118,6 +149,7 @@ async function submit() {
     if (!r.ok) throw new Error(data.detail || '提交失败')
     result.value = data
     submitted.value = true
+    persist()
   } catch (e) {
     ElMessage.error('提交失败：' + e.message)
   } finally {
