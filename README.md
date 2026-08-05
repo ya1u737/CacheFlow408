@@ -106,6 +106,7 @@ docker compose -f docker-compose.cpu.yml up -d --build
 - reranker 模型目录默认挂载 `D:/models/bge-reranker-v2-m3`，路径不同请修改 `docker-compose.yml`
 - 知识库向量库持久化在 `kb_storage` 卷，`docker compose down` 不丢失
 - 查看日志：`docker compose logs -f backend`
+- 响应慢？先确认模型跑在 GPU 上：`docker logs knowmate-ollama | grep "inference compute"`，应显示 `library=CUDA` 而非 `id=cpu`
 
 ### 本地开发
 
@@ -163,7 +164,7 @@ storage/          向量库持久化（运行时生成）
 
 ✅ **已完成**：RAG 全链路、混合检索、引用溯源、AI 出题、扫描型 PDF 识别、评测体系、Docker 部署、一键启动
 
-🚧 **进行中**：演示素材补充（截图 / GIF）、前端Vue,CSS优化
+🚧 **进行中**：优化端到端响应时间、演示素材补充（截图 / GIF）、前端Vue,CSS优化
 
 🔮 **规划中**：学习数据分析、Agent 化、评测数据规模
 

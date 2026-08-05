@@ -27,6 +27,13 @@ services:
       retries: 30
       start_period: 30s
     entrypoint: ["/bin/sh", "/entrypoint.sh"]
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
 
   backend:
     build:
