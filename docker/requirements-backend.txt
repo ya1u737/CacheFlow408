@@ -1,4 +1,4 @@
-# KnowMate-408 后端容器依赖（精简自 requirements.txt，仅含 backend + src 运行所需）
+# CacheFlow408 后端容器依赖（精简自 requirements.txt，仅含 backend + src 运行所需）
 # 注意：torch 单独在 Dockerfile 中安装（避免多源哈希冲突）
 
 fastapi==0.121.0

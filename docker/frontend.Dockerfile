@@ -1,4 +1,4 @@
-# KnowMate-408 前端：Vite 构建产物 + Nginx 静态托管（/api 反向代理到后端）
+# CacheFlow408 前端：Vite 构建产物 + Nginx 静态托管（/api 反向代理到后端）
 FROM node:20-alpine AS build
 
 WORKDIR /app

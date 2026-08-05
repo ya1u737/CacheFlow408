@@ -6,7 +6,7 @@
       <div class="aside-header">
         <div class="brand-left">
           <div class="logo-badge">KM</div>
-          <span v-if="!isCollapse" class="brand-text">KnowMate</span>
+          <span v-if="!isCollapse" class="brand-text">CacheFlow408</span>
         </div>
         <!-- 移到了顶部 Logo 旁边的切换按钮 -->
         <button class="collapse-btn" @click="isCollapse = !isCollapse" :title="isCollapse ? '展开侧边栏' : '收起侧边栏'">
@@ -103,7 +103,7 @@
       <el-header class="app-header">
         <div class="header-center">
           <h2 class="app-title">
-            KnowMate <span class="tag">RAG Assistant</span>
+            CacheFlow408 <span class="tag">RAG Assistant</span>
           </h2>
         </div>
       </el-header>

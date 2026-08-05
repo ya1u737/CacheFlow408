@@ -331,7 +331,7 @@ for name, size, color, before, after in (
 # 页眉：安静标签 + 细下划线
 header_p = sec.header.paragraphs[0]
 header_p.alignment = WD_ALIGN_PARAGRAPH.LEFT
-set_run(header_p.add_run("KnowMate-408 · RAG 评测总报告"), size=9, color=MUTED)
+set_run(header_p.add_run("CacheFlow408 · RAG 评测总报告"), size=9, color=MUTED)
 pbdr = OxmlElement("w:pBdr")
 btm = OxmlElement("w:bottom")
 btm.set(qn("w:val"), "single")
@@ -349,7 +349,7 @@ add_page_field(footer_p, " PAGE ")
 set_run(footer_p.add_run(" 页"), size=9, color=MUTED)
 
 # ==================== 封面标题区 ====================
-add_para(doc, "KnowMate-408 评测总报告", size=22, bold=True, color=TITLE_COLOR,
+add_para(doc, "CacheFlow408 评测总报告", size=22, bold=True, color=TITLE_COLOR,
          before=0, after=4)
 add_para(doc, "全链路 RAG · 混合检索 · 可评测体系（复习助手 / AI 应用岗简历项目）",
          size=13, color=MUTED, after=8)

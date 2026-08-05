@@ -11,7 +11,7 @@ from backend.schemas import (
     QuizCheckRequest, QuizCheckResponse,
 )
 
-app = FastAPI(title="KnowMate RAG API", version="1.0.0")
+app = FastAPI(title="CacheFlow408 RAG API", version="1.0.0")
 service = RAGService()
 quiz_service = QuizService(service.generator)
 

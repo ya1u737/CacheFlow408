@@ -1,4 +1,4 @@
-# KnowMate-408 后端（FastAPI + RAG 检索/重排）
+# CacheFlow408 后端（FastAPI + RAG 检索/重排）
 # 镜像含 torch CUDA 运行时（约 6~7 GB），8GB 显存可跑 rerank；CPU 机器请改用
 # docker-compose.cpu.yml（自动关闭 rerank 与查询改写）。
 FROM python:3.11-slim

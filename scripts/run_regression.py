@@ -59,7 +59,7 @@ def main():
     for r in rows:
         subjects.setdefault(r["subject"], []).append(r)
     lines = []
-    lines.append("# KnowMate-408 回归报告")
+    lines.append("# CacheFlow408 回归报告")
     lines.append("")
     lines.append(f"- 评测时间：{time.strftime('%Y-%m-%d %H:%M:%S')}")
     lines.append(f"- 基准：{BENCH}（{len(rows)} 题）")
