@@ -1,0 +1,26 @@
+# 依赖与构建产物
+frontend/node_modules
+frontend/dist
+.venv
+__pycache__
+*.pyc
+
+# 大目录：数据、向量库、模型、评测结果不进入构建上下文
+data/
+storage/
+models/
+results/
+backend/database/
+
+# Git 与 IDE
+.git
+.gitignore
+.idea
+.vscode
+.env
+.env.*
+!.env.docker.example
+
+# 系统文件
+.DS_Store
+Thumbs.db

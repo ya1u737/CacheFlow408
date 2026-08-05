@@ -1,467 +1,173 @@
-# 🎓 KnowMate-RAG Assistant
+# 🎓 KnowMate-408
 
-> **Local-First 408 RAG Assistant
+> **Local-first 考研智能辅导助手** · RAG 全链路问答 · AI 出题 · 量化评测
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
-[![Vue 3](https://img.shields.io/badge/frontend-Vue3-brightgreen.svg)](https://vuejs.org/)
 [![FastAPI](https://img.shields.io/badge/backend-FastAPI-009688.svg)](https://fastapi.tiangolo.com/)
+[![Vue3](https://img.shields.io/badge/frontend-Vue3-brightgreen.svg)](https://vuejs.org/)
+[![Docker](https://img.shields.io/badge/deploy-Docker-2496ED.svg)](https://www.docker.com/)
 [![RAG](https://img.shields.io/badge/AI-RAG-orange.svg)]()
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
----
-![Demo 预览](./assets/demo01.png)
-# 📖 Introduction
+KnowMate-408 是一个面向计算机考研 **408**（数据结构 / 操作系统 / 组成原理 / 计算机网络）的本地优先智能学习助手：基于个人知识库精准问答、回答可溯源、AI 随机出题即时判题，并自带一套量化评测体系——每一项检索策略选型都由 A/B 实验数据驱动。
 
-**KnowMate** 是一个基于 **RAG（Retrieval-Augmented Generation，检索增强生成）** 架构的 Local-first AI 知识库助手。
+**开箱即用：** 克隆仓库 → Docker 一键启动 → 内置四科知识点库与 **1175 道选择题**，无需准备任何数据。
 
-当前项目主要面向 **408计算机考研知识学习场景**，通过构建个人知识库，实现对专业教材和学习资料的智能问答。
-
-用户导入或选择408相关资料后，系统通过：
-
-* 📄 文档解析
-* ✂️ 知识切片
-* 🧠 Embedding向量化
-* 🔍 语义检索
-* 🤖 大模型生成
-
-实现基于个人学习资料的智能辅导。
-
-当前支持：
-
-* 数据结构
-* 计算机组成原理
-* 操作系统
-* 计算机网络
-
-相比普通 ChatBot，KnowMate 更关注：
-
-* 📚 **基于教材内容回答，降低大模型幻觉**
-* 🔍 **回答来源可追溯**
-* 🔒 **本地运行，保护个人学习资料**
-* 🎯 **针对专业知识场景优化**
-* ⚙️ **完整 RAG 应用工程链路**
-
-未来计划支持更多垂直知识库场景，例如：
-
-* 专业课程资料
-* 技术文档助手
-* 个人知识管理
-* 企业内部知识库
+![操作演示](assets/demo.gif)
 
 ---
 
-# ✨ Features
-
-## 🚀 Full-Stack AI Application Architecture
-
-KnowMate 采用前后端分离架构：
-
-```
-Vue3 Frontend
-
-        |
-        | REST API / SSE Streaming
-        |
-
-FastAPI Backend
-
-        |
-        |
-        ├── Document Parser
-        |
-        ├── Retriever
-        |
-        ├── Generator
-        |
-        └── Vector Database
-```
-
-技术特点：
-
-* Vue3 + Element Plus 构建交互界面
-* FastAPI 提供高性能 API 服务
-* SSE 实现流式回答
-* 模块化 RAG 服务设计
-
----
-
-# 📚 Knowledge Base Management
-
-支持用户构建个人知识库。
-
-当前支持：
-
-* 文本型PDF
-* Markdown
-* TXT
-* DOCX
-
-文档处理流程：
-
-```
-Document
-
-↓
-
-Parser
-
-↓
-
-Text Chunking
-
-↓
-
-Embedding
-
-↓
-
-Chroma Vector Database
-
-↓
-
-Retriever
-
-↓
-
-LLM Generation
-```
-
-支持：
-
-* 本地知识资料管理
-* 多来源文档解析
-* 知识库切换
-* 基于私有数据问答
-
----
-
-# 🔍 RAG Pipeline
-
-完整 RAG 流程：
-
-## 1. Document Processing
-
-支持：
-
-* Markdown解析
-* TXT解析
-* DOCX解析
-
-未来支持：
-
-* 扫描型PDF解析
-
-
----
-
-## 2. Text Chunking
-
-采用：
-
-* RecursiveCharacterTextSplitter
-
-根据文本结构切分知识片段。
-
----
-
-## 3. Embedding
-
-使用：
-
-* BGE-M3 Embedding Model
-
-将文本转换为语义向量。
-
----
-
-## 4. Vector Retrieval
-
-使用：
-
-* ChromaDB
-
-实现：
-
-* Top-K语义召回
-* 私有知识检索
-
----
-
-## 5. Reranking
-
-支持：
-
-* bge-reranker-v2-m3
-
-用于提升召回结果排序质量。
-
----
-
-## 6. Generation
-
-支持：
-
-本地模型：
-
-* Ollama
-* Qwen2.5
-
-云端模型（需自备 API Key）：
-
-* DeepSeek API —— 在网页侧边栏选择 "DeepSeek API"，填入自己的 API Key 即可启用
-
-
----
-
-# ⚡ Streaming Chat Experience
-
-支持类似 ChatGPT 的实时回答体验。
-
-流程：
-
-```
-User Query
-
-↓
-
-Knowledge Retrieval
-
-↓
-
-LLM Streaming Generation
-
-↓
-
-SSE
-
-↓
-
-Vue Incremental Rendering
-```
-
-特点：
-
-* 打字机效果
-* 实时响应
-* 更低等待感
-
----
-
-# 🔒 Local-First Privacy
-
-KnowMate 默认采用本地运行模式。
-
-本地组件：
-
-* Ollama Local LLM
-* Local Embedding Model
-* Chroma Vector Database
-
-用户资料无需上传第三方平台。
-
----
-
-# 🏗️ System Architecture
+## ✨ 功能亮点
+
+| 能力 | 说明 |
+| --- | --- |
+| 🧠 **RAG 全链路问答** | 查询改写 → 混合检索（向量 + BM25 + RRF）→ 重排 → 置信度门控 → 流式生成 |
+| 📌 **回答可溯源** | 行内 `[资料N]` 标注 + 结构化引用（来源 / 页码 / 章节），前端点击定位 |
+| 📝 **AI 出题** | 内置四科 1175 道选择题，随机出题 + 即时判题，答案来自题库、秒出 |
+| 📄 **扫描型 PDF 识别** | 自动检测图片型文档，提示用户后逐页 OCR 入库（本地离线识别） |
+| 📚 **内置知识库** | 四科 408 知识点库，加载即用；支持上传 Markdown / TXT / DOCX / PDF |
+| 🖥️ **本地优先** | Ollama + 本地向量库，数据不出机器；可选 DeepSeek 云端模式 |
+| ⚡ **流式体验** | SSE 打字机式输出，对话历史持久化 |
+| 📊 **量化评测** | 四科 200 题基准、多轮 A/B 对比、一键回归报告 |
+| 🐳 **一键部署** | Docker GPU / CPU 双模式，模型自动拉取，服务健康检查 |
+
+## 💎 内置数据资产
+
+- **四科知识点库**：数据结构、操作系统、组成原理、计算机网络，源自四本主流教材的系统化清洗整理，按章节组织、覆盖 408 考纲
+- **1175 道选择题题库**：四科全覆盖，答案与解析随题附赠，出题、判题开箱即用
+- 全部本地运行，无需联网，克隆即用
+
+## 🤔 为什么选择 KnowMate-408？
+
+| 对比 | 通用 ChatPDF / 纯 LLM | KnowMate-408 |
+| --- | --- | --- |
+| 回答依据 | 无结构化知识库，易幻觉 | 混合检索 + 重排 + 门控，答案可溯源 |
+| 专业适配 | 通用问答，不区分考点 | 针对 408 术语、考纲优化，查询改写专为检索设计 |
+| 出题练习 | 无 | 内置千题题库，秒出秒判 |
+| 效果验证 | 无评测 | 200 题基准 + 多轮 A/B，选型有数据 |
+| 数据隐私 | 依赖云端 | 本地优先，数据不出机器 |
+
+## 🏗️ 系统架构
 
 ```mermaid
 flowchart LR
-
-A[User]
-
-A --> B[Vue3 Frontend]
-
-B -->|REST API / SSE| C[FastAPI Backend]
-
-C --> D[Document Parser]
-
-C --> E[RAG Retriever]
-
-C --> F[LLM Generator]
-
-E --> G[(Chroma Vector Database)]
-
-F --> H[Ollama Local LLM]
-
-F --> I[DeepSeek API]
-
+    A[Vue3 前端] -->|REST / SSE| B[FastAPI 后端]
+    B --> C[查询改写]
+    C --> D[混合检索<br/>向量 + BM25 + RRF]
+    D --> E[BGE Reranker]
+    E --> F[置信度门控]
+    F --> G[Qwen2.5 流式生成]
+    D --> H[(Chroma 向量库)]
+    G --> I[Ollama 本地模型]
+    G --> J[DeepSeek API 可选]
 ```
 
----
+## 🖼️ 界面预览
 
-# 📂 Project Structure
+![对话问答](assets/demo-chat.png)
 
-```
-KnowMate-RAG-assistant
+![AI 出题](assets/demo-quiz.png)
 
-├── backend
-│   ├── api.py              # FastAPI入口
-│   ├── service.py          # RAG业务服务
-│   └── schemas.py           # API模型定义
-│
-├── src
-│   ├── parser.py            # 文档解析
-│   ├── retriever.py         # 检索逻辑
-│   ├── generator.py         # LLM生成
-│   └── config.py            # 全局配置
-│
-├── frontend
-│   ├── src
-│   │   ├── views
-│   │   └── components
-│   └── package.json
-│
-├── data
-│   └── knowledge_documents
-│
-├── vector_db
-│
-└── README.md
-```
+> 截图与 GIF 为占位，替换同名文件即可更新。
 
----
+## 🛠️ 技术栈
 
-# 🛠️ Tech Stack
+| 层 | 技术 |
+| --- | --- |
+| 前端 | Vue3 · Vite · Element Plus |
+| 后端 | Python · FastAPI · SSE 流式 |
+| RAG | LangChain · BGE-M3 向量 + BM25 + RRF 融合 · BGE-Reranker |
+| 模型 | Ollama（Qwen2.5-7B / 1.5B / BGE-M3）· DeepSeek API（可选） |
+| 存储 | ChromaDB · SQLite |
+| 文档解析 | PyMuPDF · python-docx · RapidOCR（扫描件识别） |
+| 部署 | Docker Compose（GPU / CPU）· Nginx |
 
-| Layer           | Technology                 |
-| --------------- | -------------------------- |
-| Frontend        | Vue3 + Vite + Element Plus |
-| Backend         | FastAPI + Uvicorn          |
-| Communication   | REST API + SSE             |
-| RAG Framework   | LangChain                  |
-| Vector Database | ChromaDB                   |
-| Embedding       | BGE-M3                     |
-| Reranker        | BGE Reranker               |
-| Local Runtime   | Ollama                     |
-| LLM             | Qwen2.5（本地）/ DeepSeek API（自备 Key） |
-| Document Parser | PyMuPDF / python-docx      |
+## 🚀 快速开始
 
----
+### Docker 一键部署（推荐）
 
-# 🚀 Quick Start
-
-## Requirements
-
-* Python 3.11+
-* Node.js 18+
-* Ollama
-
----
-
-## Backend
+**前置条件：** Docker Desktop 已启动；GPU 模式需 NVIDIA 显卡 + 驱动（无显卡请用 CPU 模式）。
 
 ```bash
-git clone https://github.com/yourname/KnowMate-RAG-Assistant.git
+# GPU 模式（默认，推荐）
+docker compose up -d --build
 
-cd KnowMate-RAG-Assistant
+# 无显卡 CPU 模式
+docker compose -f docker-compose.cpu.yml up -d --build
+```
 
+访问：
+
+- 前端：http://localhost:5173
+- 后端 API：http://localhost:8000
+
+说明：
+
+- 首次启动自动拉取本地模型（qwen2.5:7b / qwen2.5:1.5b / bge-m3，合计约 6GB）
+- reranker 模型目录默认挂载 `D:/models/bge-reranker-v2-m3`，路径不同请修改 `docker-compose.yml`
+- 知识库向量库持久化在 `kb_storage` 卷，`docker compose down` 不丢失
+- 查看日志：`docker compose logs -f backend`
+
+### 本地开发
+
+```bash
+# 后端（需已启动 Ollama）
 pip install -r requirements.txt
-```
-
-启动：
-
-```bash
 uvicorn backend.api:app --reload --port 8000
-```
 
----
-
-## Frontend
-
-```bash
+# 前端
 cd frontend
-
 npm install
-
 npm run dev
 ```
 
----
+本地 Ollama 需已拉取模型：`qwen2.5:7b`、`qwen2.5:1.5b`、`bge-m3`。
 
-## ☁️ 云端 DeepSeek API（可选，自备 Key）
+### 扫描型 PDF
 
-不想用本地 Ollama 时，可切换为云端 DeepSeek API 回答问题。API Key 由**用户自己填写**，无需在项目中配置任何付费密钥。
+上传图片型（扫描）PDF 时，系统会检测并提示"识别较慢，推荐使用预设知识点库"；确认后由 RapidOCR 本地逐页识别并入库，识别结果与普通文档一样参与检索。
 
-**方式一：网页端填写（推荐）**
+## 📊 评测结果
 
-1. 打开前端页面
-2. 在左侧边栏的「模型选择」中点击 **DeepSeek API**
-3. 粘贴你自己的 DeepSeek API Key，点击 **启用云端**
-4. 之后对话将使用云端模型回答
+内置评测体系：80 题 A/B 基准扩展至四科 200 题基准，裁判为本地模型（temperature=0），指标包括回答质量（1-5）、要点命中率、召回充分性（1-5）。
 
-API Key 只保存在本地浏览器中，仅发送给本地后端服务，不写入项目文件、不会上传第三方。
+| 对比项 | 回答质量 | 要点命中 | 召回充分性 |
+| --- | --- | --- | --- |
+| 纯向量检索 | 3.79 | 0.735 | 4.25 |
+| 混合检索（向量 + BM25 + RRF） | **3.99** | **0.821** | **4.66** |
+| 混合检索 + 语义切块 | 3.99 | 0.797 | 4.67 |
+| 混合检索，关闭 reranker | 3.88 | 0.784 | 4.45 |
 
-**方式二：服务端 .env 配置**
+关键结论：
 
-在项目根目录的 `.env` 文件中配置（可选）：
+- 混合检索四科全胜纯向量；语义切块未胜出，默认采用固定切块 800/150
+- reranker + 置信度门控保留：关闭后回答质量明显回落
+- 200 题回归已作为后续改动的量化基线（回答质量 3.76 / 要点命中 0.89）
 
-```bash
-DEEPSEEK_API_KEY=sk-你的key
-DEEPSEEK_API_MODEL=deepseek-chat   # 可选：deepseek-chat / deepseek-reasoner
+完整对比与复现方式见 [docs/EVAL_REPORT.md](docs/EVAL_REPORT.md)。
+
+## 📂 项目结构
+
+```
+backend/          FastAPI 服务（RAG 链路 / AI 出题 / 会话管理）
+src/              核心模块（检索 / 生成 / 解析 / OCR / 配置）
+frontend/         Vue3 前端（问答 / 知识库 / 出题 / 状态）
+data/             内置四科知识点与题库（1175 道选择题）
+docker/           Dockerfile 与容器编排
+scripts/          评测与工具脚本（回归 / 对比 / 建库 / OCR）
+evaluate.py       评测入口
+results/          评测结果归档
+storage/          向量库持久化（运行时生成）
 ```
 
-配置后启动后端，云端模式自动可用。
+## 🗺️ Roadmap
 
----
+✅ **已完成**：RAG 全链路、混合检索、引用溯源、AI 出题、扫描型 PDF 识别、评测体系、Docker 部署、一键启动
 
-# 🛣️ Roadmap
+🚧 **进行中**：演示素材补充（截图 / GIF）、拍照搜题原型
 
-## ✅ Completed
+🔮 **规划中**：学习数据分析、Agent 化学习流程、评测基准扩展
 
-* [x] 完成四本408教材清洗，分为知识点 & 题库
-* [x] RAG基础问答流程
-* [x] Vue3 + FastAPI前后端分离
-* [x] SSE流式回答
-* [x] Markdown/TXT/DOCX解析
-* [x] Chroma向量数据库
-* [x] 本地LLM推理
-* [x] 云端 DeepSeek API（用户自填 Key 启用）
-* [x] 知识库切换
-* [x] 文档来源引用
-
----
-
-## 🚧 In Progress
-
-* [ ] 高级检索策略
-* [ ] 多文件知识库管理
-* [ ] 高级Citation系统
-* [ ] 扫描型PDF解析
-
----
-
-## 🔮 Future
-
-### Advanced RAG
-
-* [ ] Hybrid Search (BM25 + Vector)
-* [ ] Better Reranking Strategy
-* [ ] RAG Evaluation System
-* [ ] Multi-stage Retrieval
-
-### AI Agent
-
-* [ ] Knowledge Agent
-* [ ] AI Question Generation
-* [ ] Learning Assistant Workflow
-
-### Engineering
-
-* [ ] Docker Deployment
-* [ ] One-click Startup
-* [ ] Observability System
-
----
-
-# 🎯 Vision
-
-KnowMate 不只是一个简单的 408 RAG Demo。
-
-未来希望成为一个：
-
-> **面向个人学习、企业知识管理和专业领域场景的 Local-first AI Knowledge Assistant。**
-
----
-
-# 📄 License
+## 📄 License
 
 MIT License

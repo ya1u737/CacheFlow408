@@ -71,8 +71,11 @@ class RAGService:
             "source": filename
         }
 
-    def upload_document(self, file) -> dict:
-        """上传并解析文档"""
+    def upload_document(self, file, ocr: bool = False) -> dict:
+        """上传并解析文档。
+
+        扫描型 PDF 首次返回 needs_ocr 信号，由前端弹窗确认后携带 ocr=true 重传。
+        """
         ext = os.path.splitext(file.filename)[1].lower()
 
         # 空文件检验
@@ -82,7 +85,14 @@ class RAGService:
         # 文件类型校验 + parser 异常捕获
         try:
             if ext == ".pdf":
-                docs = self.parser.parse_pdf(file.file)
+                pdf_type = self.parser.detect_pdf_type(file.file)
+                if pdf_type == "scanned" and not ocr:
+                    return {
+                        "status": "needs_ocr",
+                        "is_scanned": True,
+                        "message": "检测到图片型（扫描）PDF，逐页识别需要较长时间，推荐直接使用系统预设知识点库；如继续将逐页识别，请耐心等待。",
+                    }
+                docs = self.parser.parse_pdf(file.file, ocr=ocr)
             elif ext in (".txt", ".md"):
                 docs = self.parser.parse_txt(file.file)
             elif ext == ".docx":
@@ -103,7 +113,7 @@ class RAGService:
         if file.filename not in self.current_docs:
             self.current_docs.append(file.filename)
         self.current_chunks += len(docs)
-        return {"status": "ok", "chunks": len(docs), "source": file.filename}
+        return {"status": "ok", "chunks": len(docs), "source": file.filename, "ocr": ocr}
 
     def query(self, question: str, chat_history: list = None, mode: str = "ollama") -> dict:
         """执行完整 RAG 流程"""

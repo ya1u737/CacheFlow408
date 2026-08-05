@@ -42,7 +42,7 @@
             </div>
             <div class="upload-text">
               <span class="primary-text">拖拽文件到此处，或 <em>点击上传</em></span>
-              <span class="sub-text">支持 文本型PDF、TXT、DOCX、Markdown </span>
+              <span class="sub-text">支持 PDF（含扫描件）、TXT、DOCX、Markdown</span>
             </div>
           </div>
         </el-upload>
@@ -124,7 +124,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 
 const presetDocs = ref({
   '数据结构_知识点': '数据结构_知识点.md',
@@ -140,6 +140,7 @@ const isRefreshing = ref(false)
 const uploadProgress = ref(0)
 const progressStatus = ref('')
 let progressTimer = null
+let ocrMsg = null
 
 const startFakeProgress = () => {
   uploadProgress.value = 1
@@ -210,7 +211,29 @@ const clearKnowledge = async () => {
   }
 }
 
-const onUploadSuccess = (response, file, fileList) => {
+const onUploadSuccess = async (response, file, fileList) => {
+  if (response.status === 'needs_ocr') {
+    // 扫描型 PDF：先征询用户，推荐使用预设知识点库
+    try {
+      await ElMessageBox.confirm(
+        '检测到图片型（扫描）PDF，逐页识别需要较长时间。\n\n推荐直接使用「预设学科知识库」，加载即用。是否继续识别该文件？',
+        '扫描型 PDF 提示',
+        { confirmButtonText: '继续识别', cancelButtonText: '取消', type: 'warning' }
+      )
+    } catch {
+      const idx = fileList.findIndex(f => f.uid === file.uid)
+      if (idx !== -1) fileList.splice(idx, 1)
+      uploadProgress.value = 0
+      progressStatus.value = ''
+      ElMessage.info('已取消扫描件识别')
+      return
+    }
+    const idx = fileList.findIndex(f => f.uid === file.uid)
+    if (idx !== -1) fileList.splice(idx, 1)
+    await ocrUpload(file.raw)
+    return
+  }
+
   if (response.status === 'ok') {
     clearInterval(progressTimer)
     uploadProgress.value = 100
@@ -220,6 +243,49 @@ const onUploadSuccess = (response, file, fileList) => {
     ElMessage.error(`上传失败：${response.message || '未知错误'}`)
     const idx = fileList.findIndex(f => f.uid === file.uid)
     if (idx !== -1) fileList.splice(idx, 1)
+  }
+  fetchStatus()
+}
+
+const ocrUpload = async (rawFile) => {
+  clearInterval(progressTimer)
+  uploadProgress.value = 8
+  progressStatus.value = ''
+  // 识别期间缓慢推进假进度，避免用户以为卡死
+  progressTimer = setInterval(() => {
+    if (uploadProgress.value < 92) {
+      uploadProgress.value += Math.floor(Math.random() * 2) + 1
+    }
+  }, 2000)
+  ocrMsg = ElMessage({
+    type: 'info',
+    message: '扫描件识别中，可能需要几分钟，请耐心等待…',
+    duration: 0,
+    showClose: true,
+  })
+
+  const fd = new FormData()
+  fd.append('file', rawFile)
+  fd.append('ocr', 'true')
+  try {
+    const r = await fetch('/api/upload', { method: 'POST', body: fd })
+    const d = await r.json()
+    if (ocrMsg) ocrMsg.close()
+    if (d.status === 'ok') {
+      clearInterval(progressTimer)
+      uploadProgress.value = 100
+      progressStatus.value = 'success'
+      ElMessage.success(`${d.source} 识别完成，共生成 ${d.chunks} 个知识片段`)
+    } else {
+      clearInterval(progressTimer)
+      uploadProgress.value = 0
+      ElMessage.error(`识别失败：${d.message || '未知错误'}`)
+    }
+  } catch {
+    if (ocrMsg) ocrMsg.close()
+    clearInterval(progressTimer)
+    uploadProgress.value = 0
+    ElMessage.error('扫描件识别请求失败，请检查后端服务')
   }
   fetchStatus()
 }

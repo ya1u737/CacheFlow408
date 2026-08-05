@@ -7,6 +7,38 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 from src.config import Config
 
 
+_ocr_engine = None
+
+
+def _get_ocr_engine():
+    """惰性初始化 OCR 引擎（仅扫描件识别时才加载，避免拖慢正常启动）。
+
+    优先 RapidOCR（ONNX Runtime，无 Paddle 依赖、离线可用）；
+    未安装时回退 PaddleOCR。
+    """
+    global _ocr_engine
+    if _ocr_engine is not None:
+        return _ocr_engine
+    try:
+        from rapidocr_onnxruntime import RapidOCR
+    except ImportError:
+        try:
+            from paddleocr import PaddleOCR
+        except ImportError:
+            raise ValueError("未安装 OCR 组件（rapidocr_onnxruntime / paddleocr），请先安装后再识别扫描型 PDF")
+        _ocr_engine = PaddleOCR(
+            lang="ch",
+            det_model_dir=os.path.join(Config.PADDLE_MODEL_DIR, "det"),
+            rec_model_dir=os.path.join(Config.PADDLE_MODEL_DIR, "rec"),
+            cls_model_dir=os.path.join(Config.PADDLE_MODEL_DIR, "cls"),
+            use_angle_cls=True,
+            show_log=False,
+        )
+        return _ocr_engine
+    _ocr_engine = RapidOCR()
+    return _ocr_engine
+
+
 class SemanticMarkdownSplitter:
     """语义切块：按 Markdown 标题组织语义单元，超长章节按段落/句子兜底。
 
@@ -152,42 +184,86 @@ class DocumentParser:
         else:
             raise ValueError(f"不支持的文件类型: {ext}")
 
-    # ===== PDF解析（支持路径 + 上传）=====
-    def parse_pdf(self, file):
-        if isinstance(file, str):
-            doc = fitz.open(file)
-            file_name = os.path.basename(file)
-        else:
-            doc = fitz.open(stream=file.read(), filetype="pdf")
-            file_name = file.name
+    # ===== PDF解析（支持路径 + 上传；扫描件可走 OCR）=====
+    def detect_pdf_type(self, file):
+        """返回 "text"（文本型）或 "scanned"（图片/扫描型）。"""
+        doc, _ = self._open_pdf(file)
+        try:
+            sample_pages = min(Config.OCR_SAMPLE_PAGES, doc.page_count)
+            for i in range(sample_pages):
+                if doc[i].get_text().strip():
+                    return "text"
+            return "scanned"
+        finally:
+            doc.close()
 
-        # PDF 类型检测：扫描件还是文本型
-        sample_pages = min(10, doc.page_count)
-        text_pages = 0
-        for i in range(sample_pages):
-            if doc[i].get_text().strip():
-                text_pages += 1
+    def parse_pdf(self, file, ocr=False):
+        doc, file_name = self._open_pdf(file)
+        try:
+            # PDF 类型检测：扫描件还是文本型
+            sample_pages = min(Config.OCR_SAMPLE_PAGES, doc.page_count)
+            text_pages = 0
+            for i in range(sample_pages):
+                if doc[i].get_text().strip():
+                    text_pages += 1
 
-        if text_pages == 0:
-            raise ValueError("当前仅支持文本型PDF，暂不支持扫描图片型PDF")
+            if text_pages == 0 and not ocr:
+                raise ValueError("当前仅支持文本型PDF，暂不支持扫描图片型PDF")
 
-        documents = []
-
-        for page_num, page in enumerate(doc):
-            text = page.get_text().strip()
-            if text:
-                documents.append(
-                    Document(
-                        page_content=text,
-                        metadata={
-                            "source": file_name,
-                            "page": page_num + 1,
-                            "type": "pdf"
-                        }
+            documents = []
+            for page_num, page in enumerate(doc):
+                has_text = bool(page.get_text().strip())
+                text = page.get_text().strip()
+                if not has_text and ocr:
+                    text = self._ocr_page(page)
+                if text:
+                    documents.append(
+                        Document(
+                            page_content=text,
+                            metadata={
+                                "source": file_name,
+                                "page": page_num + 1,
+                                "type": "pdf" if has_text else "pdf_ocr"
+                            }
+                        )
                     )
-                )
+            return self.splitter.split_documents(documents)
+        finally:
+            doc.close()
 
-        return self.splitter.split_documents(documents)
+    @staticmethod
+    def _open_pdf(file):
+        """统一打开 PDF：支持路径字符串与文件流，返回 (doc, file_name)。"""
+        if isinstance(file, str):
+            return fitz.open(file), os.path.basename(file)
+        file.seek(0)
+        return fitz.open(stream=file.read(), filetype="pdf"), file.name
+
+    def _ocr_page(self, page):
+        """单页扫描件 OCR：渲染高清位图 → OCR 识别 → 拼接文本。"""
+        engine = _get_ocr_engine()
+        zoom = Config.OCR_DPI / 72.0
+        pix = page.get_pixmap(matrix=fitz.Matrix(zoom, zoom))
+        from PIL import Image
+        import numpy as np
+        rgb = np.array(Image.frombytes("RGB", (pix.width, pix.height), pix.samples))
+        bgr = rgb[:, :, ::-1].copy()
+        out = engine(bgr)
+        result = out[0] if isinstance(out, tuple) else out
+        lines = []
+        if result:
+            for item in result:
+                if not isinstance(item, (list, tuple)) or len(item) < 2:
+                    continue
+                second = item[1]
+                if isinstance(second, (list, tuple)):
+                    text = second[0]          # paddleocr: (text, conf)
+                else:
+                    text = second             # rapidocr: text
+                text = (str(text) if text is not None else "").strip()
+                if text:
+                    lines.append(text)
+        return "\n".join(lines)
 
     # ===== TXT/Markdown 解析（支持路径字符串 + 上传文件对象） =====
     def parse_txt(self, file):

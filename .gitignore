@@ -45,6 +45,10 @@ storage/
 
 # 运行时数据库（聊天历史），不纳入版本库
 backend/database/chat.db
+backend/database/learning.db
+
+# 错题本模块已决定不做，保留本地不提交
+backend/learning_db.py
 
 # Model files
 models/

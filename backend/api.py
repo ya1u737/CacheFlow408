@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, Form
 from fastapi.responses import StreamingResponse, JSONResponse
 from backend.service import RAGService
 from backend.quiz_service import QuizService
@@ -59,9 +59,9 @@ def load_knowledge(filename: str):
 
 
 @app.post("/api/upload")
-def upload(file: UploadFile = File(...)):
-    result = service.upload_document(file)
-    if result.get("status") != "ok":
+def upload(file: UploadFile = File(...), ocr: bool = Form(False)):
+    result = service.upload_document(file, ocr=ocr)
+    if result.get("status") not in ("ok", "needs_ocr"):
         return JSONResponse(status_code=400, content=result)
     return result
 

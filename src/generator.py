@@ -17,6 +17,7 @@ class AnswerGenerator:
         # ==================== 本地 Ollama ====================
         self.ollama_llm = ChatOllama(
             model=Config.CHAT_MODEL,
+            base_url=Config.OLLAMA_BASE_URL,
             temperature=0.25,
             streaming=True,
             num_ctx=Config.CHAT_NUM_CTX,  # 上下文窗口（8GB 显存建议 8192）

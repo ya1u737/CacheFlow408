@@ -5,6 +5,10 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
+    # ==================== 运行环境 ====================
+    # Docker 容器内通过环境变量指向 ollama 服务；本机运行时默认 localhost
+    OLLAMA_BASE_URL = os.getenv("OLLAMA_BASE_URL", "http://localhost:11434")
+
     # ==================== 路径配置 ====================
     DATA_PATH = "data/clean_md/"                # Markdown 文件存放目录
     VECTOR_DB_PATH = "storage/chroma/"          # Chroma 持久化目录（每个知识库一个子目录）
@@ -41,7 +45,7 @@ class Config:
     FINAL_TOP_K = 3                        
 
     # ==================== 混合检索（BM25 词法 + 向量语义，RRF 融合）====================
-    HYBRID_ENABLED = True                    # 是否启用 BM25 + RRF 混合检索
+    HYBRID_ENABLED = os.getenv("HYBRID_ENABLED", "true").lower() != "false"
     DENSE_TOP_K = 10                         # 向量检索候选数（融合前）
     BM25_TOP_K = 10                          # BM25 候选数（融合前）
     RRF_K = 60                               # RRF 平滑常数
@@ -49,19 +53,24 @@ class Config:
     RRF_BM25_WEIGHT = 1.0                    # BM25 路权重
 
     # ==================== Rerank（Cross Encoder 重排序） ====================
-    RERANK_ENABLED = True                        # 是否启用 Cross Encoder 重排序
-    RERANKER_MODEL = r"D:\models\bge-reranker-v2-m3"
+    # Docker CPU 模式通过环境变量关闭重排序（避免加载重型 reranker 模型）
+    RERANK_ENABLED = os.getenv("RERANK_ENABLED", "true").lower() != "false"
+    # Docker 容器内通过环境变量指向挂载的模型目录（如 /models/bge-reranker-v2-m3）
+    RERANKER_MODEL = os.getenv(
+        "RERANKER_MODEL", r"D:\models\bge-reranker-v2-m3"
+    )
     RERANKER_FP16 = True                         # fp16 加载可省一半显存（质量几乎无损）
 
     # ==================== 分级降级（检索置信度门控）====================
     # 检索到的资料置信度不足时，不强行基于知识库回答，改用模型自身知识直接回答，
     # 避免"错误上下文带偏答案"。门控信号 = 重排器对候选的最高相关分。
-    RAG_FALLBACK_ENABLED = True                  # 是否启用分级降级
+    RAG_FALLBACK_ENABLED = os.getenv("RAG_FALLBACK_ENABLED", "true").lower() != "false"
     RAG_FALLBACK_THRESHOLD = 0.5                 # 最高重排分低于该值 → 纯模型回答（按评测校准）
     FALLBACK_NOTICE = "（知识库未检索到足够相关的内容，以下回答基于模型自身知识，仅供参考）"
 
     # ==================== Query Rewrite（查询改写）====================
-    QUERY_REWRITE_ENABLED = True                 # 是否启用查询改写（轻量模型改写为更利于检索的查询）
+    # Docker CPU 模式通过环境变量关闭查询改写（轻量模型改写为更利于检索的查询）
+    QUERY_REWRITE_ENABLED = os.getenv("QUERY_REWRITE_ENABLED", "true").lower() != "false"
     QUERY_REWRITE_MODEL = "qwen2.5:1.5b"         # 改写模型（本地 Ollama）
     QUERY_REWRITE_TIMEOUT = 20                   # 改写超时（秒），超时回退原问题
 
@@ -73,6 +82,11 @@ class Config:
     QUIZ_BANK_DIR = "data/clean_md/"             # 题库 Markdown 目录
     QUIZ_GROUNDING_ENABLED = True                # 操作系统 LLM 判题时是否检索知识点做 grounding
     QUIZ_ANSWER_CACHE_PATH = "storage/quiz_os_answers.json"   # 操作系统判题结果缓存（内存 + JSON）
+
+    # ==================== 扫描型 PDF OCR（PaddleOCR）====================
+    PADDLE_MODEL_DIR = os.getenv("PADDLE_MODEL_DIR", "models/paddleocr")
+    OCR_DPI = int(os.getenv("OCR_DPI", "200"))
+    OCR_SAMPLE_PAGES = int(os.getenv("OCR_SAMPLE_PAGES", "10"))
 
     FALLBACK_PROMPT = """
 你是 KnowMate-408，一个计算机408考研辅导助手（数据结构、操作系统、计算机网络、计算机组成原理）。

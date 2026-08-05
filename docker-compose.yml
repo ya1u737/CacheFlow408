@@ -1,0 +1,82 @@
+# KnowMate-408 一键容器化（GPU 默认配置）
+# 使用前提：Docker Desktop 已安装并运行。
+#
+# 常用命令：
+#   docker compose up -d --build      # 构建并启动
+#   docker compose logs -f backend    # 跟踪后端日志
+#   docker compose down               # 停止（保留数据卷）
+
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: knowmate-ollama
+    restart: unless-stopped
+    volumes:
+      - ollama_models:/root/.ollama
+      - ./docker/ollama-entrypoint.sh:/entrypoint.sh:ro
+    environment:
+      # 首次启动自动拉取：聊天 7B + 查询改写 1.5B + 嵌入 bge-m3
+      OLLAMA_MODELS_TO_PULL: "qwen2.5:7b,qwen2.5:1.5b,bge-m3"
+      OLLAMA_KEEP_ALIVE: "10m"
+    ports:
+      - "11434:11434"
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 30
+      start_period: 30s
+    entrypoint: ["/bin/sh", "/entrypoint.sh"]
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    container_name: knowmate-backend
+    restart: unless-stopped
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      OLLAMA_BASE_URL: "http://ollama:11434"
+      RERANKER_MODEL: "/models/bge-reranker-v2-m3"
+      DEEPSEEK_API_KEY: "${DEEPSEEK_API_KEY:-}"
+      DEEPSEEK_API_MODEL: "${DEEPSEEK_API_MODEL:-deepseek-chat}"
+    volumes:
+      # reranker 模型目录（只读；Windows 下用绝对路径挂载子目录最稳）
+      - D:/models/bge-reranker-v2-m3:/models/bge-reranker-v2-m3:ro
+      # 题库/知识点 md（只读，用于知识库构建与出题）
+      - ./data:/app/data:ro
+      # 向量库与运行时缓存（首次构建知识库约需几分钟，之后走缓存）
+      - kb_storage:/app/storage
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/api/status', timeout=5)"]
+      interval: 15s
+      timeout: 10s
+      retries: 20
+      start_period: 60s
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend.Dockerfile
+    container_name: knowmate-frontend
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+      - "5173:5173"
+
+volumes:
+  ollama_models:
+  kb_storage:

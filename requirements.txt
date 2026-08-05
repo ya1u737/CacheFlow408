@@ -136,3 +136,4 @@ xxhash==3.8.1
 yarl==1.24.5
 zstandard==0.25.0
 python-docx==1.2.0
+rapidocr_onnxruntime==1.4.4

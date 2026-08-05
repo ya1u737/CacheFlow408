@@ -36,7 +36,7 @@ class QueryProcessor:
         if self.enabled:
             try:
                 self.client = ollama.Client(
-                    host="http://127.0.0.1:11434", timeout=self.timeout
+                    host=Config.OLLAMA_BASE_URL, timeout=self.timeout
                 )
                 print(f"[REWRITE] 查询改写已启用: {self.model} (timeout={self.timeout}s)")
             except Exception as e:

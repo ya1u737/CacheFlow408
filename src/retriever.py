@@ -86,6 +86,7 @@ class KnowledgeBase:
         self.embedding = OllamaEmbeddings(
             model=Config.EMBEDDING_MODEL,
             keep_alive=Config.EMBEDDING_KEEP_ALIVE,
+            base_url=Config.OLLAMA_BASE_URL,
         )
 
         # 向量库（当前会话使用）
